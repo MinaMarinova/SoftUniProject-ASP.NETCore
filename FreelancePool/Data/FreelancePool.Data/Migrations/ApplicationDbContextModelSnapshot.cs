@@ -117,6 +117,9 @@ namespace FreelancePool.Data.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Stars")
+                        .HasColumnType("int");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -164,6 +167,172 @@ namespace FreelancePool.Data.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("FreelancePool.Data.Models.CategoryPost", b =>
+                {
+                    b.Property<string>("CategoryId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CategoryId", "PostId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("CategoryPost");
+                });
+
+            modelBuilder.Entity("FreelancePool.Data.Models.CategoryProject", b =>
+                {
+                    b.Property<string>("CategoryId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CategoryId", "ProjectId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("CategoriesProjects");
+                });
+
+            modelBuilder.Entity("FreelancePool.Data.Models.CategoryUser", b =>
+                {
+                    b.Property<string>("CategoryId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("CategoryId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CategoriesUsers");
+                });
+
+            modelBuilder.Entity("FreelancePool.Data.Models.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("FreelancePool.Data.Models.Project", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ExecutorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("ExecutorId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("Projects");
+                });
+
+            modelBuilder.Entity("FreelancePool.Data.Models.Recommendation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RecipientId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("RecipientId");
+
+                    b.ToTable("Recommendation");
                 });
 
             modelBuilder.Entity("FreelancePool.Data.Models.Setting", b =>
@@ -300,6 +469,80 @@ namespace FreelancePool.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("FreelancePool.Data.Models.CategoryPost", b =>
+                {
+                    b.HasOne("FreelancePool.Data.Models.Category", "Category")
+                        .WithMany("CategoryPosts")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("FreelancePool.Data.Models.Post", "Post")
+                        .WithMany("PostCategories")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FreelancePool.Data.Models.CategoryProject", b =>
+                {
+                    b.HasOne("FreelancePool.Data.Models.Category", "Category")
+                        .WithMany("CategoryProjects")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("FreelancePool.Data.Models.Project", "Project")
+                        .WithMany("ProjectCategories")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FreelancePool.Data.Models.CategoryUser", b =>
+                {
+                    b.HasOne("FreelancePool.Data.Models.Category", "Category")
+                        .WithMany("CategoryUsers")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("FreelancePool.Data.Models.ApplicationUser", "User")
+                        .WithMany("UserCategories")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FreelancePool.Data.Models.Post", b =>
+                {
+                    b.HasOne("FreelancePool.Data.Models.ApplicationUser", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId");
+                });
+
+            modelBuilder.Entity("FreelancePool.Data.Models.Project", b =>
+                {
+                    b.HasOne("FreelancePool.Data.Models.ApplicationUser", "Author")
+                        .WithMany("ProjectsPosted")
+                        .HasForeignKey("AuthorId");
+
+                    b.HasOne("FreelancePool.Data.Models.ApplicationUser", "Executor")
+                        .WithMany("ProjectsCompleted")
+                        .HasForeignKey("ExecutorId");
+                });
+
+            modelBuilder.Entity("FreelancePool.Data.Models.Recommendation", b =>
+                {
+                    b.HasOne("FreelancePool.Data.Models.ApplicationUser", "Author")
+                        .WithMany("RecommendationsMade")
+                        .HasForeignKey("AuthorId");
+
+                    b.HasOne("FreelancePool.Data.Models.ApplicationUser", "Recipient")
+                        .WithMany("Recommendations")
+                        .HasForeignKey("RecipientId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

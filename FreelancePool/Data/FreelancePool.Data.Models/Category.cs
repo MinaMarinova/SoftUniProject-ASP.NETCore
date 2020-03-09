@@ -1,14 +1,25 @@
 ﻿namespace FreelancePool.Data.Models
 {
-    using FreelancePool.Data.Common.Models;
     using System;
+    using System.Collections.Generic;
 
-    public class Category : BaseDeletableModel<string>
+    using FreelancePool.Data.Common.Models;
+
+    public class Category : BaseDeletableModel<int>
     {
         public Category()
         {
-            this.Id = Guid.NewGuid().ToString();
+            this.CategoryUsers = new HashSet<CategoryUser>();
+            this.CategoryProjects = new HashSet<CategoryProject>();
+            this.CategoryPosts = new HashSet<CategoryPost>();
         }
+
         public string Name { get; set; }
+
+        public virtual ICollection<CategoryUser> CategoryUsers { get; set; }
+
+        public virtual ICollection<CategoryProject> CategoryProjects { get; set; }
+
+        public virtual ICollection<CategoryPost> CategoryPosts { get; set; }
     }
 }

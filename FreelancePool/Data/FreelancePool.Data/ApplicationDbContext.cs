@@ -28,6 +28,14 @@
 
         public DbSet<Category> Categories { get; set; }
 
+        public DbSet<Project> Projects { get; set; }
+
+        public DbSet<Post> Posts { get; set; }
+
+        public DbSet<CategoryUser> CategoriesUsers { get; set; }
+
+        public DbSet<CategoryProject> CategoriesProjects { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
@@ -98,6 +106,65 @@
                 .HasForeignKey(e => e.UserId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // CategoriesUsers
+            builder
+                .Entity<CategoryUser>(categoryUser =>
+                {
+                    categoryUser
+                    .HasKey(cu => new { cu.CategoryId, cu.UserId });
+
+                    categoryUser
+                    .HasOne(cu => cu.Category)
+                    .WithMany(c => c.CategoryUsers)
+                    .HasForeignKey(cu => cu.CategoryId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                    categoryUser
+                    .HasOne(cu => cu.User)
+                    .WithMany(u => u.UserCategories)
+                    .HasForeignKey(cu => cu.UserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            //CategoryProject
+            builder
+                .Entity<CategoryProject>(categoryProject =>
+                {
+                    categoryProject
+                    .HasKey(cp => new { cp.CategoryId, cp.ProjectId });
+
+                    categoryProject
+                    .HasOne(cp => cp.Category)
+                    .WithMany(c => c.CategoryProjects)
+                    .HasForeignKey(cp => cp.CategoryId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                    categoryProject
+                    .HasOne(cp => cp.Project)
+                    .WithMany(p => p.ProjectCategories)
+                    .HasForeignKey(cp => cp.ProjectId)
+                    .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            //CategoryPost
+            builder.Entity<CategoryPost>(categoryPost =>
+            {
+                categoryPost
+                .HasKey(cp => new { cp.CategoryId, cp.PostId });
+
+                categoryPost
+                .HasOne(cp => cp.Category)
+                .WithMany(c => c.CategoryPosts)
+                .HasForeignKey(cp => cp.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+                categoryPost
+                .HasOne(cp => cp.Post)
+                .WithMany(p => p.PostCategories)
+                .HasForeignKey(cp => cp.PostId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
         }
 
         private static void SetIsDeletedQueryFilter<T>(ModelBuilder builder)
