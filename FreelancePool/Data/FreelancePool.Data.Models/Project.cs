@@ -10,7 +10,11 @@
 
         public string Description { get; set; }
 
+        public string AuthorId { get; set; }
+
         public ApplicationUser Author { get; set; }
+
+        public string ExecutorId { get; set; }
 
         public ApplicationUser Executor { get; set; }
 

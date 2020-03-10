@@ -127,7 +127,7 @@
                     .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            //CategoryProject
+            // CategoryProject
             builder
                 .Entity<CategoryProject>(categoryProject =>
                 {
@@ -147,7 +147,7 @@
                     .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            //CategoryPost
+            // CategoryPost
             builder.Entity<CategoryPost>(categoryPost =>
             {
                 categoryPost
@@ -163,6 +163,22 @@
                 .HasOne(cp => cp.Post)
                 .WithMany(p => p.PostCategories)
                 .HasForeignKey(cp => cp.PostId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            //Recommandations
+            builder.Entity<Recommendation>(recommandation =>
+            {
+                recommandation
+                .HasOne(r => r.Author)
+                .WithMany(a => a.RecommendationsMade)
+                .HasForeignKey(r => r.AuthorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+                recommandation
+                .HasOne(r => r.Recipient)
+                .WithMany(u => u.Recommendations)
+                .HasForeignKey(r => r.RecipientId)
                 .OnDelete(DeleteBehavior.Restrict);
             });
         }

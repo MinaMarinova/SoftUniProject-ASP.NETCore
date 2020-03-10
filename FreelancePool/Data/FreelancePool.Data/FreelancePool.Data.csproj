@@ -11,6 +11,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20191224074400_InitialCreate.cs" />
+    <Compile Remove="Migrations\20191224074400_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200204133006_CreateCategoryEntity.cs" />
+    <Compile Remove="Migrations\20200204133006_CreateCategoryEntity.Designer.cs" />
+    <Compile Remove="Migrations\20200308210628_EditCategory.cs" />
+    <Compile Remove="Migrations\20200308210628_EditCategory.Designer.cs" />
+    <Compile Remove="Migrations\20200308221019_AddGuidCategory.cs" />
+    <Compile Remove="Migrations\20200308221019_AddGuidCategory.Designer.cs" />
+    <Compile Remove="Migrations\20200309234852_RelateUsersWithRecommandation.cs" />
+    <Compile Remove="Migrations\20200309234852_RelateUsersWithRecommandation.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
 
