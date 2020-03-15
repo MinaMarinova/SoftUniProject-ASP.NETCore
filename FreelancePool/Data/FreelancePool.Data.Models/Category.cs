@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-
+    using System.ComponentModel.DataAnnotations;
     using FreelancePool.Data.Common.Models;
 
     public class Category : BaseDeletableModel<int>
@@ -14,7 +14,11 @@
             this.CategoryPosts = new HashSet<CategoryPost>();
         }
 
+        [Required]
+        [MaxLength(50)]
         public string Name { get; set; }
+
+        public byte[] Icon { get; set; }
 
         public virtual ICollection<CategoryUser> CategoryUsers { get; set; }
 

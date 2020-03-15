@@ -3,6 +3,7 @@ namespace FreelancePool.Data.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
     using FreelancePool.Data.Common.Models;
@@ -23,7 +24,11 @@ namespace FreelancePool.Data.Models
             this.ProjectsCompleted = new HashSet<Project>();
         }
 
+        [Range(0, 100)]
         public int Stars { get; set; }
+
+        [Required]
+        public string PhotoUrl { get; set; }
 
         // Audit info
         public DateTime CreatedOn { get; set; }

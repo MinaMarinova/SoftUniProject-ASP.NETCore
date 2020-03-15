@@ -1,7 +1,7 @@
 ﻿namespace FreelancePool.Data.Models
 {
     using System.Collections.Generic;
-
+    using System.ComponentModel.DataAnnotations;
     using FreelancePool.Data.Common.Models;
 
     public class Post : BaseDeletableModel<int>
@@ -11,10 +11,14 @@
             this.PostCategories = new HashSet<CategoryPost>();
         }
 
+        [Required]
+        [MaxLength(200)]
         public string Title { get; set; }
 
+        [Required]
         public string Content { get; set; }
 
+        [Required]
         public string AuthorId { get; set; }
 
         public ApplicationUser Author { get; set; }
