@@ -13,11 +13,11 @@ namespace FreelancePool.Data.Models
         [Required]
         public string AuthorId { get; set; }
 
-        public ApplicationUser Author { get; set; }
+        public virtual ApplicationUser Author { get; set; }
 
         [Required]
         public string RecipientId { get; set; }
 
-        public ApplicationUser Recipient { get; set; }
+        public virtual ApplicationUser Recipient { get; set; }
     }
 }

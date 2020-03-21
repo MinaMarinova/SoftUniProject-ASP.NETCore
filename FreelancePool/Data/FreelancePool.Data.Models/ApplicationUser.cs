@@ -24,6 +24,16 @@ namespace FreelancePool.Data.Models
             this.ProjectsCompleted = new HashSet<Project>();
         }
 
+        [StringLength(30, MinimumLength = 3)]
+        [Required]
+        public override string UserName { get; set; }
+
+        [Required]
+        public override string Email { get; set; }
+
+        [Required]
+        public override string PasswordHash { get; set; }
+
         [Range(0, 100)]
         public int Stars { get; set; }
 

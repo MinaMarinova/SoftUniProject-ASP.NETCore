@@ -8,10 +8,10 @@ namespace FreelancePool.Data.Models
         [Required]
         public string UserId { get; set; }
 
-        public ApplicationUser User { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
         public int CategoryId { get; set; }
 
-        public Category Category { get; set; }
+        public virtual Category Category { get; set; }
     }
 }

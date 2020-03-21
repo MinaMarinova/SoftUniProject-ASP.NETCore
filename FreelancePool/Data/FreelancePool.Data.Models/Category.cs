@@ -18,7 +18,8 @@
         [MaxLength(50)]
         public string Name { get; set; }
 
-        public byte[] Icon { get; set; }
+        [Required]
+        public string IconURL { get; set; }
 
         public virtual ICollection<CategoryUser> CategoryUsers { get; set; }
 
