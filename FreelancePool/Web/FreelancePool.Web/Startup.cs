@@ -16,6 +16,7 @@
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -46,6 +47,16 @@
                         options.MinimumSameSitePolicy = SameSiteMode.None;
                     });
 
+            services.Configure<IdentityOptions>(
+                options =>
+                    {
+                        options.Lockout.MaxFailedAccessAttempts = 5;
+                        options.Password.RequireNonAlphanumeric = false;
+                        options.Password.RequireUppercase = false;
+                        options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 -._@+ ";
+                        options.User.RequireUniqueEmail = true;
+                    });
+
             services.AddControllersWithViews();
             services.AddRazorPages();
 
@@ -73,7 +84,7 @@
 
                 if (env.IsDevelopment())
                 {
-                     dbContext.Database.Migrate();
+                    dbContext.Database.Migrate();
                 }
 
                 new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
