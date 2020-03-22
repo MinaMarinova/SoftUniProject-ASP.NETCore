@@ -6,7 +6,7 @@ body {
     width: 100%;
     height: 100%;
     font-family: 'Lato',sans-serif;
-    font-weight: 300;
+	font-weight: 300;
     color: #666;
     background-color: #fff;
 }
@@ -295,7 +295,17 @@ hr {
 	color: #fff;
 }
 
+.register {
+    width: 100%;
+    height: 100vh;
+    position: relative;
 
+    background: url(../img/register.jpg) no-repeat top center;
+}
+
+#register.register {
+    padding: 10% 0 0 0;
+}
 
 /* ===========================
 --- Intro
@@ -303,9 +313,10 @@ hr {
 
 .intro {
 	width:100%;
+    height: 100vh;
 	position:relative;
 	
-	background: url(../img/bg1.jpg) no-repeat top center;
+	background: url(../img/home.jpg) no-repeat top center;
 }
 
 #intro.intro {
@@ -518,7 +529,7 @@ form#contact-form input:focus,form#contact-form select:focus,form#contact-form t
 --- Footer
 ============================ */
 
-footer {
+/*footer {
 	text-align: center;
 	padding: 50px 0 ;
 	
@@ -526,7 +537,7 @@ footer {
 
 footer p {
 	color: #f8f8f8;
-}
+}*/
 
 /* ==========================
 Parallax
@@ -789,4 +800,23 @@ Parallax
 		font-size: 20px;
 	}
 	
+}
+
+.wrapper {
+    min-height: 100%;
+    height: 100vh;
+    /* Equal to height of footer */
+    /* But also accounting for potential margin-bottom of last child */
+    margin-bottom: -60px;
+}
+
+.footer,
+.push {
+    /*position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    /*line-height: 60px; /* Vertically center the text there */
 }
