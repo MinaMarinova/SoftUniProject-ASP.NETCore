@@ -1,0 +1,7 @@
+﻿@model ICollection<FreelancePool.Web.ViewModels.Components.RandomFreelancersViewModel>
+
+@foreach (var user in Model)
+{
+    <h1>@user.UserName</h1>
+    <img src="@user.PhotoUrl" alt="" width="30" height="30"/>
+}
