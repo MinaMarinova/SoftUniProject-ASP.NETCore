@@ -2,10 +2,10 @@
 {
     using System.Collections.Generic;
 
+    using FreelancePool.Data.Models;
+
     public interface IUsersService
     {
-        IEnumerable<T> GetRandomEightUsers<T>();
-
-        IEnumerable<T> GetRandomEightUsersByCategories<T>();
+        IEnumerable<T> GetRandomEightUsersByCategories<T>(ApplicationUser user);
     }
 }

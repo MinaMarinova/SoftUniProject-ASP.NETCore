@@ -7,37 +7,39 @@
     using FreelancePool.Data.Common.Repositories;
     using FreelancePool.Data.Models;
     using FreelancePool.Services.Mapping;
-    using Microsoft.AspNetCore.Identity;
 
     public class UsersService : IUsersService
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        private int toSkip;
-        public UsersService(UserManager<ApplicationUser> userManager)
+        private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
+
+        public UsersService(IDeletableEntityRepository<ApplicationUser> userRepository)
         {
-            this.userManager = userManager;
+            this.userRepository = userRepository;
         }
 
-        public IEnumerable<T> GetRandomEightUsers<T>()
+        public IEnumerable<T> GetRandomEightUsersByCategories<T>(ApplicationUser user)
         {
-            if (this.userManager.Users.Count() > 8)
-            {
-                Random rand = new Random();
-                this.toSkip = rand.Next(1, this.userManager.Users.Count() - 8);
+            var freelancers = this.userRepository.All();
 
-                IQueryable users = this.userManager.Users.Skip(this.toSkip).Take(8);
-                return users.To<T>().ToList();
-            }
-            else
+            if (user != null && user.UserCategories.Count > 0)
             {
-                IQueryable users = this.userManager.Users;
-                return users.To<T>().ToList();
+                freelancers = this.userRepository.All()
+                    .Where(u => u.UserCategories.Intersect(user.UserCategories).Any());
             }
+
+            if (freelancers.Count() > 8)
+            {
+                freelancers = freelancers.Skip(GetNumberToSkip(this.userRepository)).Take(8);
+            }
+
+            return freelancers.To<T>().ToList();
         }
 
-        public IEnumerable<T> GetRandomEightUsersByCategories<T>()
+        private static int GetNumberToSkip(IDeletableEntityRepository<ApplicationUser> repository)
         {
-            return null;
+            Random rand = new Random();
+            int toSkip = rand.Next(1, repository.All().Count() - 8);
+            return toSkip;
         }
     }
 }

@@ -1,11 +1,12 @@
-﻿using FreelancePool.Data.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace FreelancePool.Web.Controllers
+﻿namespace FreelancePool.Web.Controllers
 {
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using FreelancePool.Data.Models;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+
     public class TestController : BaseController
     {
         private readonly UserManager<ApplicationUser> userManager;
@@ -15,8 +16,7 @@ namespace FreelancePool.Web.Controllers
         public TestController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            RoleManager<ApplicationRole> roleManager
-            )
+            RoleManager<ApplicationRole> roleManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -46,7 +46,6 @@ namespace FreelancePool.Web.Controllers
             await this.userManager.AddToRoleAsync(user, "Admin");
 
             return this.Ok();
-
         }
     }
 }
