@@ -9,15 +9,15 @@ body {
     font-weight: 300;
     color: #666;
     background-color: #fff;
-    margin:0
+    margin: 0
 }
 
 html {
     min-height: 100%;
     width: 100%;
     height: 100%;
-    margin:0
-} 
+    margin: 0
+}
 
 h1,
 h2,
@@ -286,11 +286,12 @@ hr {
 ============================ */
 
 .home-section {
-    padding-top: 110px;
+    padding-top: 50px;
     padding-bottom: 110px;
     display: block;
     position: relative;
     z-index: 120;
+    background: url(../img/about.jpg) no-repeat top center;
 }
 
 
@@ -393,14 +394,14 @@ hr {
     font-size: 60px;
     line-height: 60px;
     font-weight: 700;
-    font-family: Montserrat, sans-serif;
+    font-family: 'Montserrat', sans-serif;
     background-color: rgba(0, 0, 0, 0);
     text-decoration: none;
     text-transform: uppercase;
     border-width: 0px;
     border-color: #000;
     border-style: none;
-    text-shadow: -1px 0 1px #000;
+    text-shadow: 7px 7px 8px #080808;
 }
 
 .intro .slogan h4 {
@@ -416,6 +417,7 @@ hr {
 .boxed-grey {
     background: #f9f9f9;
     padding: 20px;
+    margin-bottom: 20px;
 }
 
 .team h5 {
@@ -661,12 +663,12 @@ form#contact-form input, form#contact-form select, form#contact-form textarea {
 }
 
 footer p {
-	color: #f8f8f8;
+    color: #f8f8f8;
 }
 
- /*==========================
+/*==========================
 Parallax
-=============================*/ 
+=============================*/
 #parallax1 {
     background-image: url(../img/parallax/1.jpg);
 }
@@ -894,7 +896,10 @@ Parallax
     .boxed-grey {
         margin-bottom: 30px;
     }
-}
+
+    .intro {
+        display: none;
+    }
 
 @media (max-width:480px) {
 
@@ -910,6 +915,10 @@ Parallax
         padding-top: 40px;
     }
 
+    .intro {
+        display: none;
+    }
+
     .page-scroll a.btn-circle {
         width: 40px;
         height: 40px;
@@ -919,7 +928,6 @@ Parallax
         border-radius: 50%;
         font-size: 20px;
     }
-
 }
 
 .wrapper {
@@ -930,4 +938,3 @@ Parallax
     padding-bottom: -60px;
     position: relative;
 }
-
