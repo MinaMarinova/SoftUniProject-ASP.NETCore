@@ -29,6 +29,7 @@ namespace FreelancePool.Data.Models
         public override string UserName { get; set; }
 
         [Required]
+        [EmailAddress]
         public override string Email { get; set; }
 
         [Required]

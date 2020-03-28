@@ -38,7 +38,7 @@
         private static int GetNumberToSkip(IDeletableEntityRepository<ApplicationUser> repository)
         {
             Random rand = new Random();
-            int toSkip = rand.Next(1, repository.All().Count() - 8);
+            int toSkip = rand.Next(0, repository.All().Count() - 7);
             return toSkip;
         }
     }
