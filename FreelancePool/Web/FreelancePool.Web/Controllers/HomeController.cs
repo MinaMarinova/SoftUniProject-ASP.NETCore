@@ -1,6 +1,7 @@
 ﻿namespace FreelancePool.Web.Controllers
 {
     using System.Diagnostics;
+
     using FreelancePool.Web.ViewModels;
     using Microsoft.AspNetCore.Mvc;
 

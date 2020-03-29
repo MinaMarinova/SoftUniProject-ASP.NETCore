@@ -30,6 +30,8 @@
             var user = await this.userRepository
                 .GetByIdWithDeletedAsync(this.userManager.GetUserId(this.ViewContext.HttpContext.User));
 
+            var userCat = user.UserCategories;
+
             var freelancers = this.usersService
                 .GetRandomEightUsersByCategories<RandomFreelancersViewModel>(user);
 

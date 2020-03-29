@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-
+    using FreelancePool.Services.Data;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 

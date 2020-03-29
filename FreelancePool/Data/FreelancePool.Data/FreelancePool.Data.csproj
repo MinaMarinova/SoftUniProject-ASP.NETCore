@@ -54,6 +54,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\FreelancePool.Common\FreelancePool.Common.csproj" />
+    <ProjectReference Include="..\..\Services\FreelancePool.Services.Data\FreelancePool.Services.Data.csproj" />
     <ProjectReference Include="..\FreelancePool.Data.Common\FreelancePool.Data.Common.csproj" />
     <ProjectReference Include="..\FreelancePool.Data.Models\FreelancePool.Data.Models.csproj" />
   </ItemGroup>

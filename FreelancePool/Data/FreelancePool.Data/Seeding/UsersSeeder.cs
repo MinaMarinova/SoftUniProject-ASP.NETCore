@@ -5,7 +5,9 @@
     using System.Threading.Tasks;
 
     using FreelancePool.Common;
+    using FreelancePool.Data.Common.Repositories;
     using FreelancePool.Data.Models;
+    using FreelancePool.Services.Data;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -14,6 +16,8 @@
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var categoriesService = serviceProvider.GetService<ICategoriesService>();
+            var categoryUsersRepository = serviceProvider.GetService<IRepository<CategoryUser>>();
 
             var userPaisii = await userManager.FindByEmailAsync("paisii@paisii.bg");
 
@@ -29,6 +33,8 @@
                 var result = await userManager.CreateAsync(newUser, "paisii123");
 
                 await AddUserToRole(userManager, newUser, result);
+
+                await AddUserToCategoryAsync(newUser, GlobalConstants.WritingCategoryName, categoriesService, categoryUsersRepository);
             }
 
             var userTuring = await userManager.FindByEmailAsync("turing@turing.bg");
@@ -45,6 +51,8 @@
                 var result = await userManager.CreateAsync(newUser, "turing123");
 
                 await AddUserToRole(userManager, newUser, result);
+
+                await AddUserToCategoryAsync(newUser, GlobalConstants.SoftwareDevCategoryName, categoriesService, categoryUsersRepository);
             }
 
             var userMario = await userManager.FindByEmailAsync("mario@mario.bg");
@@ -61,6 +69,8 @@
                 var result = await userManager.CreateAsync(newUser, "mario123");
 
                 await AddUserToRole(userManager, newUser, result);
+
+                await AddUserToCategoryAsync(newUser, GlobalConstants.HomeCareCategoryName, categoriesService, categoryUsersRepository);
             }
 
             var userSam = await userManager.FindByEmailAsync("sam@sam.bg");
@@ -77,6 +87,8 @@
                 var result = await userManager.CreateAsync(newUser, "sam123");
 
                 await AddUserToRole(userManager, newUser, result);
+
+                await AddUserToCategoryAsync(newUser, GlobalConstants.SalesAndMarketingCategoryName, categoriesService, categoryUsersRepository);
             }
 
             var userPicasso = await userManager.FindByEmailAsync("picasso@picasso.bg");
@@ -93,6 +105,8 @@
                 var result = await userManager.CreateAsync(newUser, "picasso123");
 
                 await AddUserToRole(userManager, newUser, result);
+
+                await AddUserToCategoryAsync(newUser, GlobalConstants.ArtCategoryName, categoriesService, categoryUsersRepository);
             }
 
             var userLeonardo = await userManager.FindByEmailAsync("leonardo@leonardo.bg");
@@ -109,6 +123,9 @@
                 var result = await userManager.CreateAsync(newUser, "leonardo123");
 
                 await AddUserToRole(userManager, newUser, result);
+
+                await AddUserToCategoryAsync(newUser, GlobalConstants.ArtCategoryName, categoriesService, categoryUsersRepository);
+                await AddUserToCategoryAsync(newUser, GlobalConstants.EngineeringCategoryName, categoriesService, categoryUsersRepository);
             }
 
             var userYerevan = await userManager.FindByEmailAsync("yerevan@yerevan.bg");
@@ -125,6 +142,8 @@
                 var result = await userManager.CreateAsync(newUser, "yerevan123");
 
                 await AddUserToRole(userManager, newUser, result);
+
+                await AddUserToCategoryAsync(newUser, GlobalConstants.ConsultingCategoryName, categoriesService, categoryUsersRepository);
             }
 
             var userTeresa = await userManager.FindByEmailAsync("teresa@teresa.bg");
@@ -141,6 +160,8 @@
                 var result = await userManager.CreateAsync(newUser, "teresa123");
 
                 await AddUserToRole(userManager, newUser, result);
+
+                await AddUserToCategoryAsync(newUser, GlobalConstants.SocialCareCategoryName, categoriesService, categoryUsersRepository);
             }
 
             var userBuddha = await userManager.FindByEmailAsync("buddha@buddha.bg");
@@ -157,6 +178,8 @@
                 var result = await userManager.CreateAsync(newUser, "buddha123");
 
                 await AddUserToRole(userManager, newUser, result);
+
+                await AddUserToCategoryAsync(newUser, GlobalConstants.WellBeingCategoryName, categoriesService, categoryUsersRepository);
             }
 
             var userShakespeare = await userManager.FindByEmailAsync("shakespeare@shakespeare.bg");
@@ -173,6 +196,8 @@
                 var result = await userManager.CreateAsync(newUser, "shakespeare123");
 
                 await AddUserToRole(userManager, newUser, result);
+
+                await AddUserToCategoryAsync(newUser, GlobalConstants.WritingCategoryName, categoriesService, categoryUsersRepository);
             }
         }
 
@@ -186,6 +211,20 @@
             {
                 await userManager.AddToRoleAsync(user, GlobalConstants.FreelancerRoleName);
             }
+        }
+
+        private static async Task AddUserToCategoryAsync(ApplicationUser user, string categoryName, ICategoriesService categoriesService, IRepository<CategoryUser> categoryUsersRepository)
+        {
+            var categoryId = categoriesService.GetCategoryIdByName(categoryName);
+
+            var categoryUser = new CategoryUser
+            {
+                User = user,
+                CategoryId = categoryId,
+            };
+
+            await categoryUsersRepository.AddAsync(categoryUser);
+            user.UserCategories.Add(categoryUser);
         }
     }
 }
