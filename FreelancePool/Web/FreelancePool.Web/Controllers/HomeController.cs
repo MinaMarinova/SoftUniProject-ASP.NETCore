@@ -1,15 +1,28 @@
 ﻿namespace FreelancePool.Web.Controllers
 {
     using System.Diagnostics;
-
+    using FreelancePool.Services.Data;
     using FreelancePool.Web.ViewModels;
+    using FreelancePool.Web.ViewModels.Categories;
     using Microsoft.AspNetCore.Mvc;
 
     public class HomeController : BaseController
     {
+        private readonly ICategoriesService categoriesService;
+
+        public HomeController(ICategoriesService categoriesService)
+        {
+            this.categoriesService = categoriesService;
+        }
+
         public IActionResult Index()
         {
-            return this.View();
+            var categoriesViewModel = new AllCategoriesViewModel
+            {
+                Categories = this.categoriesService.GetAll<CategoryIndexPageViewModel>(),
+            };
+
+            return this.View(categoriesViewModel);
         }
 
         public IActionResult Privacy()

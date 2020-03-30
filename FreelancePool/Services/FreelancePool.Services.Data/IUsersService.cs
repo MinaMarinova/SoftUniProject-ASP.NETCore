@@ -6,6 +6,6 @@
 
     public interface IUsersService
     {
-        IEnumerable<T> GetRandomEightUsersByCategories<T>(ApplicationUser user);
+        IEnumerable<T> GetRandomEightUsers<T>(ApplicationUser user);
     }
 }

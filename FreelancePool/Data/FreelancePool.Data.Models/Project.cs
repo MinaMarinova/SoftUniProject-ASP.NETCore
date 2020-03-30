@@ -20,7 +20,7 @@
 
         public string ExecutorId { get; set; }
 
-        public ApplicationUser Executor { get; set; }
+        public virtual ApplicationUser Executor { get; set; }
 
         [Required]
         public ProjectStatus Status { get; set; }

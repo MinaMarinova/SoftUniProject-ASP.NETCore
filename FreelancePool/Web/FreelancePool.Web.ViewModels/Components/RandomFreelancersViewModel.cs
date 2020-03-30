@@ -1,12 +1,12 @@
-﻿using AutoMapper;
-using FreelancePool.Data.Models;
-using FreelancePool.Services.Mapping;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace FreelancePool.Web.ViewModels.Components
+﻿namespace FreelancePool.Web.ViewModels.Components
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using AutoMapper;
+    using FreelancePool.Data.Models;
+    using FreelancePool.Services.Mapping;
+
     public class RandomFreelancersViewModel : IMapFrom<ApplicationUser>, IHaveCustomMappings
     {
         public RandomFreelancersViewModel()

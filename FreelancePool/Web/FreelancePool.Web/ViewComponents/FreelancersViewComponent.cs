@@ -1,5 +1,6 @@
 ﻿namespace FreelancePool.Web.ViewComponents
 {
+    using System.Linq;
     using System.Threading.Tasks;
 
     using FreelancePool.Data.Common.Repositories;
@@ -28,12 +29,10 @@
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var user = await this.userRepository
-                .GetByIdWithDeletedAsync(this.userManager.GetUserId(this.ViewContext.HttpContext.User));
-
-            var userCat = user.UserCategories;
+               .GetByIdWithDeletedAsync(this.userManager.GetUserId(this.ViewContext.HttpContext.User));
 
             var freelancers = this.usersService
-                .GetRandomEightUsersByCategories<RandomFreelancersViewModel>(user);
+               .GetRandomEightUsers<RandomFreelancersViewModel>(user);
 
             return this.View(freelancers);
         }

@@ -1,4 +1,5 @@
-﻿@using FreelancePool.Common
+﻿@model FreelancePool.Web.ViewModels.Categories.AllCategoriesViewModel
+@using FreelancePool.Common
 @{
     this.ViewData["Title"] = "Home Page";
 }
@@ -57,58 +58,21 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-3 col-md-3">
-                <div class="wow fadeInLeft animated" data-wow-delay="0.2s" style="visibility: visible;-webkit-animation-delay: 0.2s; -moz-animation-delay: 0.2s; animation-delay: 0.2s;">
-                    <div class="service-box">
-                        <div class="service-icon">
-                            <img src="img/icons/service-icon-1.png" alt="">
-                        </div>
-                        <div class="service-desc">
-                            <h5>Print</h5>
-                            <p>Vestibulum tincidunt enim in pharetra malesuada. Duis semper magna metus electram accommodare.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3 col-md-3">
-                <div class="wow fadeInUp animated" data-wow-delay="0.2s" style="visibility: visible;-webkit-animation-delay: 0.2s; -moz-animation-delay: 0.2s; animation-delay: 0.2s;">
-                    <div class="service-box">
-                        <div class="service-icon">
-                            <img src="img/icons/service-icon-2.png" alt="">
-                        </div>
-                        <div class="service-desc">
-                            <h5>Web Design</h5>
-                            <p>Vestibulum tincidunt enim in pharetra malesuada. Duis semper magna metus electram accommodare.</p>
+            @foreach (var category in Model.Categories)
+            {
+                <div class="col-sm-3 col-md-4">
+                    <div class="wow fadeInLeft animated" data-wow-delay="0.2s" style="visibility: visible;-webkit-animation-delay: 0.2s; -moz-animation-delay: 0.2s; animation-delay: 0.2s;">
+                        <div class="service-box">
+                            <div class="service-icon">
+                                <img src="@category.IconURL" width="45" height="45" alt="">
+                            </div>
+                            <div class="service-desc">
+                                <h5>@category.Name</h5>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-3 col-md-3">
-                <div class="wow fadeInUp animated" data-wow-delay="0.2s" style="visibility: visible;-webkit-animation-delay: 0.2s; -moz-animation-delay: 0.2s; animation-delay: 0.2s;">
-                    <div class="service-box">
-                        <div class="service-icon">
-                            <img src="img/icons/service-icon-3.png" alt="">
-                        </div>
-                        <div class="service-desc">
-                            <h5>Photography</h5>
-                            <p>Vestibulum tincidunt enim in pharetra malesuada. Duis semper magna metus electram accommodare.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3 col-md-3">
-                <div class="wow fadeInRight animated" data-wow-delay="0.2s" style="visibility: visible;-webkit-animation-delay: 0.2s; -moz-animation-delay: 0.2s; animation-delay: 0.2s;">
-                    <div class="service-box">
-                        <div class="service-icon">
-                            <img src="img/icons/service-icon-4.png" alt="">
-                        </div>
-                        <div class="service-desc">
-                            <h5>Cloud System</h5>
-                            <p>Vestibulum tincidunt enim in pharetra malesuada. Duis semper magna metus electram accommodare.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            }
         </div>
     </div>
 </section>

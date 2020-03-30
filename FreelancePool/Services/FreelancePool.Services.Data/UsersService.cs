@@ -17,14 +17,16 @@
             this.userRepository = userRepository;
         }
 
-        public IEnumerable<T> GetRandomEightUsersByCategories<T>(ApplicationUser user)
+        public IEnumerable<T> GetRandomEightUsers<T>(ApplicationUser user)
         {
             var freelancers = this.userRepository.All();
 
             if (user != null && user.UserCategories.Count > 0)
             {
+                List<string> categories = user.UserCategories.Select(uc => uc.Category.Name).ToList();
+
                 freelancers = this.userRepository.All()
-                    .Where(u => u.UserCategories.Intersect(user.UserCategories).Any());
+                    .Where(u => u.Id != user.Id && u.UserCategories.Select(uc => uc.Category.Name).Any(x => categories.Contains(x)));
             }
 
             if (freelancers.Count() > 8)
