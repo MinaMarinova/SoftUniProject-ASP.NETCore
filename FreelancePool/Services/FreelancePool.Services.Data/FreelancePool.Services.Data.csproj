@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\FreelancePool.Data.Common\FreelancePool.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\FreelancePool.Data.Models\FreelancePool.Data.Models.csproj" />
+    <ProjectReference Include="..\..\FreelancePool.Common\FreelancePool.Common.csproj" />
     <ProjectReference Include="..\..\Web\FreelancePool.Web.ViewModels\FreelancePool.Web.ViewModels.csproj" />
     <ProjectReference Include="..\FreelancePool.Services.Mapping\FreelancePool.Services.Mapping.csproj" />
   </ItemGroup>

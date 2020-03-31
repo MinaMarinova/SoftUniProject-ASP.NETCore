@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
     using FreelancePool.Data.Common.Repositories;
     using FreelancePool.Data.Models;
     using FreelancePool.Services.Mapping;
@@ -19,7 +18,7 @@
 
         public IEnumerable<T> GetRandomEightUsers<T>(ApplicationUser user)
         {
-            var freelancers = this.userRepository.All();
+            var freelancers = this.userRepository.All().Where(u => u.UserCategories.Count > 0);
 
             if (user != null && user.UserCategories.Count > 0)
             {
@@ -40,7 +39,7 @@
         private static int GetNumberToSkip(IDeletableEntityRepository<ApplicationUser> repository)
         {
             Random rand = new Random();
-            int toSkip = rand.Next(0, repository.All().Count() - 7);
+            int toSkip = rand.Next(0, repository.All().Where(u => u.UserCategories.Count > 0).Count() - 7);
             return toSkip;
         }
     }

@@ -199,6 +199,44 @@
 
                 await AddUserToCategoryAsync(newUser, GlobalConstants.WritingCategoryName, categoriesService, categoryUsersRepository);
             }
+
+            var userIvan = await userManager.FindByEmailAsync("ivan@ivan.bg");
+
+            if (userIvan == null)
+            {
+                var newUser = new ApplicationUser
+                {
+                    UserName = "Ivan Popov",
+                    Email = "ivan@ivan.bg",
+                    PhotoUrl = "https://res.cloudinary.com/freelancepool/image/upload/v1585084662/Categories/recruit_kqvbck.png",
+                };
+
+                var result = await userManager.CreateAsync(newUser, "ivan123");
+
+                if (!result.Succeeded)
+                {
+                    throw new Exception(string.Join(Environment.NewLine, result.Errors.Select(e => e.Description)));
+                }
+            }
+
+            var userMilena = await userManager.FindByEmailAsync("milena@milena.bg");
+
+            if (userMilena == null)
+            {
+                var newUser = new ApplicationUser
+                {
+                    UserName = "Milena Popova",
+                    Email = "milena@milena.bg",
+                    PhotoUrl = "https://res.cloudinary.com/freelancepool/image/upload/v1585084662/Categories/recruit_kqvbck.png",
+                };
+
+                var result = await userManager.CreateAsync(newUser, "milena123");
+
+                if (!result.Succeeded)
+                {
+                    throw new Exception(string.Join(Environment.NewLine, result.Errors.Select(e => e.Description)));
+                }
+            }
         }
 
         private static async Task AddUserToRole(UserManager<ApplicationUser> userManager, ApplicationUser user, IdentityResult result)
