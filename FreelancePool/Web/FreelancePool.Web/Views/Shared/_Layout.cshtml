@@ -29,7 +29,7 @@
     <div class="wrapper">
         <header>
             <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
-                <div class="container">
+                <div class="container-fluid">
                     <div class="navbar-header page-scroll">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
                             <i class="fa fa-bars"></i>
@@ -42,15 +42,8 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse navbar-left navbar-main-collapse">
                         <ul class="nav navbar-nav">
-                            <li><a asp-area="" asp-controller="Home" asp-action="Index">Forum</a></li>
-                            <li class="dropdown active">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Categories <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Example menu</a></li>
-                                    <li><a href="#">Example menu</a></li>
-                                    <li><a href="#">Example menu</a></li>
-                                </ul>
-                            </li>
+                            <li><a class="bg-primary" asp-area="" asp-controller="Home" asp-action="Index">Make a profile</a></li>
+                            <vc:categories></vc:categories> 
                             <li><a class="bg-primary" href="#contact">Post a project</a></li>
                             <li><a href="#projects">All Projects</a></li>
                             <li><a href="#posts">All Freelancers</a></li>
