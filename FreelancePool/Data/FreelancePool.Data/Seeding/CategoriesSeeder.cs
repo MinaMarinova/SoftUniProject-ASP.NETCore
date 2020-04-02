@@ -1,13 +1,12 @@
-﻿using FreelancePool.Common;
-using FreelancePool.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FreelancePool.Data.Seeding
+﻿namespace FreelancePool.Data.Seeding
 {
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using FreelancePool.Common;
+    using FreelancePool.Data.Models;
+
     internal class CategoriesSeeder : ISeeder
     {
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)

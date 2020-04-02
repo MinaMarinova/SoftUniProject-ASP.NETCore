@@ -1,5 +1,7 @@
 ﻿namespace FreelancePool.Web
 {
+    using System.IO;
+
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Hosting;
 

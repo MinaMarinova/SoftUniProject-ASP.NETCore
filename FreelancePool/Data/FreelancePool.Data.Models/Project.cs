@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+
     using FreelancePool.Data.Common.Models;
 
     public class Project : BaseDeletableModel<int>
