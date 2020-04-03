@@ -12,6 +12,7 @@
         public string Title { get; set; }
 
         [Required]
+        [MaxLength(2000)]
         public string Description { get; set; }
 
         [Required]

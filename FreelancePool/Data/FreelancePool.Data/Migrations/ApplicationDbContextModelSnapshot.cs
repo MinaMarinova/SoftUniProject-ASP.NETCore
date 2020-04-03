@@ -277,6 +277,9 @@ namespace FreelancePool.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("AuthorId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -289,7 +292,8 @@ namespace FreelancePool.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(2000)")
+                        .HasMaxLength(2000);
 
                     b.Property<string>("ExecutorId")
                         .HasColumnType("nvarchar(450)");
@@ -309,6 +313,8 @@ namespace FreelancePool.Data.Migrations
                         .HasMaxLength(200);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("AuthorId");
 
@@ -554,6 +560,10 @@ namespace FreelancePool.Data.Migrations
 
             modelBuilder.Entity("FreelancePool.Data.Models.Project", b =>
                 {
+                    b.HasOne("FreelancePool.Data.Models.ApplicationUser", null)
+                        .WithMany("ProjectsOffered")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("FreelancePool.Data.Models.ApplicationUser", "Author")
                         .WithMany("ProjectsPosted")
                         .HasForeignKey("AuthorId")

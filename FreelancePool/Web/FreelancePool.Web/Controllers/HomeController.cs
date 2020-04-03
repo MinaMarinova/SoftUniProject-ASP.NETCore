@@ -19,7 +19,7 @@
         {
             var categoriesViewModel = new AllCategoriesViewModel
             {
-                Categories = this.categoriesService.GetAll<CategoryIndexPageViewModel>(),
+                Categories = this.categoriesService.GetAll<CategoryListViewModel>(),
             };
 
             return this.View(categoriesViewModel);

@@ -19,11 +19,11 @@
     @*<environment names="Development">
         <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" asp-append-version="true" />
         <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
-    </environment>*@
+    </environment>
     <environment names="Staging,Production">
         <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
         <link href="~/css/site.css/site.min.css" rel="stylesheet" asp-append-version="true" />
-    </environment>
+    </environment>*@
 </head>
 <body class="container-fluid" id="page-top" data-spy="scroll" data-target=".navbar-custom">
     <div class="wrapper">
@@ -44,7 +44,7 @@
                         <ul class="nav navbar-nav">
                             <li><a class="bg-primary" asp-area="" asp-controller="Home" asp-action="Index">Make a profile</a></li>
                             <vc:categories></vc:categories> 
-                            <li><a class="bg-primary" href="#contact">Post a project</a></li>
+                            <li><a class="bg-primary" asp-area="" asp-controller="Projects" asp-action="Post">Post a project</a></li>
                             <li><a href="#projects">All Projects</a></li>
                             <li><a href="#posts">All Freelancers</a></li>
                         </ul>

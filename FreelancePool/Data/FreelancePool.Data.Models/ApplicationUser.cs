@@ -22,6 +22,7 @@ namespace FreelancePool.Data.Models
             this.UserCategories = new HashSet<CategoryUser>();
             this.ProjectsPosted = new HashSet<Project>();
             this.ProjectsCompleted = new HashSet<Project>();
+            this.ProjectsOffered = new HashSet<Project>();
         }
 
         [StringLength(30, MinimumLength = 3)]
@@ -70,5 +71,7 @@ namespace FreelancePool.Data.Models
 
         [InverseProperty("Executor")]
         public virtual ICollection<Project> ProjectsCompleted { get; set; }
+
+        public virtual ICollection<Project> ProjectsOffered { get; set; }
     }
 }
