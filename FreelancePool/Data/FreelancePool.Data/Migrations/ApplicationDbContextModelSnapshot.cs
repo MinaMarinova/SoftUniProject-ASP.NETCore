@@ -196,7 +196,7 @@ namespace FreelancePool.Data.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("CategoryPost");
+                    b.ToTable("CategoriesPosts");
                 });
 
             modelBuilder.Entity("FreelancePool.Data.Models.CategoryProject", b =>
@@ -277,9 +277,6 @@ namespace FreelancePool.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("AuthorId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -292,8 +289,8 @@ namespace FreelancePool.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(2000)")
-                        .HasMaxLength(2000);
+                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(5000);
 
                     b.Property<string>("ExecutorId")
                         .HasColumnType("nvarchar(450)");
@@ -314,8 +311,6 @@ namespace FreelancePool.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
-
                     b.HasIndex("AuthorId");
 
                     b.HasIndex("ExecutorId");
@@ -323,6 +318,21 @@ namespace FreelancePool.Data.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.ToTable("Projects");
+                });
+
+            modelBuilder.Entity("FreelancePool.Data.Models.ProjectOfferUser", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "ProjectId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("ProjectOffersUsers");
                 });
 
             modelBuilder.Entity("FreelancePool.Data.Models.Recommendation", b =>
@@ -560,10 +570,6 @@ namespace FreelancePool.Data.Migrations
 
             modelBuilder.Entity("FreelancePool.Data.Models.Project", b =>
                 {
-                    b.HasOne("FreelancePool.Data.Models.ApplicationUser", null)
-                        .WithMany("ProjectsOffered")
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("FreelancePool.Data.Models.ApplicationUser", "Author")
                         .WithMany("ProjectsPosted")
                         .HasForeignKey("AuthorId")
@@ -573,6 +579,21 @@ namespace FreelancePool.Data.Migrations
                     b.HasOne("FreelancePool.Data.Models.ApplicationUser", "Executor")
                         .WithMany("ProjectsCompleted")
                         .HasForeignKey("ExecutorId");
+                });
+
+            modelBuilder.Entity("FreelancePool.Data.Models.ProjectOfferUser", b =>
+                {
+                    b.HasOne("FreelancePool.Data.Models.Project", "Project")
+                        .WithMany("SuggestedUsers")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("FreelancePool.Data.Models.ApplicationUser", "User")
+                        .WithMany("ProjectsOffered")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("FreelancePool.Data.Models.Recommendation", b =>

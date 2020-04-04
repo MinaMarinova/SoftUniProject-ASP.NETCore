@@ -22,7 +22,7 @@ namespace FreelancePool.Data.Models
             this.UserCategories = new HashSet<CategoryUser>();
             this.ProjectsPosted = new HashSet<Project>();
             this.ProjectsCompleted = new HashSet<Project>();
-            this.ProjectsOffered = new HashSet<Project>();
+            this.ProjectsOffered = new HashSet<ProjectOfferUser>();
         }
 
         [StringLength(30, MinimumLength = 3)]
@@ -40,6 +40,7 @@ namespace FreelancePool.Data.Models
         public int Stars { get; set; }
 
         [Required]
+        [Url]
         public string PhotoUrl { get; set; }
 
         // Audit info
@@ -72,6 +73,6 @@ namespace FreelancePool.Data.Models
         [InverseProperty("Executor")]
         public virtual ICollection<Project> ProjectsCompleted { get; set; }
 
-        public virtual ICollection<Project> ProjectsOffered { get; set; }
+        public virtual ICollection<ProjectOfferUser> ProjectsOffered { get; set; }
     }
 }

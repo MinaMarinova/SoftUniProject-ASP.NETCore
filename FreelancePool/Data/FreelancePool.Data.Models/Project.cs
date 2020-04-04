@@ -12,7 +12,7 @@
         public string Title { get; set; }
 
         [Required]
-        [MaxLength(2000)]
+        [StringLength(5000)]
         public string Description { get; set; }
 
         [Required]
@@ -28,5 +28,7 @@
         public ProjectStatus Status { get; set; }
 
         public virtual ICollection<CategoryProject> ProjectCategories { get; set; }
+
+        public virtual ICollection<ProjectOfferUser> SuggestedUsers { get; set; }
     }
 }

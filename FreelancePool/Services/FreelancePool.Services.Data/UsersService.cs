@@ -36,6 +36,16 @@
             return freelancers.To<T>().ToList();
         }
 
+        public string GetUserIdByEmail(string email)
+        {
+            string userId = this.userRepository.All()
+                .Where(u => u.Email == email)
+                .Select(u => u.Id)
+                .FirstOrDefault();
+
+            return userId;
+        }
+
         private static int GetNumberToSkip(IDeletableEntityRepository<ApplicationUser> repository)
         {
             Random rand = new Random();

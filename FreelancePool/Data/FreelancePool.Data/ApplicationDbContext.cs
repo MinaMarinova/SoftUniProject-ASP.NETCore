@@ -36,6 +36,10 @@
 
         public DbSet<CategoryProject> CategoriesProjects { get; set; }
 
+        public DbSet<ProjectOfferUser> ProjectOffersUsers { get; set; }
+
+        public DbSet<CategoryPost> CategoriesPosts { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
@@ -147,6 +151,25 @@
                     .OnDelete(DeleteBehavior.Restrict);
                 });
 
+            // ProjectOfferUser
+            builder.Entity<ProjectOfferUser>(projectOfferUser =>
+            {
+                projectOfferUser
+                .HasKey(pu => new { pu.UserId, pu.ProjectId });
+
+                projectOfferUser
+                .HasOne(po => po.User)
+                .WithMany(u => u.ProjectsOffered)
+                .HasForeignKey(po => po.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+                projectOfferUser
+                .HasOne(po => po.Project)
+                .WithMany(p => p.SuggestedUsers)
+                .HasForeignKey(po => po.ProjectId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+
             // CategoryPost
             builder.Entity<CategoryPost>(categoryPost =>
             {
@@ -166,7 +189,7 @@
                 .OnDelete(DeleteBehavior.Restrict);
             });
 
-            //Recommandations
+            // Recommandations
             builder.Entity<Recommendation>(recommandation =>
             {
                 recommandation
