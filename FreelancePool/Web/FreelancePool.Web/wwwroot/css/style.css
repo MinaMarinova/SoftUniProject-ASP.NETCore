@@ -376,19 +376,28 @@ hr {
 }*/
 
 .login {
-    width: 100%;
+    padding-top: 100px;
+    padding-bottom: 110px;
+    padding-left: 10px;
+    display: block;
+    position: relative;
+    z-index: 120;
+    background: url(../img/login.jpg) no-repeat top center;
+    margin-bottom: 0px;
+
+    /*width: 100%;
     height: 100vh;
     position: relative;
     background: url(../img/login.jpg) no-repeat top center;
     /* Equal to height of footer */
-    /* But also accounting for potential margin-bottom of last child */
+    /* But also accounting for potential margin-bottom of last child */*/
 }
 
-#login.login {
+/*#login.login {
     padding: 10% 0 0 0;
     height: 100vh;
     margin-bottom: -60px;
-}
+}*/
 
 /* ===========================
 --- Intro
@@ -458,6 +467,13 @@ hr {
 
 .boxed-grey-post {
     background: #f9f9f9;
+    padding: 13px;
+    margin-bottom: 20px;
+    height: auto;
+}
+
+.boxed-profile {
+    background: #81b3c1;
     padding: 13px;
     margin-bottom: 20px;
     height: auto;

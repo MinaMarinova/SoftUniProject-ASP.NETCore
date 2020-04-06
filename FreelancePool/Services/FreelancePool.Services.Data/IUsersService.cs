@@ -13,5 +13,7 @@
         List<string> GetUsersEmailsFromString(string usersEmails);
 
         Task ApplyAsync(string userId, int projectId);
+
+        T GetUserById<T>(string id);
     }
 }

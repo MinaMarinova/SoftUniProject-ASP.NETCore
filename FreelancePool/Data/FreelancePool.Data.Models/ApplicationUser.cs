@@ -30,6 +30,9 @@ namespace FreelancePool.Data.Models
         [Required]
         public override string UserName { get; set; }
 
+        [MaxLength(10000)]
+        public string Summary { get; set; }
+
         [Required]
         [EmailAddress]
         public override string Email { get; set; }
@@ -76,6 +79,6 @@ namespace FreelancePool.Data.Models
 
         public virtual ICollection<ProjectOfferUser> ProjectsOffered { get; set; }
 
-        public virtual ICollection<UserCandidateProject> ProjectsApplied{ get; set; }
+        public virtual ICollection<UserCandidateProject> ProjectsApplied { get; set; }
     }
 }

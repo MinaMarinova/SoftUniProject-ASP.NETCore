@@ -47,6 +47,13 @@
                         options.MinimumSameSitePolicy = SameSiteMode.None;
                     });
 
+            // TODO: Redirect to Make a profile;
+            services
+                .ConfigureApplicationCookie(options =>
+                {
+                    options.AccessDeniedPath = "/Home/Index";
+                });
+
             services.Configure<IdentityOptions>(
                 options =>
                     {

@@ -126,6 +126,10 @@ namespace FreelancePool.Data.Migrations
                     b.Property<int>("Stars")
                         .HasColumnType("int");
 
+                    b.Property<string>("Summary")
+                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(10000);
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 

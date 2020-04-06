@@ -88,6 +88,16 @@
             await this.userCandidateProjectsRepository.SaveChangesAsync();
         }
 
+        public T GetUserById<T>(string id)
+        {
+            var user = this.userRepository.All()
+                .Where(u => u.Id == id)
+                .To<T>()
+                .FirstOrDefault();
+
+            return user;
+        }
+
         private static int GetNumberToSkip(IDeletableEntityRepository<ApplicationUser> repository)
         {
             Random rand = new Random();
@@ -95,6 +105,6 @@
             return toSkip;
         }
 
-        
+
     }
 }
