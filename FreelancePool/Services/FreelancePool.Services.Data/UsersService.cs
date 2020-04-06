@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
     using FreelancePool.Data.Common.Repositories;
     using FreelancePool.Data.Models;
     using FreelancePool.Services.Mapping;
@@ -44,6 +45,30 @@
                 .FirstOrDefault();
 
             return userId;
+        }
+
+        public List<string> GetUsersEmailsFromString(string usersEmails)
+        {
+            var usersIds = new List<string>();
+
+            if (!string.IsNullOrWhiteSpace(usersEmails))
+            {
+                var usersEmailsCollection = usersEmails.Split(
+                    new[] { ',', ' ' },
+                    StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                foreach (var email in usersEmailsCollection)
+                {
+                    var userId = this.GetUserIdByEmail(email);
+
+                    if (userId != null)
+                    {
+                        usersIds.Add(userId);
+                    }
+                }
+            }
+
+            return usersIds;
         }
 
         private static int GetNumberToSkip(IDeletableEntityRepository<ApplicationUser> repository)

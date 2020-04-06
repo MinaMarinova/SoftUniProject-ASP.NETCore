@@ -38,6 +38,8 @@
 
         public DbSet<ProjectOfferUser> ProjectOffersUsers { get; set; }
 
+        public DbSet<UserCandidateProject> UsersCandidateProjects { get; set; }
+
         public DbSet<CategoryPost> CategoriesPosts { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
@@ -167,6 +169,25 @@
                 .HasOne(po => po.Project)
                 .WithMany(p => p.SuggestedUsers)
                 .HasForeignKey(po => po.ProjectId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            //UserCandidateProject
+            builder.Entity<UserCandidateProject>(usersCandidateProjects =>
+            {
+                usersCandidateProjects
+                .HasKey(ucp => new { ucp.UserId, ucp.ProjectId });
+
+                usersCandidateProjects
+                .HasOne(ucp => ucp.User)
+                .WithMany(u => u.ProjectsApplied)
+                .HasForeignKey(ucp => ucp.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+                usersCandidateProjects
+                .HasOne(ucp => ucp.Project)
+                .WithMany(p => p.AppliedUsers)
+                .HasForeignKey(ucp => ucp.ProjectId)
                 .OnDelete(DeleteBehavior.Restrict);
             });
 

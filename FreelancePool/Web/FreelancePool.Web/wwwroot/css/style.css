@@ -353,19 +353,27 @@ hr {
 }
 
 .post {
-    width: 100%;
+    /*width: 100%;
     height: 100vh;
     position: relative;
-    background: url(../img/post.jpg) no-repeat top center;
+    background: url(../img/post.jpg) no-repeat top center;*/
     /* Equal to height of footer */
     /* But also accounting for potential margin-bottom of last child */
+    padding-top: 50px;
+    padding-bottom: 110px;
+    padding-left: 10px;
+    display: block;
+    position: relative;
+    z-index: 120;
+    background: url(../img/post.jpg) no-repeat top center;
+    margin-bottom: 0px;
 }
 
-#post.post {
+/*#post.post {
     padding: 8% 0 0 0;
     height: 100vh;
     margin-bottom: -60px;
-}
+}*/
 
 .login {
     width: 100%;
@@ -855,7 +863,7 @@ Parallax
     background: #ffcc00;
 }
 
-#text-post {
+.text-post {
     color: #fff;
     text-shadow: 7px 7px 8px #080808
 }
@@ -1102,6 +1110,7 @@ Parallax
     height: 200px;
 }
 
+
 .card {
     /* Add shadows to create the "card" effect */
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -1115,6 +1124,41 @@ Parallax
     .card:hover {
         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     }
+.card-postdetails {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    background-color: #f9f9f9;
+    transition: 0.3s;
+    padding: 10px 10px 10px 20px;
+    height: 380px;
+}
+
+.card-promoted {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    background-color: #4c829c;
+    transition: 0.3s;
+    padding: 20px 20px 20px 30px;
+    height: 180px;
+    float: none;
+}
+/* On mouse-over, add a deeper shadow */
+.card-postdetails:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+
 .card-body{
 }
 
+
+.project-details {
+    margin-top: 60px;
+    position: relative;
+}
+
+#centre img {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}

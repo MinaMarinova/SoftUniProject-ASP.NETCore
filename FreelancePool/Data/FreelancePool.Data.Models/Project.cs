@@ -7,6 +7,13 @@
 
     public class Project : BaseDeletableModel<int>
     {
+        public Project()
+        {
+            this.AppliedUsers = new HashSet<UserCandidateProject>();
+            this.ProjectCategories = new HashSet<CategoryProject>();
+            this.SuggestedUsers = new HashSet<ProjectOfferUser>();
+        }
+
         [Required]
         [MaxLength(200)]
         public string Title { get; set; }
@@ -30,5 +37,7 @@
         public virtual ICollection<CategoryProject> ProjectCategories { get; set; }
 
         public virtual ICollection<ProjectOfferUser> SuggestedUsers { get; set; }
+
+        public virtual ICollection<UserCandidateProject> AppliedUsers { get; set; }
     }
 }

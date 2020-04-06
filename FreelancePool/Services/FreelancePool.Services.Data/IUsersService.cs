@@ -9,5 +9,7 @@
         IEnumerable<T> GetRandomEightUsers<T>(ApplicationUser user);
 
         string GetUserIdByEmail(string email);
+
+        List<string> GetUsersEmailsFromString(string usersEmails);
     }
 }

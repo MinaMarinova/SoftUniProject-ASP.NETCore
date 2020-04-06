@@ -410,6 +410,21 @@ namespace FreelancePool.Data.Migrations
                     b.ToTable("Settings");
                 });
 
+            modelBuilder.Entity("FreelancePool.Data.Models.UserCandidateProject", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "ProjectId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("UsersCandidateProjects");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -607,6 +622,21 @@ namespace FreelancePool.Data.Migrations
                     b.HasOne("FreelancePool.Data.Models.ApplicationUser", "Recipient")
                         .WithMany("Recommendations")
                         .HasForeignKey("RecipientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FreelancePool.Data.Models.UserCandidateProject", b =>
+                {
+                    b.HasOne("FreelancePool.Data.Models.Project", "Project")
+                        .WithMany("AppliedUsers")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("FreelancePool.Data.Models.ApplicationUser", "User")
+                        .WithMany("ProjectsApplied")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
