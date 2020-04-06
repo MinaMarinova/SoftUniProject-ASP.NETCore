@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using FreelancePool.Data.Common.Repositories;
     using FreelancePool.Data.Models;
@@ -11,10 +12,14 @@
     public class UsersService : IUsersService
     {
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
+        private readonly IRepository<UserCandidateProject> userCandidateProjectsRepository;
 
-        public UsersService(IDeletableEntityRepository<ApplicationUser> userRepository)
+        public UsersService(
+            IDeletableEntityRepository<ApplicationUser> userRepository,
+            IRepository<UserCandidateProject> userCandidateProjectsRepository)
         {
             this.userRepository = userRepository;
+            this.userCandidateProjectsRepository = userCandidateProjectsRepository;
         }
 
         public IEnumerable<T> GetRandomEightUsers<T>(ApplicationUser user)
@@ -71,11 +76,25 @@
             return usersIds;
         }
 
+        public async Task ApplyAsync(string userId, int projectId)
+        {
+            var userCandidateProject = new UserCandidateProject
+            {
+                UserId = userId,
+                ProjectId = projectId,
+            };
+
+            await this.userCandidateProjectsRepository.AddAsync(userCandidateProject);
+            await this.userCandidateProjectsRepository.SaveChangesAsync();
+        }
+
         private static int GetNumberToSkip(IDeletableEntityRepository<ApplicationUser> repository)
         {
             Random rand = new Random();
             int toSkip = rand.Next(0, repository.All().Where(u => u.UserCategories.Count > 0).Count() - 7);
             return toSkip;
         }
+
+        
     }
 }
