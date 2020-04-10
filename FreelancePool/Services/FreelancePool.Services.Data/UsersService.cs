@@ -4,22 +4,29 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
+    using FreelancePool.Common;
     using FreelancePool.Data.Common.Repositories;
     using FreelancePool.Data.Models;
     using FreelancePool.Services.Mapping;
+    using Microsoft.AspNetCore.Identity;
 
     public class UsersService : IUsersService
     {
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IRepository<UserCandidateProject> userCandidateProjectsRepository;
+        private readonly IRepository<CategoryUser> categoryUsersRepository;
+        private readonly UserManager<ApplicationUser> userManager;
 
         public UsersService(
             IDeletableEntityRepository<ApplicationUser> userRepository,
-            IRepository<UserCandidateProject> userCandidateProjectsRepository)
+            IRepository<UserCandidateProject> userCandidateProjectsRepository,
+            IRepository<CategoryUser> categoryUsersRepository,
+            UserManager<ApplicationUser> userManager)
         {
             this.userRepository = userRepository;
             this.userCandidateProjectsRepository = userCandidateProjectsRepository;
+            this.categoryUsersRepository = categoryUsersRepository;
+            this.userManager = userManager;
         }
 
         public IEnumerable<T> GetRandomEightUsers<T>(ApplicationUser user)
@@ -96,6 +103,37 @@
                 .FirstOrDefault();
 
             return user;
+        }
+
+        public async Task CreateAProfileAsync(string userId, string userName, string photoUrl, string email, string summary, string phoneNumber, ICollection<int> categoriesId)
+        {
+            var user = this.userRepository.All().Where(u => u.Id == userId).FirstOrDefault();
+
+            user.UserName = userName;
+            if (photoUrl != null)
+            {
+                user.PhotoUrl = photoUrl;
+            }
+
+            user.Email = email;
+            user.Summary = summary;
+            user.PhoneNumber = phoneNumber;
+
+            await this.userManager.AddToRoleAsync(user, GlobalConstants.FreelancerRoleName);
+
+            await this.userRepository.SaveChangesAsync();
+
+            foreach (var categoryId in categoriesId)
+            {
+                var categoryUser = new CategoryUser
+                {
+                    CategoryId = categoryId,
+                    UserId = userId,
+                };
+
+                await this.categoryUsersRepository.AddAsync(categoryUser);
+                await this.categoryUsersRepository.SaveChangesAsync();
+            }
         }
 
         private static int GetNumberToSkip(IDeletableEntityRepository<ApplicationUser> repository)

@@ -26,6 +26,7 @@
             this.userRepository = userRepository;
         }
 
+        // Inject IHttpContextAccessor for mocking
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var user = await this.userRepository

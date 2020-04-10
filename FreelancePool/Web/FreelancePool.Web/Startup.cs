@@ -2,12 +2,14 @@
 {
     using System.Reflection;
 
+    using CloudinaryDotNet;
     using FreelancePool.Data;
     using FreelancePool.Data.Common;
     using FreelancePool.Data.Common.Repositories;
     using FreelancePool.Data.Models;
     using FreelancePool.Data.Repositories;
     using FreelancePool.Data.Seeding;
+    using FreelancePool.Services;
     using FreelancePool.Services.Data;
     using FreelancePool.Services.Mapping;
     using FreelancePool.Services.Messaging;
@@ -17,6 +19,7 @@
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -47,11 +50,10 @@
                         options.MinimumSameSitePolicy = SameSiteMode.None;
                     });
 
-            // TODO: Redirect to Make a profile;
             services
                 .ConfigureApplicationCookie(options =>
                 {
-                    options.AccessDeniedPath = "/Home/Index";
+                    options.AccessDeniedPath = "/Users/CreateAProfile";
                 });
 
             services.Configure<IdentityOptions>(
@@ -64,7 +66,19 @@
                         options.User.RequireUniqueEmail = true;
                     });
 
-            services.AddControllersWithViews();
+            Account cloudinaryCredentials = new Account(
+                 this.configuration["Cloudinary:CloudName"],
+                 this.configuration["Cloudinary:ApiKey"],
+                 this.configuration["Cloudinary:ApiSecret"]);
+
+            Cloudinary cloudinary = new Cloudinary(cloudinaryCredentials);
+
+            services.AddSingleton(cloudinary);
+
+            services.AddControllersWithViews(configure =>
+            {
+                configure.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            });
             services.AddRazorPages();
 
             services.AddSingleton(this.configuration);
@@ -77,6 +91,7 @@
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ISettingsService, SettingsService>();
+            services.AddTransient<ICloudinaryService, CloudinaryService>();
             services.AddTransient<IUsersService, UsersService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IProjectsService, ProjectsService>();

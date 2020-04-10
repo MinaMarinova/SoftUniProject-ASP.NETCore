@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+
     using FreelancePool.Data.Models;
 
     public interface IUsersService
@@ -15,5 +16,7 @@
         Task ApplyAsync(string userId, int projectId);
 
         T GetUserById<T>(string id);
+
+        Task CreateAProfileAsync(string userId, string userName, string photoUrl, string email, string summary, string phoneNumber, ICollection<int> categoriesId);
     }
 }
