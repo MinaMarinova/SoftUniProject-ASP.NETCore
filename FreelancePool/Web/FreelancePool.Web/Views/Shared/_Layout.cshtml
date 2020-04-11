@@ -50,6 +50,10 @@
                             {
                             <li><a class="bg-primary" asp-area="" asp-controller="Users" asp-action="CreateProfile">Create profile</a></li>
                             }
+                            else
+                            {
+                            <li><a class="bg-primary" asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="@UserManager.GetUserId(this.User)">View profile</a></li>
+                            }
                             <vc:categories></vc:categories>
                             <li><a class="bg-primary" asp-area="" asp-controller="Projects" asp-action="Post">Post a project</a></li>
                             <li><a href="#projects">All Projects</a></li>

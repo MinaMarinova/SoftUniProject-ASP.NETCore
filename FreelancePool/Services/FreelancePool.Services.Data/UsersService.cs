@@ -110,6 +110,8 @@
             var user = this.userRepository.All().Where(u => u.Id == userId).FirstOrDefault();
 
             user.UserName = userName;
+            user.NormalizedUserName = userName.ToUpper();
+
             if (photoUrl != null)
             {
                 user.PhotoUrl = photoUrl;

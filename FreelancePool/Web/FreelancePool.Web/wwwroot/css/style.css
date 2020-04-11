@@ -384,13 +384,12 @@ hr {
     z-index: 120;
     background: url(../img/login.jpg) no-repeat top center;
     margin-bottom: 0px;
-
     /*width: 100%;
     height: 100vh;
     position: relative;
     background: url(../img/login.jpg) no-repeat top center;
     /* Equal to height of footer */
-    /* But also accounting for potential margin-bottom of last child */*/
+    /* But also accounting for potential margin-bottom of last child */ */
 }
 
 /*#login.login {
@@ -884,6 +883,11 @@ Parallax
     text-shadow: 7px 7px 8px #080808
 }
 
+.text-profile-about {
+    color: #555;
+    text-shadow: 0px 0px 0px #080808
+}
+
 #map {
     height: 500px;
 }
@@ -1140,6 +1144,7 @@ Parallax
     .card:hover {
         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     }
+
 .card-postdetails {
     /* Add shadows to create the "card" effect */
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -1147,6 +1152,23 @@ Parallax
     transition: 0.3s;
     padding: 10px 10px 10px 20px;
     height: 380px;
+    /* On mouse-over, add a deeper shadow */
+}
+
+    .card-postdetails:hover {
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    }
+
+.card-profiledetails {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    background-color: #9fcad6;
+    transition: 0.3s;
+    padding: 10px 10px 10px 20px;
+    height: 417px;
+}
+.card-profiledetails:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 
 .card-promoted {
@@ -1158,13 +1180,8 @@ Parallax
     height: 180px;
     float: none;
 }
-/* On mouse-over, add a deeper shadow */
-.card-postdetails:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-}
 
-
-.card-body{
+.card-body {
 }
 
 
