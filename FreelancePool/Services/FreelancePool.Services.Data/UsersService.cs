@@ -15,17 +15,20 @@
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IRepository<UserCandidateProject> userCandidateProjectsRepository;
         private readonly IRepository<CategoryUser> categoryUsersRepository;
+        private readonly IDeletableEntityRepository<Recommendation> recommendationsRepository;
         private readonly UserManager<ApplicationUser> userManager;
 
         public UsersService(
             IDeletableEntityRepository<ApplicationUser> userRepository,
             IRepository<UserCandidateProject> userCandidateProjectsRepository,
             IRepository<CategoryUser> categoryUsersRepository,
+            IDeletableEntityRepository<Recommendation> recommendationsRepository,
             UserManager<ApplicationUser> userManager)
         {
             this.userRepository = userRepository;
             this.userCandidateProjectsRepository = userCandidateProjectsRepository;
             this.categoryUsersRepository = categoryUsersRepository;
+            this.recommendationsRepository = recommendationsRepository;
             this.userManager = userManager;
         }
 
@@ -138,13 +141,35 @@
             }
         }
 
+        public async Task RateFreelancerAsync(string authorId, string executorId, int starGivenOrTaken, string recommendation)
+        {
+            var freelancer = this.userRepository.All().Where(u => u.Id == executorId).FirstOrDefault();
+
+            if (freelancer != null)
+            {
+                freelancer.Stars += starGivenOrTaken;
+                await this.userRepository.SaveChangesAsync();
+
+                if (!string.IsNullOrWhiteSpace(recommendation))
+                {
+                    var recommendationToAdd = new Recommendation
+                    {
+                        AuthorId = authorId,
+                        RecipientId = executorId,
+                        Content = recommendation,
+                    };
+
+                    await this.recommendationsRepository.AddAsync(recommendationToAdd);
+                    await this.recommendationsRepository.SaveChangesAsync();
+                }
+            }
+        }
+
         private static int GetNumberToSkip(IDeletableEntityRepository<ApplicationUser> repository)
         {
             Random rand = new Random();
             int toSkip = rand.Next(0, repository.All().Where(u => u.UserCategories.Count > 0).Count() - 7);
             return toSkip;
         }
-
-
     }
 }

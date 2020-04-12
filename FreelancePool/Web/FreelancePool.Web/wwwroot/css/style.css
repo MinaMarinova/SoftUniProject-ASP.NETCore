@@ -471,6 +471,13 @@ hr {
     height: auto;
 }
 
+.boxed-close-post {
+    background: #f9f9f9;
+    padding: 13px;
+    margin-bottom: 20px;
+    height: auto;
+}
+
 .boxed-profile {
     background: #81b3c1;
     padding: 13px;
