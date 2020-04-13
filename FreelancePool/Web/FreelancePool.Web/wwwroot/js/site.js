@@ -11,4 +11,8 @@ $(window).scroll(function () {
 	}
 });
 
+function makeInputVisible() {
+	document.getElementById("message").style.display = "block";
+};
+
 

@@ -53,7 +53,7 @@
             services
                 .ConfigureApplicationCookie(options =>
                 {
-                    options.AccessDeniedPath = "/Users/CreateAProfile";
+                    options.AccessDeniedPath = "/Users/CreateProfile";
                 });
 
             services.Configure<IdentityOptions>(
