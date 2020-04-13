@@ -40,7 +40,6 @@ namespace FreelancePool.Data.Models
         [Required]
         public override string PasswordHash { get; set; }
 
-        [Range(0, 100)]
         public int Stars { get; set; }
 
         [Required]

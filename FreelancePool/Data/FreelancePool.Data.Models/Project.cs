@@ -12,6 +12,7 @@
             this.AppliedUsers = new HashSet<UserCandidateProject>();
             this.ProjectCategories = new HashSet<CategoryProject>();
             this.SuggestedUsers = new HashSet<ProjectOfferUser>();
+            this.MessagesLeft = new HashSet<Message>();
         }
 
         [Required]
@@ -33,6 +34,8 @@
 
         [Required]
         public ProjectStatus Status { get; set; }
+
+        public virtual ICollection<Message> MessagesLeft { get; set; }
 
         public virtual ICollection<CategoryProject> ProjectCategories { get; set; }
 

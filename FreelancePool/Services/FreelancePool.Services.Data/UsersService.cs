@@ -165,11 +165,18 @@
             }
         }
 
+        public T GetUserByName<T>(string userName)
+        {
+            return this.userRepository.All().Where(u => u.UserName == userName).To<T>().FirstOrDefault();
+        }
+
         private static int GetNumberToSkip(IDeletableEntityRepository<ApplicationUser> repository)
         {
             Random rand = new Random();
             int toSkip = rand.Next(0, repository.All().Where(u => u.UserCategories.Count > 0).Count() - 7);
             return toSkip;
         }
+
+
     }
 }

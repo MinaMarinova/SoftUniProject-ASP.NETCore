@@ -30,6 +30,10 @@
 
         public DbSet<Project> Projects { get; set; }
 
+        public DbSet<Recommendation> Recommendations { get; set; }
+
+        public DbSet<Message> Messages { get; set; }
+
         public DbSet<Post> Posts { get; set; }
 
         public DbSet<CategoryUser> CategoriesUsers { get; set; }

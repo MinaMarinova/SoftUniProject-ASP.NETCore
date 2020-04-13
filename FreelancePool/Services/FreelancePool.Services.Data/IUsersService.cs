@@ -17,6 +17,8 @@
 
         T GetUserById<T>(string id);
 
+        T GetUserByName<T>(string userName);
+
         Task CreateAProfileAsync(string userId, string userName, string photoUrl, string email, string summary, string phoneNumber, ICollection<int> categoriesId);
 
         Task RateFreelancerAsync(string authorId, string executorId, int starGivenOrTaken, string recommendation);

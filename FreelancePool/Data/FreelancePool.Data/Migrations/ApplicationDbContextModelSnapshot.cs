@@ -233,6 +233,48 @@ namespace FreelancePool.Data.Migrations
                     b.ToTable("CategoriesUsers");
                 });
 
+            modelBuilder.Entity("FreelancePool.Data.Models.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AuthorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Messages");
+                });
+
             modelBuilder.Entity("FreelancePool.Data.Models.Post", b =>
                 {
                     b.Property<int>("Id")
@@ -379,7 +421,7 @@ namespace FreelancePool.Data.Migrations
 
                     b.HasIndex("RecipientId");
 
-                    b.ToTable("Recommendation");
+                    b.ToTable("Recommendations");
                 });
 
             modelBuilder.Entity("FreelancePool.Data.Models.Setting", b =>
@@ -574,6 +616,21 @@ namespace FreelancePool.Data.Migrations
                     b.HasOne("FreelancePool.Data.Models.ApplicationUser", "User")
                         .WithMany("UserCategories")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FreelancePool.Data.Models.Message", b =>
+                {
+                    b.HasOne("FreelancePool.Data.Models.ApplicationUser", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("FreelancePool.Data.Models.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
