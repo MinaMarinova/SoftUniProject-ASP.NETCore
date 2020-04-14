@@ -27,5 +27,10 @@
         public const string SocialCareCategoryName = "Social care";
 
         public const string WellBeingCategoryName = "Well-Being";
+
+        // Order
+        public const string AlphabeticalOrder = "alphabetically";
+
+        public const string RatingOrder = "rating";
     }
 }

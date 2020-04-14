@@ -1166,7 +1166,7 @@ Parallax
 .card {
     /* Add shadows to create the "card" effect */
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    background-color: #f9f9f9;
+    background-color: #e9e8ed; #f9f9f9;
     transition: 0.3s;
     padding: 10px 10px 10px 20px;
     height: 560px;
@@ -1177,10 +1177,24 @@ Parallax
         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     }
 
+.card-allprojects {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    background-color: #e9e8ed;
+    transition: 0.3s;
+    padding: 10px 10px 10px 20px;
+    height: 520px;
+}
+
+    /* On mouse-over, add a deeper shadow */
+    .card-allprojects:hover {
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    }
+
 .card-postdetails {
     /* Add shadows to create the "card" effect */
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    background-color: #f9f9f9;
+    background-color: #e9e8ed;
     transition: 0.3s;
     padding: 10px 10px 10px 20px;
     height: 380px;
@@ -1201,6 +1215,15 @@ Parallax
 }
 .card-profiledetails:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.card-allfreelancers {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    background-color: #9fcad6;
+    transition: 0.3s;
+    padding: 25px 10px 10px 20px;
+    height: 550px;
 }
 
 .card-messages {

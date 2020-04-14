@@ -15,6 +15,7 @@
     {
         private const int NumberOfTopFreelancers = 6;
         private const int NumberOfRandomFreelancers = 8;
+        private const int NumberOfRecentlyJoined = 3;
 
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IRepository<UserCandidateProject> userCandidateProjectsRepository;
@@ -196,6 +197,16 @@
                 .Take(NumberOfTopFreelancers);
 
             return topFreelancers.To<T>().ToList();
+        }
+
+        public IEnumerable<T> GetRecent<T>()
+        {
+            var recentlyJoind = this.userRepository.All()
+                .Where(u => u.UserCategories.Count() > 0)
+                .OrderByDescending(u => u.CreatedOn)
+                .Take(3);
+
+            return recentlyJoind.To<T>().ToList();
         }
 
         private static int GetNumberToSkip(int freelancersCount)

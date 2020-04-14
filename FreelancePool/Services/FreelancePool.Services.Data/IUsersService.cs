@@ -26,5 +26,7 @@
         IEnumerable<T> GetAll<T>();
 
         IEnumerable<T> GetTop<T>();
+
+        IEnumerable<T> GetRecent<T>();
     }
 }
