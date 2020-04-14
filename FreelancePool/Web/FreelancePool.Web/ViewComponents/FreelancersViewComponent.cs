@@ -33,7 +33,7 @@
                .GetByIdWithDeletedAsync(this.userManager.GetUserId(this.ViewContext.HttpContext.User));
 
             var freelancers = this.usersService
-               .GetRandomEightUsers<RandomFreelancersViewModel>(user);
+               .GetRandomEightUsers<FreelancerViewModel>(user);
 
             return this.View(freelancers);
         }

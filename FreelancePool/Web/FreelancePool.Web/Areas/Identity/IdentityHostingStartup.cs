@@ -1,4 +1,5 @@
 ﻿using System;
+
 using FreelancePool.Data;
 using FreelancePool.Data.Models;
 using Microsoft.AspNetCore.Hosting;
@@ -9,13 +10,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 [assembly: HostingStartup(typeof(FreelancePool.Web.Areas.Identity.IdentityHostingStartup))]
+
 namespace FreelancePool.Web.Areas.Identity
 {
     public class IdentityHostingStartup : IHostingStartup
     {
         public void Configure(IWebHostBuilder builder)
         {
-            builder.ConfigureServices((context, services) => {
+            builder.ConfigureServices((context, services) =>
+            {
             });
         }
     }

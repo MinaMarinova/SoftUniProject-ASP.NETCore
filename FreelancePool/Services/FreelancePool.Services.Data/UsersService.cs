@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
     using FreelancePool.Common;
     using FreelancePool.Data.Common.Repositories;
     using FreelancePool.Data.Models;
@@ -12,6 +13,9 @@
 
     public class UsersService : IUsersService
     {
+        private const int NumberOfTopFreelancers = 6;
+        private const int NumberOfRandomFreelancers = 8;
+
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IRepository<UserCandidateProject> userCandidateProjectsRepository;
         private readonly IRepository<CategoryUser> categoryUsersRepository;
@@ -34,7 +38,8 @@
 
         public IEnumerable<T> GetRandomEightUsers<T>(ApplicationUser user)
         {
-            var freelancers = this.userRepository.All().Where(u => u.UserCategories.Count > 0);
+            var freelancers = this.userRepository.All()
+                .Where(u => u.UserCategories.Count > 0);
 
             if (user != null && user.UserCategories.Count > 0)
             {
@@ -46,7 +51,7 @@
 
             if (freelancers.Count() > 8)
             {
-                freelancers = freelancers.Skip(GetNumberToSkip(this.userRepository)).Take(8);
+                freelancers = freelancers.Skip(GetNumberToSkip(freelancers.Count())).Take(8);
             }
 
             return freelancers.To<T>().ToList();
@@ -110,7 +115,9 @@
 
         public async Task CreateAProfileAsync(string userId, string userName, string photoUrl, string email, string summary, string phoneNumber, ICollection<int> categoriesId)
         {
-            var user = this.userRepository.All().Where(u => u.Id == userId).FirstOrDefault();
+            var user = this.userRepository.All()
+                .Where(u => u.Id == userId)
+                .FirstOrDefault();
 
             user.UserName = userName;
             user.NormalizedUserName = userName.ToUpper();
@@ -143,7 +150,9 @@
 
         public async Task RateFreelancerAsync(string authorId, string executorId, int starGivenOrTaken, string recommendation)
         {
-            var freelancer = this.userRepository.All().Where(u => u.Id == executorId).FirstOrDefault();
+            var freelancer = this.userRepository.All()
+                .Where(u => u.Id == executorId)
+                .FirstOrDefault();
 
             if (freelancer != null)
             {
@@ -170,13 +179,31 @@
             return this.userRepository.All().Where(u => u.UserName == userName).To<T>().FirstOrDefault();
         }
 
-        private static int GetNumberToSkip(IDeletableEntityRepository<ApplicationUser> repository)
+        public IEnumerable<T> GetAll<T>()
         {
-            Random rand = new Random();
-            int toSkip = rand.Next(0, repository.All().Where(u => u.UserCategories.Count > 0).Count() - 7);
-            return toSkip;
+            var users = this.userRepository.All()
+                .Where(u => u.UserCategories.Count() > 0);
+
+            return users.To<T>().ToList();
         }
 
+        public IEnumerable<T> GetTop<T>()
+        {
+            var topFreelancers = this.userRepository.All()
+                .Where(u => u.UserCategories.Count() > 0)
+                .OrderByDescending(u => u.Stars)
+                .ThenByDescending(u => u.Recommendations.Count())
+                .Take(NumberOfTopFreelancers);
 
+            return topFreelancers.To<T>().ToList();
+        }
+
+        private static int GetNumberToSkip(int freelancersCount)
+        {
+            Random rand = new Random();
+            int toSkip = rand.Next(0, freelancersCount - (NumberOfRandomFreelancers - 1));
+
+            return toSkip;
+        }
     }
 }

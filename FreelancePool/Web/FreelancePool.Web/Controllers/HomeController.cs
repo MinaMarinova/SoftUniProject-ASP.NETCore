@@ -1,6 +1,7 @@
 ﻿namespace FreelancePool.Web.Controllers
 {
     using System.Diagnostics;
+
     using FreelancePool.Services.Data;
     using FreelancePool.Web.ViewModels;
     using FreelancePool.Web.ViewModels.Categories;

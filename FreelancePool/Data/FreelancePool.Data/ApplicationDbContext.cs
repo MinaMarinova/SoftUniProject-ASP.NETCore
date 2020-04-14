@@ -176,7 +176,7 @@
                 .OnDelete(DeleteBehavior.Restrict);
             });
 
-            //UserCandidateProject
+            // UserCandidateProject
             builder.Entity<UserCandidateProject>(usersCandidateProjects =>
             {
                 usersCandidateProjects

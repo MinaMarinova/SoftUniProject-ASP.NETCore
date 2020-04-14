@@ -1,4 +1,4 @@
-﻿@model ICollection<FreelancePool.Web.ViewModels.Components.RandomFreelancersViewModel>
+﻿@model ICollection<FreelancePool.Web.ViewModels.Components.FreelancerViewModel>
 
 <div class="wow bounceInDown animated" data-wow-delay="0.4s" style="visibility: visible;-webkit-animation-delay: 0.4s; -moz-animation-delay: 0.4s; animation-delay: 0.4s;">
     <div class="section-heading">
@@ -6,19 +6,7 @@
         <i class="fa fa-2x fa-angle-down"></i>
     </div>
 </div>
-@foreach (var user in Model)
+@foreach (var freelancer in Model)
 {
-<div class="col-xs-6 col-sm-3 col-md-3">
-    <div class="wow bounceInUp animated" data-wow-delay="0.2s" style="visibility: visible;-webkit-animation-delay: 0.2s; -moz-animation-delay: 0.2s; animation-delay: 0.2s;">
-        <div class="team boxed-grey">
-            <div class="inner clearfix">
-                <a asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="@user.Id">
-                    <h6>@user.UserName<br><img src="~/img/icons/star.svg" alt="" width="15" height="15" /> @user.Stars</h6>
-                    <div class="avatar"><img src="@user.PhotoUrl" alt="" class="img-responsive img-circle"></div>
-                </a>
-                <div>@string.Join(" / ", user.Categories)</div>
-            </div>
-        </div>
-    </div>
-</div>
+    @Html.DisplayFor(f => freelancer);
 }
