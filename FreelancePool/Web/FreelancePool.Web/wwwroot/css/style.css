@@ -1166,7 +1166,7 @@ Parallax
 .card {
     /* Add shadows to create the "card" effect */
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    background-color: #e9e8ed; #f9f9f9;
+    background-color: #f9f9f9;
     transition: 0.3s;
     padding: 10px 10px 10px 20px;
     height: 560px;
@@ -1223,10 +1223,13 @@ Parallax
     background-color: #9fcad6;
     transition: 0.3s;
     padding: 25px 10px 10px 20px;
-    height: 550px;
+    height: 560px;
 }
 
-.card-messages {
+    .card-allfreelancers:hover {
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    }
+    .card-messages {
     /* Add shadows to create the "card" effect */
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     background-color: #9fcad6;
@@ -1246,6 +1249,16 @@ Parallax
     transition: 0.3s;
     padding: 20px 20px 20px 30px;
     height: 180px;
+    float: none;
+}
+
+.card-filter-projects {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    background-color: #4c829c;
+    transition: 0.3s;
+    padding: 20px 20px 20px 30px;
+    height: auto;
     float: none;
 }
 
@@ -1270,4 +1283,9 @@ Parallax
 
 .profile-about a:hover {
     color: whitesmoke;
+}
+
+.bold {
+    font-weight: bold;
+    color: #67b0d1 ;
 }

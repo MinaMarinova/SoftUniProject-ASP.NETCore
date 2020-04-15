@@ -12,7 +12,25 @@ $(window).scroll(function () {
 });
 
 function makeInputVisible() {
-	document.getElementById("message").style.display = "block";
+	let element = document.getElementById("message");
+
+	if (element.style.display == "none") {
+		element.style.display = "block";
+	}
+	else {
+		element.style.display = "none"
+    }
 };
+
+function makeMostWantedVisible() {
+	let element = document.getElementById("most-wanted");
+
+	if (element.style.display == "none") {
+		element.style.display = "block";
+	}
+	else {
+		element.style.display = "none"
+	}
+}
 
 

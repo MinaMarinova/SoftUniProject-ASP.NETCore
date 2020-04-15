@@ -61,9 +61,9 @@
                             <div class="service-icon">
                                 <img src="@category.IconURL" width="45" height="45" alt="">
                             </div>
-                            <div class="service-desc">
+                            <a class="service-desc" asp-area="" asp-controller="Categories" asp-action="DetailsById" asp-route-id="@category.Id">
                                 <h4>@category.Name</h4>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </div>
