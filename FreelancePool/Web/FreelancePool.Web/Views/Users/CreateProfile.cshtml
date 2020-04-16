@@ -1,0 +1,92 @@
+﻿@model CreateProfileInputModel
+@using FreelancePool.Common
+@using FreelancePool.Web.ViewModels.Users
+@using Microsoft.AspNetCore.Identity
+@using FreelancePool.Data.Models
+@inject UserManager<ApplicationUser> UserManager
+@{
+    this.ViewData["Title"] = "Freelancer's profile";
+}
+
+<div id="login" class="login container-fluid">
+    <div class="container">
+        @if (this.User.IsInRole(GlobalConstants.FreelancerRoleName))
+        {
+            <h4 class="text-post text-left">Edit @ViewData["Title"]</h4>
+        }
+        else
+        {
+            <h4 class="text-post text-left">Create @ViewData["Title"]</h4>
+        }
+        <script src="https://cdn.tiny.cloud/1/hhvv13byvxapusxlco3vsin7d8xcfozmch0vsde036hxek40/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+        <script>
+            tinymce.init({
+                selector: 'textarea', plugins: [
+                    "image paste table link code media"
+                ]
+            });</script>
+
+        <div class="row boxed-profile">
+            <form asp-action="CreateProfile" enctype="multipart/form-data">
+                <section>
+                    <div class="col-md-2">
+                        <div class="team boxed-grey-post text-center">
+                            <div class="inner clearfix">
+                                <h6>@Model.UserName<br /></h6>
+                                <div class="avatar"><img src="@Model.PhotoUrl" alt="" class="img-responsive img-circle"></div>
+                                <div>@Model.Email</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="UserName"></label>
+                            <input asp-for="UserName" class="form-control" placeholder="Change username" />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Email"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <div class="col-md-7">
+                        <div class="form-group">
+                            <label asp-for="Summary"></label>
+                            <textarea asp-for="Summary" class="form-control" placeholder="Enter summary of your skills"></textarea>
+                            <span asp-validation-for="Summary" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="PhoneNumber"></label>
+                            <input asp-for="PhoneNumber" class="form-control" placeholder="Enter phone number" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="NewPhoto"></label>
+                            <input asp-for="NewPhoto" class="form-control" type="file" />
+                            <span asp-validation-for="NewPhoto" class="text-danger"></span>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label asp-for="CategoriesId"></label>
+                            @foreach (var category in Model.AllCategories.Categories)
+                            {
+                                <input class="" name="CategoriesId" type="checkbox" value="@category.Id" /> @category.Name<br />
+                            }
+                            <hr />
+                            <span asp-validation-for="CategoriesId" class="text-danger"></span>
+                        </div>
+                        <div class="pull-right">
+                            <input type="submit" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </section>
+            </form>
+        </div>
+    </div>
+</div>

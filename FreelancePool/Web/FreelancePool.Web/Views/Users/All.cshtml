@@ -1,0 +1,84 @@
+﻿@model FreelancePool.Web.ViewModels.Users.AllFreelancersViewModel
+@using FreelancePool.Common 
+@{
+    this.ViewData["Title"] = "All freelancers";
+}
+
+
+<div class="freelancers">
+    <section id="top-freelancers" class="text-center">
+
+        <h2>Top rated freelancers</h2>
+        <div class="container">
+            <div class="row">
+                @foreach (var freelancer in Model.TopFreelancers)
+                {
+                    <div class="col-md-2 col-sm-4 col-xs-12">
+                        <div class="wow bounceInUp animated" data-wow-delay="0.2s" style="visibility: visible;-webkit-animation-delay: 0.2s; -moz-animation-delay: 0.2s; animation-delay: 0.2s;">
+                            <div class="team">
+                                <a asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="@freelancer.Id">
+                                    <h5>@freelancer.UserName<br><img src="~/img/icons/star.svg" alt="" width="15" height="15" /> @freelancer.Stars</h5>
+                                    <div><img src="@freelancer.PhotoUrl" alt="" class="img-circle" height="70" width="70"></div>
+                                </a>
+                                <div>@string.Join(" / ", freelancer.Categories.Take(3))</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <br />
+            <hr />
+            <div class="row">
+                <div class="col-md-7 text-center">
+                    <div class="card-allfreelancers example-1 text-profile-about square scrollbar-cyan bordered-cyan">
+                        @foreach (var freelancer in Model.Freelancers)
+                        {
+                            @Html.DisplayFor(f => freelancer)
+
+                        }
+                    </div>
+                </div>
+                <div class="col-md-1">
+                </div>
+                <div class="col-md-4 text-center">
+                    <br />
+                    <br />
+                    <div>
+                        <h5 class="bg bg-primary">You can arrange the freelancers by:</h5>
+                    </div>
+                    <br />
+                    <form asp-area="" asp-controller="Users" asp-action="All">
+                        <div class="form-group radio text-center">
+                            <label><input type="radio" asp-for="Order" value="@GlobalConstants.AlphabeticalOrder">Name</label>
+                            <label><input type="radio" asp-for="Order" value="@GlobalConstants.RatingOrder">Rating</label>
+                        </div>
+                        <input type="submit" class="btn btn-primary pull-right"/>
+                    </form>
+                    <br />
+                    <hr />
+                    <br />
+                    <br />
+                    <br />
+                    <div>
+                        <div class="text-center">
+                            <h5>Recently Joined</h5>
+                            <i class="fa fa-2x fa-angle-down"></i>
+                        </div>
+                        <hr />
+                        @foreach (var freelancer in Model.RecentlyJoined)
+                        {
+                            <div class="col-md-4">
+                                <a asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="@freelancer.Id">
+                                    <h5>@freelancer.UserName</h5>
+                                    <br />
+                                    <div><img src="@freelancer.PhotoUrl" alt="" class="img-circle" height="70" width="70"></div>
+                                </a>
+                                <div>@string.Join(" / ", freelancer.Categories.Take(3))</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            </div>
+    </section>
+</div>

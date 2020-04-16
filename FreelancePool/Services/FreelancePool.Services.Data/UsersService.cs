@@ -204,9 +204,17 @@
             var recentlyJoind = this.userRepository.All()
                 .Where(u => u.UserCategories.Count() > 0)
                 .OrderByDescending(u => u.CreatedOn)
-                .Take(3);
+                .Take(NumberOfRecentlyJoined);
 
             return recentlyJoind.To<T>().ToList();
+        }
+
+        public string GetUserEmailById(string userId)
+        {
+            return this.userRepository.All()
+                .Where(u => u.Id == userId)
+                .Select(u => u.Email)
+                .FirstOrDefault();
         }
 
         private static int GetNumberToSkip(int freelancersCount)

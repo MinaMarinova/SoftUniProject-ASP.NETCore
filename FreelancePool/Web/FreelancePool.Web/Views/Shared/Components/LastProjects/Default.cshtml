@@ -1,0 +1,23 @@
+﻿@model ICollection<FreelancePool.Web.ViewModels.Components.ProjectViewModel>
+
+<div class="section-heading">
+    <h3>Recent Projects</h3>
+    <i class="fa fa-2x fa-angle-down"></i>
+</div>
+<div class="card text-left example-1 square scrollbar-cyan bordered-cyan">
+    @foreach (var project in Model)
+    {
+        <h5>
+            <strong>
+                <a asp-area="" asp-controller="Projects" asp-action="DetailsById" asp-route-id="@project.Id">
+                    @project.Title
+                </a>
+            </strong>
+        </h5>
+        <div class="card-subtitle text-right"><i>by</i>  <img src="@project.AuthorPhotoUrl" class="img-circle" alt="" width="30" height="30" /> <i>@project.AuthorUserName</i></div>
+        <p>
+            @project.ShortDescription
+        </p>
+        <br />
+    }
+</div>

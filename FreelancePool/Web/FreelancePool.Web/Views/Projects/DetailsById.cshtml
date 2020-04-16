@@ -1,0 +1,160 @@
+﻿@model ProjectDetailsViewModel
+@using FreelancePool.Common
+@using FreelancePool.Data.Models
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@using FreelancePool.Web.ViewModels.Projects
+@{
+    this.ViewData["Title"] = "Project Details";
+}
+
+
+
+<section id="post" class="post container-fluid">
+    <div class="project-details">
+        <div class="row">
+            @if (this.TempData["Error"] != null)
+            {
+                <div class="alert alert-danger text-center">
+                    <strong>@this.TempData["Error"]</strong>
+                </div>
+            }
+            <div class="col-md-2 text-center text-post">
+                <div class="wow bounceInDown animated" data-wow-delay="0.4s" style="visibility: visible;-webkit-animation-delay: 0.4s; -moz-animation-delay: 0.4s; animation-delay: 0.4s;">
+                    <div class="section-heading">
+                        <h4>Posted by</h4>
+                        <i class="fa fa-2x fa-angle-down"></i>
+                    </div>
+                </div>
+                <div>
+                    <a asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="@Model.AuthorId">
+                        <h5 class="text-post">@Model.AuthorUserName</h5>
+                    </a>
+                    <br />
+                    <div id="over" class="avatar"><img src="@Model.AuthorPhotoUrl" alt="" class="img-circle" width="80" height="80"></div>
+                    <div>@Model.AuthorEmail</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <section id="project-content">
+                    @if ((int)@Model.Status == 3)
+                    {
+                        <h3 class="text-post">@Model.Title<i class="text-danger">(The project is closed!)</i></h3>
+                    }
+                    else
+                    {
+                        <h3 class="text-post">@Model.Title</h3>
+                    }
+                    <div class="card-postdetails text-left example-1 square scrollbar-cyan bordered-cyan">
+                        <div class="pull-right">
+                            <i class="text-danger">@Model.CreatedOn.Date</i>
+                        </div>
+                        <br />
+                        <p>
+                            @Html.Raw(Model.SanitizedDescription)
+                        </p>
+                    </div>
+                    <br />
+                </section>
+
+                <section>
+                    @if (Model.AuthorId != UserManager.GetUserId(this.User))
+                    {
+                        <button onclick="makeInputVisible()" type="submit" class="btn btn-primary"><strong>Leave a message</strong></button>
+                        <div id="message" style="display:none">
+                            <form method="post" asp-controller="Messages" asp-action="Write">
+                                <div class="form-group">
+                                    <input type="hidden" asp-for="Message.ProjectId" value="@Model.Id" />
+                                    <textarea asp-for="Message.Content" class="form-control" placeholder="Write your message here.">
+                                </textarea>
+                                    <span asp-validation-for="Message.Content" class="text-danger"></span>
+                                </div>
+                                <div>
+                                    <input type="submit" class="btn btn-primary pull-right" />
+                                </div>
+                            </form>
+                        </div>
+                    }
+                    else if (Model.AuthorId == UserManager.GetUserId(this.User))
+                    {
+                        if ((int)Model.Status != 3)
+                        {
+                            <a class="btn btn-default" asp-area="" asp-controller="Projects" asp-action="Close" asp-route-id="@Model.Id"><strong class="text-danger">Close the project</strong></a>
+                        }
+                    }
+                    <div class="text-center text-post">
+                        <h4 class="text-post text-center">MESSAGIES:</h4>
+                        <i class="fa fa-2x fa-angle-down"></i>
+                    </div>
+                    <div class="card-messages example-1 text-left text-profile-about square scrollbar-cyan bordered-cyan">
+                        @foreach (var message in Model.MessagesLeft)
+                        {
+                            <a asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="@message.Author.Id">
+                                <div class="text-post text-left">&nbsp;<img src="@message.Author.PhotoUrl" alt="" class="img-circle" width="40" height="40" />&nbsp;@message.Author.UserName</div>
+                            </a>
+                            <div><i class="text-profile-about">"@message.Content"</i></div>
+                            @if (UserManager.GetUserId(this.User) == message.Author.Id)
+                            {
+                                <form asp-area="" asp-controller="Messages" asp-action="Delete" asp-route-id="@message.Id">
+                                    <button class="btn" onclick="return confirm('Are you sure you want to delete the message?')"><strong class="text-danger">Delete</strong></button>
+                                </form>
+                            }
+                            <hr />
+                        }
+                    </div>
+                </section>
+            </div>
+            <div class="col-md-4 text-post">
+                <div class="col-md-1">
+                </div>
+                <div class="col-md-10">
+                    @if (Model.AuthorId != UserManager.GetUserId(this.User)
+                && (int)Model.Status == 1
+                && Model.Candidates.All(c => c.Id != UserManager.GetUserId(this.User)))
+                    {
+                        <form asp-area="" asp-controller="Projects" asp-action="DetailsById">
+                            <button type="submit" class="btn btn-default" onclick="return confirm('Are you sure you want to apply for this project?')"><strong class="text-danger">Apply now!</strong></button>
+                        </form>
+                    }
+                    else if (Model.AuthorId == UserManager.GetUserId(this.User))
+                    {
+                        <div class="text-center">
+                            <h5>Offered to</h5>
+                            <i class="fa fa-2x fa-angle-down"></i>
+                        </div>
+                        <div class="card-promoted example-1 square scrollbar-cyan bordered-cyan">
+                            @if (Model.Suggested.Count() == 0)
+                            {
+                                <div>The project hasn't been offered to anyone explicitly.</div>
+                            }
+                            @foreach (var freelancer in Model.Suggested)
+                            {
+                                @Html.DisplayFor(u => freelancer)
+                            }
+                        </div>
+                        <hr />
+                        <div class="text-center">
+                            <h5>Applicants&nbsp;(@Model.Candidates.Count())</h5>
+                            <i class="fa fa-2x fa-angle-down"></i>
+                        </div>
+                        <div class="card-promoted example-1 square scrollbar-cyan bordered-cyan">
+                            @if (Model.Candidates.Count() == 0)
+                            {
+                                <div>There are no applicants yet.</div>
+                            }
+                            @foreach (var freelancer in Model.Candidates)
+                            {
+                                @Html.DisplayFor(u => freelancer);
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="about" class="home-section text-center">
+    <div class="col-md-3">
+    </div>
+</section>

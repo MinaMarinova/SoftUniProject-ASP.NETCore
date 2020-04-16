@@ -1,0 +1,15 @@
+﻿@model FreelancePool.Web.ViewModels.Components.FreelancerViewModel
+
+<div class="col-xs-6 col-sm-3 col-md-3">
+    <div class="wow bounceInUp animated" data-wow-delay="0.2s" style="visibility: visible;-webkit-animation-delay: 0.2s; -moz-animation-delay: 0.2s; animation-delay: 0.2s;">
+        <div class="team boxed-grey">
+            <div class="inner clearfix">
+                <a asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="@Model.Id">
+                    <h6>@Model.UserName<br><img src="~/img/icons/star.svg" alt="" width="15" height="15" /> @Model.Stars</h6>
+                    <div class="avatar"><img src="@Model.PhotoUrl" alt="" class="img-responsive img-circle"></div>
+                </a>
+                <div>@string.Join(" / ", Model.Categories.Take(3))</div>
+            </div>
+        </div>
+    </div>
+</div>

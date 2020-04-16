@@ -1,0 +1,62 @@
+﻿@model ProjectPostInputViewModel
+@using FreelancePool.Web.ViewModels.Projects
+@{
+    this.ViewData["Title"] = "Post a project";
+}
+
+<div id="post" class="post container-fluid">
+    <div class="container project-details">
+        <h2 class="text-post text-center">@ViewData["Title"]</h2>
+        <script src="https://cdn.tiny.cloud/1/hhvv13byvxapusxlco3vsin7d8xcfozmch0vsde036hxek40/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+        <script>
+            tinymce.init({
+                selector: 'textarea', plugins: [
+                    "image paste table link code media"
+                ]
+            });</script>
+
+        <div class="row boxed-grey-post">
+            <form method="post" asp-action="Post">
+                <section>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label asp-for="Title"></label>
+                            <input asp-for="Title" class="form-control" placeholder="Enter title" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Description"></label>
+                            <textarea asp-for="Description" class="form-control" placeholder="Enter description"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="UsersEmails"></label>
+                            <input asp-for="UsersEmails" class="form-control" placeholder="example@example.com, example@example.com"/>
+                            <span asp-validation-for="UsersEmails" class="text-danger"></span>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label asp-for="CategoriesId"></label>
+                            @foreach (var category in Model.AllCategories.Categories)
+                            {
+                                <input class="" name="CategoriesId" type="checkbox" value="@category.Id" /> @category.Name<br />
+                            }
+                            <hr />
+                            <span asp-validation-for="CategoriesId" class="text-danger"></span>
+                        </div>
+                        <div>
+                            <input type="submit" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </section>
+            </form>
+        </div>
+    </div>
+    <a class="pull-right" style="background-color:black;color:white;text-decoration:none;padding:4px 6px;font-family:-apple-system, BlinkMacSystemFont, &quot;San Francisco&quot;, &quot;Helvetica Neue&quot;, Helvetica, Ubuntu, Roboto, Noto, &quot;Segoe UI&quot;, Arial, sans-serif;font-size:12px;font-weight:bold;line-height:1.2;display:inline-block;border-radius:3px" href="https://unsplash.com/@@impatrickt?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge" target="_blank" rel="noopener noreferrer" title="Download free do whatever you want high-resolution photos from Patrick Tomasso"><span style="display:inline-block;padding:2px 3px"><svg xmlns="http://www.w3.org/2000/svg" style="height:12px;width:auto;position:relative;vertical-align:middle;top:-2px;fill:white" viewBox="0 0 32 32"><title>unsplash-logo</title><path d="M10 9V0h12v9H10zm12 5h10v18H0V14h10v9h12v-9z"></path></svg></span><span style="display:inline-block;padding:2px 3px">Patrick Tomasso</span></a>
+</div>
+

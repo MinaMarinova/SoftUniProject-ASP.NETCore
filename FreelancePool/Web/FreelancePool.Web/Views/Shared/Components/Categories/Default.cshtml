@@ -1,0 +1,11 @@
+﻿@model FreelancePool.Web.ViewModels.Categories.AllCategoriesViewModel
+
+<li class="dropdown active">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Categories <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+        @foreach (var category in Model.Categories)
+        {
+            <li><a asp-area="" asp-controller="Categories" asp-action="DetailsById" asp-route-id="@category.Id">@category.Name</a></li>
+        }
+    </ul>
+</li>

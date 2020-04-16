@@ -9,6 +9,7 @@
     using FreelancePool.Data.Models;
     using FreelancePool.Services.Data;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
     internal class UsersSeeder : ISeeder
@@ -18,6 +19,39 @@
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var categoriesService = serviceProvider.GetService<ICategoriesService>();
             var categoryUsersRepository = serviceProvider.GetService<IRepository<CategoryUser>>();
+            var configuration = serviceProvider.GetService<IConfiguration>();
+
+            var userRoot = await userManager.FindByEmailAsync(configuration["RootUser:Email"]);
+
+            if (userRoot == null)
+            {
+                var newUser = new ApplicationUser
+                {
+                    UserName = configuration["RootUser:UserName"],
+                    Email = configuration["RootUser:Email"],
+                    PhotoUrl = "https://res.cloudinary.com/freelancepool/image/upload/v1585084662/Categories/recruit_kqvbck.png",
+                };
+
+                var result = await userManager.CreateAsync(newUser, configuration["RootUser:Password"]);
+
+                await userManager.AddToRoleAsync(newUser, GlobalConstants.AdministratorRoleName);
+            }
+
+            var userAdmin = await userManager.FindByEmailAsync("admin@admin.bg");
+
+            if (userAdmin == null)
+            {
+                var newUser = new ApplicationUser
+                {
+                    UserName = "Admin",
+                    Email = "admin@admin.bg",
+                    PhotoUrl = "https://res.cloudinary.com/freelancepool/image/upload/v1585084662/Categories/recruit_kqvbck.png",
+                };
+
+                var result = await userManager.CreateAsync(newUser, "admin123");
+
+                await userManager.AddToRoleAsync(newUser, GlobalConstants.AdministratorRoleName);
+            }
 
             var userPaisii = await userManager.FindByEmailAsync("paisii@paisii.bg");
 

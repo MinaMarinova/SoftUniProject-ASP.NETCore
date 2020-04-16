@@ -1,0 +1,16 @@
+﻿@model ProjectViewModel
+@using FreelancePool.Web.ViewModels.Components
+
+
+<h5>
+    <strong>
+        <a asp-area="" asp-controller="Projects" asp-action="DetailsById" asp-route-id="@Model.Id">
+            @Model.Title
+        </a>
+    </strong>
+</h5>
+<div class="card-subtitle text-right"><i>by</i>  <img src="@Model.AuthorPhotoUrl" class="img-circle" alt="" width="30" height="30" /> <i>@Model.AuthorUserName</i></div>
+<p>
+    @Model.ShortDescription
+</p>
+<br />

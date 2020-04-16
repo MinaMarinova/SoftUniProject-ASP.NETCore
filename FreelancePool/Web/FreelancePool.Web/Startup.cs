@@ -13,6 +13,7 @@
     using FreelancePool.Services.Data;
     using FreelancePool.Services.Mapping;
     using FreelancePool.Services.Messaging;
+    using FreelancePool.Web.Filters;
     using FreelancePool.Web.ViewModels;
 
     using Microsoft.AspNetCore.Builder;
@@ -20,6 +21,7 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.ViewFeatures;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -79,8 +81,17 @@
             {
                 configure.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             });
+
+            services
+               .Configure<CookieTempDataProviderOptions>(options =>
+               {
+                   options.Cookie.IsEssential = true;
+               });
+
             services.AddRazorPages();
 
+            services.AddSession();
+            
             services.AddSingleton(this.configuration);
 
             // Data repositories
@@ -96,6 +107,9 @@
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IProjectsService, ProjectsService>();
             services.AddTransient<IMessagesService, MessagesService>();
+            services.AddTransient<AuthorizeRootUserFilterAttribute>();
+
+            services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -135,6 +149,8 @@
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseEndpoints(
                 endpoints =>

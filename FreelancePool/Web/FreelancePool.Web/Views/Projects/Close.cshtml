@@ -1,0 +1,48 @@
+﻿@model CloseProjectViewModel
+@using FreelancePool.Web.ViewModels.Projects
+@{
+    this.ViewData["Title"] = "Close the project";
+}
+
+<div id="post" class="post container-fluid">
+    <div class="container project-details">
+        <h2 class="text-post text-center">@ViewData["Title"]</h2>
+        <div class="row">
+            <div class="col-md-3"> </div>
+            <div class="col-md-6 boxed-close-post">
+                <h4>@Model.Title</h4>
+                <form method="post" asp-action="Close">
+                    <div class="form-group">
+                        <label asp-for="ExecutorUserName"></label>
+                        <input asp-for="ExecutorUserName" class="form-control" placeholder="Enter freelancer's username" />
+                        <span asp-validation-for="ExecutorUserName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ExecutorEmail"></label>
+                        <input asp-for="ExecutorEmail" class="form-control" placeholder="Enter freelancer's username" />
+                        <span asp-validation-for="ExecutorEmail" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">
+                            Give or take a star depending on the performance<i>(optional)</i>
+                        </label>
+                        <select id="subject" asp-for="StarGivenOrTaken" class="form-control">
+                            <option value=0 selected>Do nothing</option>
+                            <option value=1>Give a star</option>
+                            <option value=-1>Take a star</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Recommendation">Recommendation<i>(optional)</i></label>
+                        <textarea asp-for="Recommendation" class="form-control" placeholder="Write a recommendation for the freelancer if you are pleased with the result." ></textarea>
+                        <span asp-validation-for="Recommendation" class="text-danger"></span>
+                    </div>
+                    <div class="pull-right">
+                        <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure you want to close this project?')">Submit</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-3"> </div>
+        </div>
+    </div>
+</div>

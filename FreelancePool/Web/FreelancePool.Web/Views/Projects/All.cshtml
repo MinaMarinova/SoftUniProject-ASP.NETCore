@@ -1,0 +1,59 @@
+﻿@model AllProjectsViewModel
+@using FreelancePool.Web.ViewModels.Projects
+@{
+    this.ViewData["Title"] = "All projects";
+}
+
+<div id="post" class="post container-fluid">
+    <div class="container project-details">
+        <div class="row">
+            <div class="col-md-8">
+                <h2 class="text-post text-center">@ViewData["Title"]</h2>
+                <div class="card-allprojects text-left example-1 square scrollbar-cyan bordered-cyan">
+                    @foreach (var project in Model.AllProjects)
+                    {
+                        @Html.DisplayFor(p => project)
+                    }
+                </div>
+            </div>
+            <div class="col-md-4 text-post">
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-9">
+                    <br />
+                    <br />
+                    <br />
+                    <form asp-area="" asp-controller="Projects" asp-action="All">
+                        <div class="form-group card-filter-projects">
+                            <label><strong>Filter projects by categories</strong></label>
+                            @foreach (var category in Model.AllCategories.Categories)
+                            {
+                                <input class="" name="SelectedCategoriesId" type="checkbox" value="@category.Id" /> @category.Name<br />
+                            }
+                            <hr />
+                            <span asp-validation-for="SelectedCategoriesId" class="text-danger"></span>
+                        </div>
+                        <div class="pull-right">
+                            <input type="submit" class="btn btn-default bold" value="Filter" />
+                        </div>
+                    </form>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <button onclick="makeMostWantedVisible()" type="submit" class="btn btn-default pull-right bold"><strong>Show most wanted projects</strong></button>
+                    <div id="most-wanted" style="display:none" class="card-filter-projects">
+                        <br />
+                        @foreach (var project in Model.MostWanted)
+                        {
+                            <a asp-area="" asp-controller="Projects" asp-action="DetailsById" asp-route-id="@project.Id">
+                                <div class="text-post">@project.Title&nbsp;(@project.ApplicantsCount)</div>
+                            </a>
+                            <br />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

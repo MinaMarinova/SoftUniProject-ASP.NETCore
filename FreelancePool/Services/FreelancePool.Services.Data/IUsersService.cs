@@ -28,5 +28,7 @@
         IEnumerable<T> GetTop<T>();
 
         IEnumerable<T> GetRecent<T>();
+
+        string GetUserEmailById(string userId);
     }
 }

@@ -1,0 +1,144 @@
+﻿@model DetailsViewModel
+@using FreelancePool.Web.ViewModels.Users
+@using Microsoft.AspNetCore.Identity
+@using FreelancePool.Data.Models
+@inject UserManager<ApplicationUser> UserManager
+@{
+    this.ViewData["Title"] = "Profile";
+}
+
+<div id="login" class="login container-fluid">
+    <div class="container">
+        @if (this.TempData["SuccessApplied"] != null)
+        {
+            <div class="alert alert-success text-center">
+                <strong>@this.TempData["SuccessApplied"]</strong>
+            </div>
+        }
+        @if (this.TempData["SuccessPost"] != null)
+        {
+            <div class="alert alert-success text-center">
+                <strong>@this.TempData["SuccessPost"]</strong>
+            </div>
+        }
+        <div class="row boxed-profile">
+            <section>
+                <div class="col-md-3 text-post text-center">
+                    <h4>@Model.UserName<br /></h4>
+                    <div><img src="~/img/icons/star.svg" alt="" width="15" height="15" /> @Model.Stars</div>
+                    <br />
+                    <div class="avatar"><img src="@Model.PhotoUrl" alt="" class="img-circle" width="240" height="240"></div>
+                    <div><img src="~/img/icons/mail.png" alt="" width="16" height="16" /><strong>&nbsp;@Model.Email</strong></div>
+                    @if (Model.PhoneNumber != null)
+                    {
+                        <div><img src="~/img/icons/phone-call.png" alt="" width="16" height="16" class="tada animated" /><strong>&nbsp;@Model.PhoneNumber</strong></div>
+                    }
+                    <br />
+                    <hr />
+                    <div class="text-left">
+                        <div><strong>CATEGORIES</strong></div>
+                        <br />
+                        @foreach (var category in Model.Categories)
+                        {
+                            <div>&#9659;&nbsp;@category</div>
+                        }
+                    </div>
+                    <br />
+                </div>
+                <div class="col-md-6">
+                    <h4 class="text-post">About me:</h4>
+                    <div class="card-profiledetails example-1 text-left text-profile-about square scrollbar-cyan bordered-cyan">
+                        <div class="profile-about">
+                            @Html.Raw(Model.SanitizedSummary)
+                        </div>
+                    </div>
+                    <br />
+                    @if (UserManager.GetUserId(this.User) == Model.Id)
+                    {
+                        <div class="col-md-6 text-post">
+                            <div class="text-center">
+                                <h5>Offers</h5>
+                                <i class="fa fa-2x fa-angle-down"></i>
+                            </div>
+                            <div class="card-promoted example-1 square scrollbar-cyan bordered-cyan text-post">
+                                @if (Model.ProjectsOffered.Count() == 0)
+                                {
+                                    <div>There are no offers yet.</div>
+                                }
+                                @foreach (var project in Model.ProjectsOffered)
+                                {
+                                    @Html.DisplayFor(p => project);
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-post">
+                            <div class="text-center">
+                                <h5>Applied for</h5>
+                                <i class="fa fa-2x fa-angle-down"></i>
+                            </div>
+                            <div class="card-promoted example-1 square scrollbar-cyan bordered-cyan text-post">
+                                @if (Model.ProjectsApplied.Count() == 0)
+                                {
+                                    <div>There are no projects applications.</div>
+                                }
+                                @foreach (var project in Model.ProjectsApplied)
+                                {
+                                    @Html.DisplayFor(p => project);
+                                }
+                            </div>
+                        </div>
+                    }
+                    <h4 class="text-post">RECOMMENDATIONS:</h4>
+                    @foreach (var recommendation in Model.Recommendations)
+                    {
+                        <div><i class="text-profile-about">"@recommendation.Content"</i></div>
+                        <a asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="@recommendation.Author.Id">
+                            <div class="avatar text-post text-right">by&nbsp;<img src="@recommendation.Author.PhotoUrl" alt="" class="img-circle" width="40" height="40" />&nbsp;@recommendation.Author.UserName</div>
+                        </a>
+                    }
+                </div>
+                <br />
+                <br />
+                <div class="col-md-3">
+                    <div class="text-center text-post">
+                        <h5>Projects completed</h5>
+                        <i class="fa fa-2x fa-angle-down"></i>
+                    </div>
+                    <div class="card-promoted example-1 square scrollbar-cyan bordered-cyan text-post">
+                        @if (Model.ProjectsCompleted.Count() == 0)
+                        {
+                            <div>I'm looking forward to completing my first project here.</div>
+                        }
+                        @foreach (var project in Model.ProjectsCompleted)
+                        {
+                            @Html.DisplayFor(p => project);
+                        }
+                    </div>
+                    <br />
+                    <div class="text-center text-post">
+                        <h5>Projects posted</h5>
+                        <i class="fa fa-2x fa-angle-down"></i>
+                    </div>
+                    <div class="card-promoted example-1 square scrollbar-cyan bordered-cyan text-post">
+                        @if (Model.ProjectsPosted.Count() == 0)
+                        {
+                            <div>I haven't posted any projects.</div>
+                        }
+                        @foreach (var project in Model.ProjectsPosted)
+                        {
+                            @Html.DisplayFor(p => project);
+                        }
+                    </div>
+                    <br />
+                    @if (UserManager.GetUserId(this.User) == Model.Id)
+                    {
+                        <div>
+                            <a class="btn btn-default" asp-area="" asp-controller="Users" asp-action="CreateProfile"><strong class="text-danger">Edit profile</strong></a>
+                        </div>
+                        <br />
+                    }
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
