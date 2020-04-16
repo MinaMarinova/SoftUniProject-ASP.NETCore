@@ -1,0 +1,18 @@
+﻿@model FreelancePool.Web.ViewModels.Administration.Users.RemoveAdminInputModel
+@{
+    this.ViewData["Title"] = "Remove Administrator";
+}
+
+    <div class="container">
+        
+        <form asp-action="RemoveAdmin" method="post">
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" placeholder="Enter email of an administraitor to remove" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div>
+                <input type="submit" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>

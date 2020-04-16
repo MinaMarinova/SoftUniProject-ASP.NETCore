@@ -43,7 +43,7 @@
             {
                 var newUser = new ApplicationUser
                 {
-                    UserName = "Admin",
+                    UserName = "AdminAgain",
                     Email = "admin@admin.bg",
                     PhotoUrl = "https://res.cloudinary.com/freelancepool/image/upload/v1585084662/Categories/recruit_kqvbck.png",
                 };

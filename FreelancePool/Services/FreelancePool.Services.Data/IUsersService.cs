@@ -30,5 +30,9 @@
         IEnumerable<T> GetRecent<T>();
 
         string GetUserEmailById(string userId);
+
+        Task<bool> AddAdmin(string userName, string email, string password);
+
+        Task<string> RemoveAdmin(string email);
     }
 }

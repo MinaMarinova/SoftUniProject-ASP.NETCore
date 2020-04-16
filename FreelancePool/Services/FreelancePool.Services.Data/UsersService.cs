@@ -23,6 +23,7 @@
         private readonly IDeletableEntityRepository<Recommendation> recommendationsRepository;
         private readonly UserManager<ApplicationUser> userManager;
 
+
         public UsersService(
             IDeletableEntityRepository<ApplicationUser> userRepository,
             IRepository<UserCandidateProject> userCandidateProjectsRepository,
@@ -215,6 +216,44 @@
                 .Where(u => u.Id == userId)
                 .Select(u => u.Email)
                 .FirstOrDefault();
+        }
+
+        public async Task<bool> AddAdmin(string userName, string email, string password)
+        {
+            var newAdmin = new ApplicationUser
+            {
+                UserName = userName,
+                Email = email,
+                PhotoUrl = "https://res.cloudinary.com/freelancepool/image/upload/v1585084662/Categories/recruit_kqvbck.png",
+            };
+
+            var result = await this.userManager.CreateAsync(newAdmin, password);
+
+            if (result.Succeeded)
+            {
+                await this.userManager.AddToRoleAsync(newAdmin, GlobalConstants.AdministratorRoleName);
+            }
+
+            return result.Succeeded;
+        }
+
+        public async Task<string> RemoveAdmin(string email)
+        {
+            var admin = this.userRepository.All()
+                .Where(u => u.Email == email)
+                .FirstOrDefault();
+
+            var users = await this.userManager.GetUsersInRoleAsync(GlobalConstants.AdministratorRoleName);
+
+            if (admin == null || users.All(u => u.Email != admin?.Email))
+            {
+                throw new ArgumentNullException();
+            }
+
+            admin.IsDeleted = true;
+            await this.userRepository.SaveChangesAsync();
+
+            return admin.UserName;
         }
 
         private static int GetNumberToSkip(int freelancersCount)

@@ -12,6 +12,7 @@
     {
         private const int NumberOfRecentProjects = 6;
         private const int NumberOfPopularProject = 5;
+
         private readonly IDeletableEntityRepository<Project> projectsRepository;
         private readonly IRepository<CategoryProject> projectCategoryRepository;
         private readonly IRepository<ProjectOfferUser> projectOfferUserRepository;
@@ -101,7 +102,11 @@
                 projects = projects.Where(p => p.ProjectCategories.Select(pc => pc.Category.Name).Any(x => userCategories.Contains(x)));
             }
 
-            return projects.OrderByDescending(p => p.CreatedOn).Take(NumberOfRecentProjects).To<T>().ToList();
+            return projects
+                .OrderByDescending(p => p.CreatedOn)
+                .Take(NumberOfRecentProjects)
+                .To<T>()
+                .ToList();
         }
 
         public string GetAuthorId(int id)
@@ -116,6 +121,7 @@
         {
             return this.projectsRepository.All()
                 .Where(p => (int)p.Status == 1)
+                .OrderByDescending(p => p.CreatedOn)
                 .To<T>()
                 .ToList();
         }

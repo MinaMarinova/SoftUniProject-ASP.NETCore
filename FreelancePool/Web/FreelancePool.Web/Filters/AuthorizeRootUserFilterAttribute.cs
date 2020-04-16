@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
 
     using FreelancePool.Services.Data;
+    using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
 

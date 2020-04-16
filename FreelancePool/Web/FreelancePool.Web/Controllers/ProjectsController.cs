@@ -18,7 +18,7 @@
         private const string ActionDeniedMessage = "You are not allowed to close this project!";
         private const string NotValidEmailErrorMessage = "There is no freelancer with {0} email!";
         private const string ApplySuccessMessage = "You have successfully applied for project: {0}";
-        private const string PostSuccessMessage = "You have successfully post a project: {0}";
+        private const string PostSuccessMessage = "You have successfully posted a project: {0}";
 
         private readonly IProjectsService projectsService;
         private readonly ICategoriesService categoriesService;
