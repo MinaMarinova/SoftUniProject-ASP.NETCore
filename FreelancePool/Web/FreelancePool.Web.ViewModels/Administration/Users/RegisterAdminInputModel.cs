@@ -4,7 +4,6 @@
 
     using FreelancePool.Data.Models;
     using FreelancePool.Services.Mapping;
-    using Microsoft.AspNetCore.Mvc;
 
     public class RegisterAdminInputModel : IMapTo<ApplicationUser>
     {

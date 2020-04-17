@@ -33,6 +33,8 @@
 
         Task<bool> AddAdmin(string userName, string email, string password);
 
-        Task<string> RemoveAdmin(string email);
+        Task<string> RemoveAdmin(string email, string role);
+
+        Task<string> RemoveUser(string email);
     }
 }

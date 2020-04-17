@@ -1,7 +1,8 @@
 ﻿namespace FreelancePool.Web.Areas.Administration.Controllers
 {
+    using System;
     using System.Threading.Tasks;
-
+    using FreelancePool.Common;
     using FreelancePool.Services.Data;
     using FreelancePool.Web.Filters;
     using FreelancePool.Web.ViewModels.Administration.Users;
@@ -11,8 +12,8 @@
     {
         private const string RegisterAdminSeccessMessage = "You have successfully registered a new administrator: {0}!";
         private const string RegisterAdminErrorMessage = "The registration failed!";
-        private const string RemoveSuccessMessage = "You have successfully removed the administrator {0}!";
-        private const string RemoveErrorMessage = "There is no administrator with such an email!";
+        private const string RemoveSuccessMessage = "You have successfully removed the {0} {1}!";
+        private const string RemoveErrorMessage = "There is no {0} with email {1}!";
 
         private readonly IUsersService usersService;
 
@@ -42,14 +43,23 @@
                 return this.View(inputModel);
             }
 
-            if (!await this.usersService.AddAdmin(inputModel.UserName, inputModel.Email, inputModel.Password))
+            try
             {
-                this.TempData["Error"] = RegisterAdminErrorMessage;
-                return this.View(inputModel);
+                if (!await this.usersService.AddAdmin(inputModel.UserName, inputModel.Email, inputModel.Password))
+                {
+                    this.TempData["Error"] = RegisterAdminErrorMessage;
+                    return this.View(inputModel);
+                }
+
+                this.TempData["Success"] = string.Format(RegisterAdminSeccessMessage, inputModel.UserName);
+            }
+            catch (ArgumentException ex)
+            {
+                this.TempData["Error"] = ex.Message;
             }
 
-            this.TempData["Success"] = string.Format(RegisterAdminSeccessMessage, inputModel.UserName);
             return this.RedirectToAction(nameof(this.Index));
+
         }
 
         [HttpGet]
@@ -61,16 +71,58 @@
 
         [HttpPost]
         [ServiceFilter(typeof(AuthorizeRootUserFilterAttribute))]
-        public async Task<IActionResult> RemoveAdmin(RemoveAdminInputModel inputModel)
+        public async Task<IActionResult> RemoveAdmin(RemoveUserInputModel inputModel)
         {
             try
             {
-                string adminName = await this.usersService.RemoveAdmin(inputModel.Email);
-                this.TempData["Success"] = string.Format(RemoveSuccessMessage, adminName);
+                string adminName = await this.usersService.RemoveAdmin(inputModel.Email, GlobalConstants.AdministratorRoleName);
+                this.TempData["Success"] = string.Format(RemoveSuccessMessage, GlobalConstants.AdministratorRoleName, adminName);
             }
             catch
             {
-                this.TempData["Error"] = string.Format(RemoveErrorMessage);
+                this.TempData["Error"] = string.Format(RemoveErrorMessage, GlobalConstants.AdministratorRoleName, inputModel.Email);
+            }
+
+            return this.RedirectToAction("Index", "Users");
+        }
+
+        public IActionResult RemoveFreelancer()
+        {
+            return this.View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveFreelancer(RemoveUserInputModel inputModel)
+        {
+            try
+            {
+                string freelancerName = await this.usersService.RemoveAdmin(inputModel.Email, GlobalConstants.FreelancerRoleName);
+                this.TempData["Success"] = string.Format(RemoveSuccessMessage, GlobalConstants.FreelancerRoleName, freelancerName);
+            }
+            catch
+            {
+                this.TempData["Error"] = string.Format(RemoveSuccessMessage, GlobalConstants.FreelancerRoleName, inputModel.Email);
+            }
+
+            return this.RedirectToAction("Index", "Users");
+        }
+
+        public IActionResult RemoveUser()
+        {
+            return this.View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveUser(RemoveUserInputModel inputModel)
+        {
+            try
+            {
+                string freelancerName = await this.usersService.RemoveUser(inputModel.Email);
+                this.TempData["Success"] = string.Format(RemoveSuccessMessage, "user", freelancerName);
+            }
+            catch
+            {
+                this.TempData["Error"] = string.Format(RemoveErrorMessage, "user", inputModel.Email);
             }
 
             return this.RedirectToAction("Index", "Users");

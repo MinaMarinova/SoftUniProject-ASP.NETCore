@@ -16,6 +16,9 @@
         private const int NumberOfTopFreelancers = 6;
         private const int NumberOfRandomFreelancers = 8;
         private const int NumberOfRecentlyJoined = 3;
+        private const string UserNameInUseErrorMessage = "The username is already in use! Please, choose another one.";
+        private const string EmailInUseErrorMessage = "The email is already in use! Please choose another one.";
+
 
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IRepository<UserCandidateProject> userCandidateProjectsRepository;
@@ -218,8 +221,19 @@
                 .FirstOrDefault();
         }
 
+        // Actions for admin area
         public async Task<bool> AddAdmin(string userName, string email, string password)
         {
+            if (this.userRepository.All().Any(u => u.UserName == userName))
+            {
+                throw new ArgumentException(UserNameInUseErrorMessage);
+            }
+
+            if (this.userRepository.All().Any(u => u.Email == email))
+            {
+                throw new ArgumentException(EmailInUseErrorMessage);
+            }
+
             var newAdmin = new ApplicationUser
             {
                 UserName = userName,
@@ -237,23 +251,41 @@
             return result.Succeeded;
         }
 
-        public async Task<string> RemoveAdmin(string email)
+        public async Task<string> RemoveAdmin(string email, string role)
         {
-            var admin = this.userRepository.All()
-                .Where(u => u.Email == email)
+            var user = this.userRepository.All()
+                .Where(u => u.Email == email && u.IsDeleted == false)
                 .FirstOrDefault();
 
-            var users = await this.userManager.GetUsersInRoleAsync(GlobalConstants.AdministratorRoleName);
+            var users = await this.userManager.GetUsersInRoleAsync(role);
 
-            if (admin == null || users.All(u => u.Email != admin?.Email))
+            if (user == null || users.All(u => u.Email != user?.Email))
             {
                 throw new ArgumentNullException();
             }
 
-            admin.IsDeleted = true;
+            user.IsDeleted = true;
             await this.userRepository.SaveChangesAsync();
 
-            return admin.UserName;
+            return user.UserName;
+        }
+
+        public async Task<string> RemoveUser(string email)
+        {
+            var user = this.userRepository.All()
+                .Where(u => u.Email == email && u.IsDeleted == false)
+                .FirstOrDefault();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            user.IsDeleted = true;
+
+            await this.userRepository.SaveChangesAsync();
+
+            return user.UserName;
         }
 
         private static int GetNumberToSkip(int freelancersCount)

@@ -1,12 +1,13 @@
-﻿@model FreelancePool.Web.ViewModels.Administration.Users.RemoveUserInputModel
+﻿@model RemoveUserInputModel
+@using FreelancePool.Web.ViewModels.Administration.Users
 @{
-    this.ViewData["Title"] = "Remove Administrator";
+    this.ViewData["Title"] = "Remove User";
 }
 
     <div class="container">
         <div class="row">
             <div class="col-md-4">
-                <form asp-action="RemoveAdmin" method="post">
+                <form asp-action="RemoveUser" method="post">
                     @Html.DisplayFor(x => Model)
                 </form>
             </div>

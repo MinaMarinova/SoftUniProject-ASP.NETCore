@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class RemoveAdminInputModel
+    public class RemoveUserInputModel
     {
         [Required]
         [EmailAddress]

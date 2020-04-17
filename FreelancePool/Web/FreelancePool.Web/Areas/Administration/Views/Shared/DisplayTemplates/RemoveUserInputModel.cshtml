@@ -1,0 +1,11 @@
+﻿@model RemoveUserInputModel
+@using FreelancePool.Web.ViewModels.Administration.Users
+
+<div class="form-group">
+    <label asp-for="Email"></label>
+    <input asp-for="Email" class="form-control" placeholder="Enter email of an user to be removed" />
+    <span asp-validation-for="Email" class="text-danger"></span>
+</div>
+<div>
+    <input type="submit" class="btn btn-primary" />
+</div>
