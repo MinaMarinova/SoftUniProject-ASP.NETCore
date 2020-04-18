@@ -1,0 +1,30 @@
+﻿@model CreateCategoryInputModel
+@using FreelancePool.Web.ViewModels.Administration.Categories
+@{
+    this.ViewData["Title"] = "Add new category";
+}
+
+<div class="container">
+    <div class="row text-center">
+        <h3>@this.ViewData["Title"]</h3>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" placeholder="Enter username" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Icon"></label>
+                <input asp-for="Icon" class="form-control" placeholder="Enter email" />
+                <span asp-validation-for="Icon" class="text-danger"></span>
+            </div>
+            <div>
+                <input type="submit" class="btn btn-primary pull-right" />
+            </div>
+            <div class="col-md-4"></div>
+        </form>
+            </div>
+        </div>
+</div>

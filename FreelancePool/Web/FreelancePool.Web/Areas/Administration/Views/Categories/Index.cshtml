@@ -1,0 +1,50 @@
+﻿@model ChooseCategoryInputModel
+@using FreelancePool.Web.ViewModels.Administration.Categories
+@{
+    this.ViewData["Title"] = "Manage categories";
+}
+
+<div class="container">
+    <br />
+    <br />
+    @if (this.TempData["Success"] != null)
+    {
+        <div class="alert alert-success text-center">
+            <strong>@this.TempData["Success"]</strong>
+        </div>
+    }
+    @if (this.TempData["Error"] != null)
+    {
+        <div class="alert alert-danger text-center">
+            <strong>@this.TempData["Error"]</strong>
+        </div>
+    }
+    <br />
+    <div class="row text-center">
+        <div class="col-md-4">
+            <a class="btn btn-primary" asp-area="Administration" asp-controller="Categories" asp-action="Create">
+                Add new category
+            </a>
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-primary" onclick="makeInputCategoryVisible()">
+                Delete category
+            </button>
+            <div id="delete-category" style="display:none">
+                <form asp-area="Administration" asp-controller="Categories" asp-action="Delete" method="post">
+                    @Html.DisplayFor(c => Model)
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-primary" onclick="makeEditCategoryVisible()">
+                Edit category
+            </button>
+            <div id="edit-category" style="display:none">
+                <form asp-area="Administration" asp-controller="Categories" asp-action="Edit" method="post">
+                    @Html.DisplayFor(c => Model)
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -60,7 +60,7 @@
                 <section>
                     @if (Model.AuthorId != UserManager.GetUserId(this.User))
                     {
-                        <button onclick="makeInputVisible()" type="submit" class="btn btn-primary"><strong>Leave a message</strong></button>
+                        <button onclick="makeInputMessageVisible()" type="submit" class="btn btn-primary"><strong>Leave a message</strong></button>
                         <div id="message" style="display:none">
                             <form method="post" asp-controller="Messages" asp-action="Write">
                                 <div class="form-group">

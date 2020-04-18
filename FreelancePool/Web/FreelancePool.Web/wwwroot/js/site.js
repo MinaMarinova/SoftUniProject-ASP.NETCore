@@ -11,20 +11,7 @@ $(window).scroll(function () {
 	}
 });
 
-function makeInputVisible() {
-	let element = document.getElementById("message");
-
-	if (element.style.display == "none") {
-		element.style.display = "block";
-	}
-	else {
-		element.style.display = "none"
-    }
-};
-
-function makeMostWantedVisible() {
-	let element = document.getElementById("most-wanted");
-
+function ShowAndHideInputField(element) {
 	if (element.style.display == "none") {
 		element.style.display = "block";
 	}
@@ -32,5 +19,31 @@ function makeMostWantedVisible() {
 		element.style.display = "none"
 	}
 }
+
+function makeInputMessageVisible() {
+	let element = document.getElementById("message");
+
+	ShowAndHideInputField(element)
+};
+
+function makeMostWantedVisible() {
+	let element = document.getElementById("most-wanted");
+
+	ShowAndHideInputField(element);
+}
+
+function makeInputCategoryVisible() {
+	let element = document.getElementById("delete-category");
+
+	ShowAndHideInputField(element)
+}
+
+function makeEditCategoryVisible() {
+	let element = document.getElementById("edit-category");
+
+	ShowAndHideInputField(element);
+}
+
+
 
 

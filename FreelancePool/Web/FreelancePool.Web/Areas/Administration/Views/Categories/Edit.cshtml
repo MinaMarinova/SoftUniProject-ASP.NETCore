@@ -1,0 +1,26 @@
+﻿@model EditCategoryViewModel
+@using FreelancePool.Web.ViewModels.Administration.Categories
+@{
+    this.ViewData["Title"] = "Edit category";
+}
+
+<div class="container">
+    <div class="row text-center">
+        <h3>@this.ViewData["Title"]</h3>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <form asp-action="EditAction" method="post">
+                <div class="form-group">
+                    <label asp-for="Name"></label>
+                    <input asp-for="Name" class="form-control" placeholder="@Model.CurrentName" />
+                    <input asp-for="CurrentName" hidden value="@Model.CurrentName">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div>
+                    <input type="submit" class="btn btn-primary pull-right" />
+                </div>
+                <div class="col-md-4"></div>
+            </form>
+        </div>
+    </div>
+</div>

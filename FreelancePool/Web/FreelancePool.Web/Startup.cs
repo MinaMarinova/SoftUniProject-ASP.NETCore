@@ -1,7 +1,7 @@
 ﻿namespace FreelancePool.Web
 {
     using System.Reflection;
-
+    using System.Threading.Tasks;
     using CloudinaryDotNet;
     using FreelancePool.Data;
     using FreelancePool.Data.Common;
@@ -79,7 +79,7 @@
 
             services.AddControllersWithViews(configure =>
             {
-               configure.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                configure.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             });
 
             services
@@ -91,7 +91,7 @@
             services.AddRazorPages();
 
             services.AddSession();
-            
+
             services.AddSingleton(this.configuration);
 
             // Data repositories

@@ -120,7 +120,7 @@
             if (authorId != this.userManager.GetUserId(this.User))
             {
                 this.TempData["Error"] = ActionDeniedMessage;
-                return this.RedirectToAction("DetailsById", "Projects", new { id });
+                return this.RedirectToAction(nameof(this.DetailsById), new { id });
             }
 
             var projectViewModel = this.projectsService.GetById<CloseProjectViewModel>(id);
@@ -159,7 +159,7 @@
             if (authorId != this.userManager.GetUserId(this.User))
             {
                 this.TempData["Error"] = ActionDeniedMessage;
-                this.RedirectToAction("DetailsById", "Projects", new { id = viewModel.Id });
+                this.RedirectToAction(nameof(this.DetailsById), new { id = viewModel.Id });
             }
 
             var executorId = this.usersService.GetUserIdByEmail(viewModel.ExecutorEmail);
@@ -168,7 +168,7 @@
 
             await this.projectsService.CloseAsync(viewModel.Id, executorId);
 
-            return this.RedirectToAction("DetailsById", "Projects", new { id = viewModel.Id });
+            return this.RedirectToAction(nameof(this.DetailsById), new { id = viewModel.Id });
         }
 
         [HttpGet]

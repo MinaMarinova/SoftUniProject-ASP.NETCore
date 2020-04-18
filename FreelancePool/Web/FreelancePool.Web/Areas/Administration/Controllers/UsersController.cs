@@ -59,7 +59,6 @@
             }
 
             return this.RedirectToAction(nameof(this.Index));
-
         }
 
         [HttpGet]
@@ -83,7 +82,7 @@
                 this.TempData["Error"] = string.Format(RemoveErrorMessage, GlobalConstants.AdministratorRoleName, inputModel.Email);
             }
 
-            return this.RedirectToAction("Index", "Users");
+            return this.RedirectToAction(nameof(this.Index));
         }
 
         public IActionResult RemoveFreelancer()
@@ -104,7 +103,7 @@
                 this.TempData["Error"] = string.Format(RemoveSuccessMessage, GlobalConstants.FreelancerRoleName, inputModel.Email);
             }
 
-            return this.RedirectToAction("Index", "Users");
+            return this.RedirectToAction(nameof(this.Index));
         }
 
         public IActionResult RemoveUser()
@@ -125,7 +124,7 @@
                 this.TempData["Error"] = string.Format(RemoveErrorMessage, "user", inputModel.Email);
             }
 
-            return this.RedirectToAction("Index", "Users");
+            return this.RedirectToAction(nameof(this.Index));
         }
     }
 }

@@ -1,0 +1,11 @@
+﻿@model ChooseCategoryInputModel
+@using FreelancePool.Web.ViewModels.Administration.Categories
+
+<div class="form-group">
+    <label asp-for="Name"></label>
+    <input asp-for="Name" class="form-control" placeholder="Enter name of a category" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+</div>
+<div>
+    <input type="submit" class="btn btn-primary" />
+</div>

@@ -1,7 +1,9 @@
 ﻿namespace FreelancePool.Services.Data
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using FreelancePool.Data.Common.Repositories;
     using FreelancePool.Data.Models;
@@ -33,6 +35,48 @@
                 .Where(c => c.Id == id)
                 .Select(c => c.Name)
                 .FirstOrDefault();
+        }
+
+        public async Task<int> Add(string name, string iconUrl)
+        {
+            var category = new Category
+            {
+                Name = name,
+                IconURL = iconUrl,
+            };
+
+            await this.categoriesRepository.AddAsync(category);
+            return await this.categoriesRepository.SaveChangesAsync();
+        }
+
+        public async Task<int> Delete(string name)
+        {
+            var category = this.categoriesRepository.All()
+                .Where(c => c.Name == name)
+                .FirstOrDefault();
+
+            if (category == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            category.IsDeleted = true;
+            return await this.categoriesRepository.SaveChangesAsync();
+        }
+
+        public async Task<int> Edit(string currentName, string name)
+        {
+            var category = this.categoriesRepository.All()
+                .Where(c => c.Name == currentName)
+                .FirstOrDefault();
+
+            if (category == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            category.Name = name;
+            return await this.categoriesRepository.SaveChangesAsync();
         }
     }
 }
