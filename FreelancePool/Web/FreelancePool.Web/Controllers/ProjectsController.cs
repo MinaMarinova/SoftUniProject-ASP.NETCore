@@ -6,10 +6,12 @@
     using FreelancePool.Common;
     using FreelancePool.Data.Models;
     using FreelancePool.Services.Data;
+    using FreelancePool.Web.Helpers;
     using FreelancePool.Web.ViewModels.Categories;
     using FreelancePool.Web.ViewModels.Components;
     using FreelancePool.Web.ViewModels.Projects;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.DataProtection;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
@@ -25,16 +27,21 @@
         private readonly IUsersService usersService;
         private readonly UserManager<ApplicationUser> userManager;
 
+        private readonly IDataProtector protector;
+
         public ProjectsController(
             IProjectsService projectsService,
             ICategoriesService categoriesService,
             IUsersService usersService,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            IDataProtectionProvider dataProtectionProvider,
+            DataProtectionPurposeStrings dataProtectionPurposeStrings)
         {
             this.projectsService = projectsService;
             this.categoriesService = categoriesService;
             this.usersService = usersService;
             this.userManager = userManager;
+            this.protector = dataProtectionProvider.CreateProtector(dataProtectionPurposeStrings.EmployeeIdRouteValue);
         }
 
         [Authorize]
@@ -88,6 +95,13 @@
                 return this.NotFound();
             }
 
+            projectViewModel.AuthorEncryptedId = this.protector.Protect(projectViewModel.AuthorId);
+
+            foreach (var message in projectViewModel.MessagesLeft)
+            {
+                message.Author.EncryptedId = this.protector.Protect(message.Author.Id);
+            }
+
             return this.View(projectViewModel);
         }
 
@@ -124,6 +138,11 @@
             }
 
             var projectViewModel = this.projectsService.GetById<CloseProjectViewModel>(id);
+
+            if (projectViewModel == null)
+            {
+                return this.NotFound();
+            }
 
             return this.View(projectViewModel);
         }

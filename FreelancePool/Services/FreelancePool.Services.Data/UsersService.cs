@@ -19,7 +19,6 @@
         private const string UserNameInUseErrorMessage = "The username is already in use! Please, choose another one.";
         private const string EmailInUseErrorMessage = "The email is already in use! Please choose another one.";
 
-
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IRepository<UserCandidateProject> userCandidateProjectsRepository;
         private readonly IRepository<CategoryUser> categoryUsersRepository;
@@ -32,7 +31,8 @@
             IRepository<UserCandidateProject> userCandidateProjectsRepository,
             IRepository<CategoryUser> categoryUsersRepository,
             IDeletableEntityRepository<Recommendation> recommendationsRepository,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager
+            )
         {
             this.userRepository = userRepository;
             this.userCandidateProjectsRepository = userCandidateProjectsRepository;
@@ -181,7 +181,10 @@
 
         public T GetUserByName<T>(string userName)
         {
-            return this.userRepository.All().Where(u => u.UserName == userName).To<T>().FirstOrDefault();
+            return this.userRepository.All()
+                .Where(u => u.UserName == userName)
+                .To<T>()
+                .FirstOrDefault();
         }
 
         public IEnumerable<T> GetAll<T>()
@@ -205,12 +208,12 @@
 
         public IEnumerable<T> GetRecent<T>()
         {
-            var recentlyJoind = this.userRepository.All()
+            var recentlyJoinеd = this.userRepository.All()
                 .Where(u => u.UserCategories.Count() > 0)
                 .OrderByDescending(u => u.CreatedOn)
                 .Take(NumberOfRecentlyJoined);
 
-            return recentlyJoind.To<T>().ToList();
+            return recentlyJoinеd.To<T>().ToList();
         }
 
         public string GetUserEmailById(string userId)

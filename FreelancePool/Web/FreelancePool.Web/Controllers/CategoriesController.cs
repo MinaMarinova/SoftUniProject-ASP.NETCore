@@ -1,10 +1,13 @@
 ﻿namespace FreelancePool.Web.Controllers
 {
     using System.Linq;
+
     using FreelancePool.Common;
     using FreelancePool.Services.Data;
+    using FreelancePool.Web.Helpers;
     using FreelancePool.Web.ViewModels.Categories;
     using FreelancePool.Web.ViewModels.Components;
+    using Microsoft.AspNetCore.DataProtection;
     using Microsoft.AspNetCore.Mvc;
 
     public class CategoriesController : BaseController
@@ -13,14 +16,19 @@
         private readonly IProjectsService projectsService;
         private readonly IUsersService usersService;
 
+        private readonly IDataProtector protector;
+
         public CategoriesController(
             ICategoriesService categoriesService,
             IProjectsService projectsService,
-            IUsersService usersService)
+            IUsersService usersService,
+            IDataProtectionProvider dataProtectionProvider,
+            DataProtectionPurposeStrings dataProtectionPurposeStrings)
         {
             this.categoriesService = categoriesService;
             this.projectsService = projectsService;
             this.usersService = usersService;
+            this.protector = dataProtectionProvider.CreateProtector(dataProtectionPurposeStrings.EmployeeIdRouteValue);
         }
 
         public IActionResult DetailsById(CategoryDetailsViewModel viewModel)
@@ -44,6 +52,12 @@
             {
                 viewModel.Freelancers = viewModel.Freelancers.OrderByDescending(f => f.Stars).ToList();
             }
+
+            viewModel.Freelancers.Select(f =>
+            {
+                f.EncryptedId = this.protector.Protect(f.Id);
+                return f;
+            }).ToList();
 
             viewModel.Projects = this.projectsService.GetAll<ProjectViewModel>()
                 .Where(p => p.CategoriesId.Any(id => id == viewModel.Id));

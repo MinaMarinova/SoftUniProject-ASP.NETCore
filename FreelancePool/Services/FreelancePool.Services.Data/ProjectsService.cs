@@ -1,5 +1,6 @@
 ﻿namespace FreelancePool.Services.Data
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -12,6 +13,8 @@
     {
         private const int NumberOfRecentProjects = 6;
         private const int NumberOfPopularProject = 5;
+        private const string ProjectNotFoundMessage = "There is no project with title: {0} in the database!";
+        private const string AuthorEmailNotMatch = "The author's email of the project is not {0}";
 
         private readonly IDeletableEntityRepository<Project> projectsRepository;
         private readonly IRepository<CategoryProject> projectCategoryRepository;
@@ -29,7 +32,9 @@
 
         public async Task CloseAsync(int id, string executorId)
         {
-            var project = this.projectsRepository.All().Where(p => p.Id == id).FirstOrDefault();
+            var project = this.projectsRepository.All()
+                .Where(p => p.Id == id)
+                .FirstOrDefault();
 
             if (project != null)
             {
@@ -142,6 +147,26 @@
                 .Where(p => p.Id == projectId)
                 .Select(p => p.Title)
                 .FirstOrDefault();
+        }
+
+        public async Task<int> Delete(string title, string authorEmail)
+        {
+            var project = this.projectsRepository.All()
+                .Where(p => p.Title == title)
+                .FirstOrDefault();
+
+            if (project == null)
+            {
+                throw new ArgumentNullException(string.Format(ProjectNotFoundMessage, title));
+            }
+
+            if (project.Author.Email != authorEmail)
+            {
+                throw new ArgumentNullException(string.Format(AuthorEmailNotMatch, authorEmail));
+            }
+
+            project.IsDeleted = true;
+            return await this.projectsRepository.SaveChangesAsync();
         }
     }
 }

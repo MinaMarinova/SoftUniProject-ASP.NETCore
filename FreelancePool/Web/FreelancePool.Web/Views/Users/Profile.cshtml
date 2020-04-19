@@ -92,7 +92,7 @@
                     @foreach (var recommendation in Model.Recommendations)
                     {
                         <div><i class="text-profile-about">"@recommendation.Content"</i></div>
-                        <a asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="@recommendation.Author.Id">
+                        <a asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="@recommendation.Author.EncryptedId">
                             <div class="avatar text-post text-right">by&nbsp;<img src="@recommendation.Author.PhotoUrl" alt="" class="img-circle" width="40" height="40" />&nbsp;@recommendation.Author.UserName</div>
                         </a>
                     }

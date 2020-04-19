@@ -1,6 +1,7 @@
 ﻿namespace FreelancePool.Web.ViewModels.Components
 {
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
 
     using AutoMapper;
@@ -15,6 +16,9 @@
         }
 
         public string Id { get; set; }
+
+        [NotMapped]
+        public string EncryptedId { get; set; }
 
         public string UserName { get; set; }
 

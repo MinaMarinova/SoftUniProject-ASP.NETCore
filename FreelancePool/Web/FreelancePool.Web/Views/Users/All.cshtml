@@ -16,7 +16,7 @@
                     <div class="col-md-2 col-sm-4 col-xs-12">
                         <div class="wow bounceInUp animated" data-wow-delay="0.2s" style="visibility: visible;-webkit-animation-delay: 0.2s; -moz-animation-delay: 0.2s; animation-delay: 0.2s;">
                             <div class="team">
-                                <a asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="@freelancer.Id">
+                                <a asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="@freelancer.EncryptedId">
                                     <h5>@freelancer.UserName<br><img src="~/img/icons/star.svg" alt="" width="15" height="15" /> @freelancer.Stars</h5>
                                     <div><img src="@freelancer.PhotoUrl" alt="" class="img-circle" height="70" width="70"></div>
                                 </a>
@@ -68,7 +68,7 @@
                         @foreach (var freelancer in Model.RecentlyJoined)
                         {
                             <div class="col-md-4">
-                                <a asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="@freelancer.Id">
+                                <a asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="@freelancer.EncryptedId">
                                     <h5>@freelancer.UserName</h5>
                                     <br />
                                     <div><img src="@freelancer.PhotoUrl" alt="" class="img-circle" height="70" width="70"></div>

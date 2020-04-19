@@ -33,6 +33,8 @@
 
         public string AuthorId { get; set; }
 
+        public string AuthorEncryptedId { get; set; }
+
         public string AuthorPhotoUrl { get; set; }
 
         public string AuthorUserName { get; set; }

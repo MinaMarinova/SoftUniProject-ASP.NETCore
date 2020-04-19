@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 <div>
-                    <a asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="@Model.AuthorId">
+                    <a asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="@Model.AuthorEncryptedId">
                         <h5 class="text-post">@Model.AuthorUserName</h5>
                     </a>
                     <br />
@@ -89,7 +89,7 @@
                     <div class="card-messages example-1 text-left text-profile-about square scrollbar-cyan bordered-cyan">
                         @foreach (var message in Model.MessagesLeft)
                         {
-                            <a asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="@message.Author.Id">
+                            <a asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="@message.Author.EncryptedId">
                                 <div class="text-post text-left">&nbsp;<img src="@message.Author.PhotoUrl" alt="" class="img-circle" width="40" height="40" />&nbsp;@message.Author.UserName</div>
                             </a>
                             <div><i class="text-profile-about">"@message.Content"</i></div>

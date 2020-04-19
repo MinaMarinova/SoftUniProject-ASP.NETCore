@@ -26,6 +26,9 @@ namespace FreelancePool.Data.Models
             this.ProjectsApplied = new HashSet<UserCandidateProject>();
         }
 
+        [NotMapped]
+        public string EncryptedId { get; set; }
+
         [StringLength(30, MinimumLength = 3)]
         [Required]
         public override string UserName { get; set; }

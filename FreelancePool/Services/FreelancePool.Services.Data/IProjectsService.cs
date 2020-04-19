@@ -22,5 +22,7 @@
         IEnumerable<T> GetMostWanted<T>();
 
         string GetTitleById(int projectId);
+
+        Task<int> Delete(string title, string authorEmail);
     }
 }

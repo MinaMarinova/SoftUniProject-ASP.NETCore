@@ -1,0 +1,42 @@
+﻿@model DeleteProjectInputModel
+@using FreelancePool.Web.ViewModels.Administration.Projects
+@{
+    this.ViewData["Title"] = "Delete Project";
+}
+
+<div class="container">
+    <div class="row text-center">
+        @if (this.TempData["Success"] != null)
+        {
+            <div class="alert alert-success text-center">
+                <strong>@this.TempData["Success"]</strong>
+            </div>
+        }
+        @if (this.TempData["Error"] != null)
+        {
+            <div class="alert alert-danger text-center">
+                <strong>@this.TempData["Error"]</strong>
+            </div>
+        }
+        <h3>@this.ViewData["Title"]</h3>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <form asp-action="Delete" method="post">
+                <div class="form-group">
+                    <label asp-for="Title"></label>
+                    <input asp-for="Title" class="form-control" placeholder="Enter project's title" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AuthorEmail"></label>
+                    <input asp-for="AuthorEmail" class="form-control" placeholder="Enter author's email" />
+                    <span asp-validation-for="AuthorEmail" class="text-danger"></span>
+                </div>
+                <div>
+                    <input type="submit" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>

@@ -7,6 +7,8 @@
     {
         public string Id { get; set; }
 
+        public string EncryptedId { get; set; }
+
         public int Stars { get; set; }
 
         public string UserName { get; set; }

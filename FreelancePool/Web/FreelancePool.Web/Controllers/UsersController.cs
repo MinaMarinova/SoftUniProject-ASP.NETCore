@@ -7,10 +7,12 @@
     using FreelancePool.Data.Models;
     using FreelancePool.Services;
     using FreelancePool.Services.Data;
+    using FreelancePool.Web.Helpers;
     using FreelancePool.Web.ViewModels.Categories;
     using FreelancePool.Web.ViewModels.Components;
     using FreelancePool.Web.ViewModels.Users;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.DataProtection;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
@@ -21,16 +23,21 @@
         private readonly IUsersService usersService;
         private readonly ICloudinaryService cloudinaryService;
 
+        private readonly IDataProtector protector;
+
         public UsersController(
             ICategoriesService categoriesService,
             UserManager<ApplicationUser> userManager,
             IUsersService usersService,
-            ICloudinaryService cloudinaryService)
+            ICloudinaryService cloudinaryService,
+            IDataProtectionProvider dataProtectionProvider,
+            DataProtectionPurposeStrings dataProtectionPurposeStrings)
         {
             this.categoriesService = categoriesService;
             this.userManager = userManager;
             this.usersService = usersService;
             this.cloudinaryService = cloudinaryService;
+            this.protector = dataProtectionProvider.CreateProtector(dataProtectionPurposeStrings.EmployeeIdRouteValue);
         }
 
         // TODO: To add API Key at appsettings.json for TinyMCE
@@ -114,11 +121,23 @@
 
         public IActionResult Profile(string id)
         {
-            var freelancerViewModel = this.usersService.GetUserById<DetailsViewModel>(id);
+            string decryptedId = id;
+
+            if (id != this.userManager.GetUserId(this.User))
+            {
+                decryptedId = this.protector.Unprotect(id);
+            }
+
+            var freelancerViewModel = this.usersService.GetUserById<DetailsViewModel>(decryptedId);
 
             if (freelancerViewModel == null)
             {
                 return this.NotFound();
+            }
+
+            foreach (var recommendation in freelancerViewModel.Recommendations)
+            {
+                recommendation.Author.EncryptedId = this.protector.Protect(recommendation.Author.Id);
             }
 
             return this.View(freelancerViewModel);
@@ -140,8 +159,24 @@
                 viewModel.Freelancers = viewModel.Freelancers.OrderByDescending(f => f.Stars).ToList();
             }
 
-            viewModel.TopFreelancers = this.usersService.GetTop<FreelancerViewModel>();
-            viewModel.RecentlyJoined = this.usersService.GetRecent<FreelancerViewModel>();
+            viewModel.Freelancers.Select(f =>
+            {
+                f.EncryptedId = this.protector.Protect(f.Id);
+                return f;
+            }).ToList();
+
+            viewModel.TopFreelancers = this.usersService.GetTop<FreelancerViewModel>()
+                .Select(f =>
+            {
+                f.EncryptedId = this.protector.Protect(f.Id);
+                return f;
+            }).ToList();
+
+            viewModel.RecentlyJoined = this.usersService.GetRecent<FreelancerViewModel>().Select(f =>
+            {
+                f.EncryptedId = this.protector.Protect(f.Id);
+                return f;
+            }).ToList();
 
             return this.View(viewModel);
         }

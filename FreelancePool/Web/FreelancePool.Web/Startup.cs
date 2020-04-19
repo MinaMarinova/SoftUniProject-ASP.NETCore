@@ -14,6 +14,7 @@
     using FreelancePool.Services.Mapping;
     using FreelancePool.Services.Messaging;
     using FreelancePool.Web.Filters;
+    using FreelancePool.Web.Helpers;
     using FreelancePool.Web.ViewModels;
 
     using Microsoft.AspNetCore.Builder;
@@ -110,6 +111,7 @@
             services.AddTransient<AuthorizeRootUserFilterAttribute>();
 
             services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
+            services.AddSingleton<DataProtectionPurposeStrings>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
