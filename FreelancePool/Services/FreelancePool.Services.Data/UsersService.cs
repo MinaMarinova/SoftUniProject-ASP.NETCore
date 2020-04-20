@@ -31,8 +31,7 @@
             IRepository<UserCandidateProject> userCandidateProjectsRepository,
             IRepository<CategoryUser> categoryUsersRepository,
             IDeletableEntityRepository<Recommendation> recommendationsRepository,
-            UserManager<ApplicationUser> userManager
-            )
+            UserManager<ApplicationUser> userManager)
         {
             this.userRepository = userRepository;
             this.userCandidateProjectsRepository = userCandidateProjectsRepository;
@@ -41,7 +40,7 @@
             this.userManager = userManager;
         }
 
-        public IEnumerable<T> GetRandomEightUsers<T>(ApplicationUser user)
+        public IEnumerable<T> GetRandomFreelancers<T>(ApplicationUser user)
         {
             var freelancers = this.userRepository.All()
                 .Where(u => u.UserCategories.Count > 0);
@@ -54,9 +53,9 @@
                     .Where(u => u.Id != user.Id && u.UserCategories.Select(uc => uc.Category.Name).Any(x => categories.Contains(x)));
             }
 
-            if (freelancers.Count() > 8)
+            if (freelancers.Count() > NumberOfRandomFreelancers)
             {
-                freelancers = freelancers.Skip(GetNumberToSkip(freelancers.Count())).Take(8);
+                freelancers = freelancers.Skip(GetNumberToSkip(freelancers.Count())).Take(NumberOfRandomFreelancers);
             }
 
             return freelancers.To<T>().ToList();

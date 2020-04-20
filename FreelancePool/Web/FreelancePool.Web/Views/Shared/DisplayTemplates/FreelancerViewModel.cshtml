@@ -8,7 +8,7 @@
                     <h6>@Model.UserName<br><img src="~/img/icons/star.svg" alt="" width="15" height="15" /> @Model.Stars</h6>
                     <div class="avatar"><img src="@Model.PhotoUrl" alt="" class="img-responsive img-circle"></div>
                 </a>
-                <div>@string.Join(" / ", Model.Categories.Take(3))</div>
+                <div>@string.Join(" / ", Model.Categories)</div>
             </div>
         </div>
     </div>

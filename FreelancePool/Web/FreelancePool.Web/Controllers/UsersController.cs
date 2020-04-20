@@ -161,6 +161,7 @@
 
             viewModel.Freelancers.Select(f =>
             {
+                f.Categories = f.Categories.Take(3);
                 f.EncryptedId = this.protector.Protect(f.Id);
                 return f;
             }).ToList();
@@ -168,12 +169,14 @@
             viewModel.TopFreelancers = this.usersService.GetTop<FreelancerViewModel>()
                 .Select(f =>
             {
+                f.Categories = f.Categories.Take(3);
                 f.EncryptedId = this.protector.Protect(f.Id);
                 return f;
             }).ToList();
 
             viewModel.RecentlyJoined = this.usersService.GetRecent<FreelancerViewModel>().Select(f =>
             {
+                f.Categories = f.Categories.Take(3);
                 f.EncryptedId = this.protector.Protect(f.Id);
                 return f;
             }).ToList();

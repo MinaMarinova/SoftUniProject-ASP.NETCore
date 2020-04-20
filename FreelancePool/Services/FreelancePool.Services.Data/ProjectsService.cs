@@ -11,7 +11,7 @@
 
     public class ProjectsService : IProjectsService
     {
-        private const int NumberOfRecentProjects = 6;
+        private const int NumberOfRecentProjects = 8;
         private const int NumberOfPopularProject = 5;
         private const string ProjectNotFoundMessage = "There is no project with title: {0} in the database!";
         private const string AuthorEmailNotMatch = "The author's email of the project is not {0}";

@@ -20,7 +20,7 @@
                                     <h5>@freelancer.UserName<br><img src="~/img/icons/star.svg" alt="" width="15" height="15" /> @freelancer.Stars</h5>
                                     <div><img src="@freelancer.PhotoUrl" alt="" class="img-circle" height="70" width="70"></div>
                                 </a>
-                                <div>@string.Join(" / ", freelancer.Categories.Take(3))</div>
+                                <div>@string.Join(" / ", freelancer.Categories)</div>
                             </div>
                         </div>
                     </div>
@@ -73,7 +73,7 @@
                                     <br />
                                     <div><img src="@freelancer.PhotoUrl" alt="" class="img-circle" height="70" width="70"></div>
                                 </a>
-                                <div>@string.Join(" / ", freelancer.Categories.Take(3))</div>
+                                <div>@string.Join(" / ", freelancer.Categories)</div>
                             </div>
                         }
                     </div>

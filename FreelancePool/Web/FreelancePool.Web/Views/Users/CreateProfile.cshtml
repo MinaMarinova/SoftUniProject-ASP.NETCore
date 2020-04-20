@@ -17,6 +17,7 @@
         else
         {
             <h4 class="text-post text-left">Create @ViewData["Title"]</h4>
+            <h6 class="text-danger"><i><strong>To apply for project, get an offer or write a message you should create your own freelancer's profile!</strong></i></h6>
         }
         <script src="https://cdn.tiny.cloud/1/hhvv13byvxapusxlco3vsin7d8xcfozmch0vsde036hxek40/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
         <script>
@@ -73,13 +74,24 @@
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label asp-for="CategoriesId"></label>
+                            @if (this.User.IsInRole(GlobalConstants.FreelancerRoleName))
+                            {
+                                <label asp-for="CategoriesId">Add new category</label>
+                            }
+                            else
+                            {
+                                <label asp-for="CategoriesId"></label>
+
+                            }
                             @foreach (var category in Model.AllCategories.Categories)
                             {
                                 <input class="" name="CategoriesId" type="checkbox" value="@category.Id" /> @category.Name<br />
                             }
                             <hr />
-                            <span asp-validation-for="CategoriesId" class="text-danger"></span>
+                            @if (!this.User.IsInRole(GlobalConstants.FreelancerRoleName))
+                            {
+                                <span asp-validation-for="CategoriesId" class="text-danger"></span>
+                            }
                         </div>
                         <div class="pull-right">
                             <input type="submit" class="btn btn-primary" />

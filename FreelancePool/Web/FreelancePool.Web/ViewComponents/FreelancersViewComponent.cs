@@ -41,8 +41,9 @@
                .GetByIdWithDeletedAsync(this.userManager.GetUserId(this.ViewContext.HttpContext.User));
 
             var freelancers = this.usersService
-               .GetRandomEightUsers<FreelancerViewModel>(user).Select(f =>
+               .GetRandomFreelancers<FreelancerViewModel>(user).Select(f =>
                {
+                   f.Categories = f.Categories.Take(3);
                    f.EncryptedId = this.protector.Protect(f.Id);
                    return f;
                }).ToList();

@@ -7,7 +7,7 @@
 
     public interface IUsersService
     {
-        IEnumerable<T> GetRandomEightUsers<T>(ApplicationUser user);
+        IEnumerable<T> GetRandomFreelancers<T>(ApplicationUser user);
 
         string GetUserIdByEmail(string email);
 
