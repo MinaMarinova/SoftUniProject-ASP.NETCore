@@ -3,16 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using System.Threading.Tasks;
 
     using FreelancePool.Data;
     using FreelancePool.Data.Models;
     using FreelancePool.Data.Repositories;
     using FreelancePool.Services.Data.Tests.Common;
-    using FreelancePool.Services.Mapping;
     using FreelancePool.Web.ViewModels.Categories;
-    using Microsoft.EntityFrameworkCore;
+
     using Xunit;
 
     public class CategoriesServiceTests
@@ -96,6 +94,18 @@
         }
 
         [Fact]
+        public async Task AddReturnsOneIfEntityIsAdded()
+        {
+            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
+
+            await this.SeedDataAsync(dbContext);
+            var repository = new EfDeletableEntityRepository<Category>(dbContext);
+            var service = new CategoriesService(repository);
+
+            Assert.Equal(1, await service.Add("Music", "someUrl"));
+        }
+
+        [Fact]
         public async Task GetNameByIdReturnsCorrectValue()
         {
             var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
@@ -127,8 +137,110 @@
         [Fact]
         public async Task DeleteShouldDecreaseTheTableWithOneEntity()
         {
+            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
+
+            await this.SeedDataAsync(dbContext);
+
+            var repository = new EfDeletableEntityRepository<Category>(dbContext);
+            var service = new CategoriesService(repository);
+
+            var count = repository.All().Count() - 1;
+            await service.Delete("Writing");
+
+            Assert.Equal(count, repository.All().Count());
 
         }
+
+        [Fact]
+        public async Task DeleteShouldDeleteRightEntity()
+        {
+            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
+
+            await this.SeedDataAsync(dbContext);
+
+            var repository = new EfDeletableEntityRepository<Category>(dbContext);
+            var service = new CategoriesService(repository);
+
+            await service.Delete("Writing");
+
+            var categoriesNames = repository.All().Select(c => c.Name);
+
+            Assert.DoesNotContain("Writing", categoriesNames);
+        }
+
+        [Fact]
+        public async Task DeleteThrowsArgumentNullExceptionIfNameIsNotValid()
+        {
+            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
+
+            await this.SeedDataAsync(dbContext);
+
+            var repository = new EfDeletableEntityRepository<Category>(dbContext);
+            var service = new CategoriesService(repository);
+
+            await Assert.ThrowsAsync<ArgumentNullException>(() => service.Delete("Writings"));
+        }
+
+        [Fact]
+        public async Task DeleteReturnsOneIfEntityIsDeleted()
+        {
+            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
+
+            await this.SeedDataAsync(dbContext);
+            var repository = new EfDeletableEntityRepository<Category>(dbContext);
+            var service = new CategoriesService(repository);
+
+            Assert.Equal(1, await service.Delete("Writing"));
+        }
+
+        [Fact]
+        public async Task EditShouldChangeCategoryName()
+        {
+            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
+
+            await this.SeedDataAsync(dbContext);
+            var repository = new EfDeletableEntityRepository<Category>(dbContext);
+            var service = new CategoriesService(repository);
+
+            string expectedResult = "Edited";
+
+            await service.Edit("Writing", expectedResult);
+
+            string actualResult = repository.All()
+                .Where(c => c.Id == 1)
+                .Select(c => c.Name)
+                .FirstOrDefault();
+
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Fact]
+        public async Task EditShouldReturnOne()
+        {
+            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
+
+            await this.SeedDataAsync(dbContext);
+            var repository = new EfDeletableEntityRepository<Category>(dbContext);
+            var service = new CategoriesService(repository);
+
+            var actualResult = await service.Edit("Writing", "Edit");
+
+            Assert.Equal(1, actualResult);
+        }
+
+        [Fact]
+        public async Task EditThrowsArgumentNullExceptionIfNameIsNotValid()
+        {
+            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
+
+            await this.SeedDataAsync(dbContext);
+
+            var repository = new EfDeletableEntityRepository<Category>(dbContext);
+            var service = new CategoriesService(repository);
+
+            await Assert.ThrowsAsync<ArgumentNullException>(() => service.Edit("Wrong", "Edit"));
+        }
+
 
         private async Task SeedDataAsync(ApplicationDbContext dbContext)
         {
