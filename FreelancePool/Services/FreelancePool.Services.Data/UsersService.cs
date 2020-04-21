@@ -71,7 +71,7 @@
             return userId;
         }
 
-        public List<string> GetUsersEmailsFromString(string usersEmails)
+        public List<string> GetUsersIdsFromEmailsString(string usersEmails)
         {
             var usersIds = new List<string>();
 

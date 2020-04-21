@@ -77,7 +77,7 @@
 
             var user = await this.userManager.GetUserAsync(this.User);
 
-            var usersIds = this.usersService.GetUsersEmailsFromString(inputModel.UsersEmails);
+            var usersIds = this.usersService.GetUsersIdsFromEmailsString(inputModel.UsersEmails);
 
             await this.projectsService.CreateAsync(inputModel.Title, inputModel.Description, user.Id, inputModel.CategoriesId, usersIds);
 

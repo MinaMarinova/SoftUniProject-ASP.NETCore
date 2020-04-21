@@ -18,6 +18,8 @@
 
     public class UsersController : BaseController
     {
+        private const string EmailInUseMessage = "Email {0} is already in use!";
+
         private readonly ICategoriesService categoriesService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IUsersService usersService;
@@ -80,7 +82,7 @@
 
             if (filterUser != null)
             {
-                return this.Json($"Email {email} is already in use!");
+                return this.Json(string.Format(EmailInUseMessage, email));
             }
             else
             {

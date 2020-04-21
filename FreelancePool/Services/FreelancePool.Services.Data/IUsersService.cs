@@ -11,7 +11,7 @@
 
         string GetUserIdByEmail(string email);
 
-        List<string> GetUsersEmailsFromString(string usersEmails);
+        List<string> GetUsersIdsFromEmailsString(string usersEmails);
 
         Task ApplyAsync(string userId, int projectId);
 
