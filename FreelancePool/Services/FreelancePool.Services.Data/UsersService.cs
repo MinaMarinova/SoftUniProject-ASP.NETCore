@@ -161,19 +161,6 @@
             {
                 freelancer.Stars += starGivenOrTaken;
                 await this.userRepository.SaveChangesAsync();
-
-                if (!string.IsNullOrWhiteSpace(recommendation))
-                {
-                    var recommendationToAdd = new Recommendation
-                    {
-                        AuthorId = authorId,
-                        RecipientId = executorId,
-                        Content = recommendation,
-                    };
-
-                    await this.recommendationsRepository.AddAsync(recommendationToAdd);
-                    await this.recommendationsRepository.SaveChangesAsync();
-                }
             }
         }
 

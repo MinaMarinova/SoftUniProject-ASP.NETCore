@@ -1,6 +1,6 @@
 ﻿@model FreelancePool.Web.ViewModels.Users.UserCardViewModel
 
-<a asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="@Model.Id">
+<a asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="@Model.EncryptedId">
     <div class="text-post"><img src="@Model.PhotoUrl" alt="Alternate Text" class="img-circle" width="40" height="40" />&nbsp; @Model.UserName &nbsp; <img src="~/img/icons/star.svg" alt="" width="15" height="15" />&nbsp;@Model.Stars </div>
     <br />
 </a>

@@ -107,6 +107,7 @@
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IProjectsService, ProjectsService>();
             services.AddTransient<IMessagesService, MessagesService>();
+            services.AddTransient<IRecommendationsService, RecommendationsService>();
             services.AddTransient<AuthorizeRootUserFilterAttribute>();
 
             services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();

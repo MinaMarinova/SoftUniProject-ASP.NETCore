@@ -29,7 +29,7 @@
         {
             try
             {
-                if (await this.projectsService.Delete(inputModel.Title, inputModel.AuthorEmail) > 0)
+                if (await this.projectsService.DeleteAsync(inputModel.Title, inputModel.AuthorEmail) > 0)
                 {
                     this.TempData["Success"] = string.Format(DeleteSuccessMessage, inputModel.Title);
                 }

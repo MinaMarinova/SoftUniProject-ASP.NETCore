@@ -274,7 +274,7 @@
 
             var service = this.InitializeService(projectsRepository, dbContext);
 
-            await Assert.ThrowsAsync<ArgumentNullException>(() => service.Delete("invalidTitle", "TestUser2@user.bg"));
+            await Assert.ThrowsAsync<ArgumentNullException>(() => service.DeleteAsync("invalidTitle", "TestUser2@user.bg"));
         }
 
         [Theory]
@@ -290,7 +290,7 @@
 
             var service = this.InitializeService(projectsRepository, dbContext);
 
-            await Assert.ThrowsAsync<ArgumentNullException>(() => service.Delete("First test title", authorEmail));
+            await Assert.ThrowsAsync<ArgumentNullException>(() => service.DeleteAsync("First test title", authorEmail));
         }
 
         [Fact]
@@ -304,7 +304,7 @@
 
             var service = this.InitializeService(projectsRepository, dbContext);
 
-            await service.Delete("First test title", "TestUser2@user.bg");
+            await service.DeleteAsync("First test title", "TestUser2@user.bg");
 
             var result = projectsRepository.AllWithDeleted().Where(p => p.Title == "First test title").FirstOrDefault().IsDeleted;
 

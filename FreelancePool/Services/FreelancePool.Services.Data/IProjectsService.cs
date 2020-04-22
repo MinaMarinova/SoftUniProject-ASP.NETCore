@@ -23,6 +23,6 @@
 
         string GetTitleById(int projectId);
 
-        Task<int> Delete(string title, string authorEmail);
+        Task<int> DeleteAsync(string title, string authorEmail);
     }
 }

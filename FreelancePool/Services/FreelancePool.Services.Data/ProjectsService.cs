@@ -149,7 +149,7 @@
                 .FirstOrDefault();
         }
 
-        public async Task<int> Delete(string title, string authorEmail)
+        public async Task<int> DeleteAsync(string title, string authorEmail)
         {
             var project = this.projectsRepository.All()
                 .Where(p => p.Title == title)

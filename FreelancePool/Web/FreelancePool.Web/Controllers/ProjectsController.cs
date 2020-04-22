@@ -26,7 +26,7 @@
         private readonly ICategoriesService categoriesService;
         private readonly IUsersService usersService;
         private readonly UserManager<ApplicationUser> userManager;
-
+        private readonly IRecommendationsService recommendationsService;
         private readonly IDataProtector protector;
 
         public ProjectsController(
@@ -34,6 +34,7 @@
             ICategoriesService categoriesService,
             IUsersService usersService,
             UserManager<ApplicationUser> userManager,
+            IRecommendationsService recommendationsService,
             IDataProtectionProvider dataProtectionProvider,
             DataProtectionPurposeStrings dataProtectionPurposeStrings)
         {
@@ -41,6 +42,7 @@
             this.categoriesService = categoriesService;
             this.usersService = usersService;
             this.userManager = userManager;
+            this.recommendationsService = recommendationsService;
             this.protector = dataProtectionProvider.CreateProtector(dataProtectionPurposeStrings.EmployeeIdRouteValue);
         }
 
@@ -100,6 +102,16 @@
             foreach (var message in projectViewModel.MessagesLeft)
             {
                 message.Author.EncryptedId = this.protector.Protect(message.Author.Id);
+            }
+
+            foreach (var offeredUser in projectViewModel.Suggested)
+            {
+                offeredUser.EncryptedId = this.protector.Protect(offeredUser.Id);
+            }
+
+            foreach (var appliedUser in projectViewModel.Candidates)
+            {
+                appliedUser.EncryptedId = this.protector.Protect(appliedUser.Id);
             }
 
             return this.View(projectViewModel);
@@ -184,6 +196,8 @@
             var executorId = this.usersService.GetUserIdByEmail(viewModel.ExecutorEmail);
 
             await this.usersService.RateFreelancerAsync(authorId, executorId, viewModel.StarGivenOrTaken, viewModel.Recommendation);
+
+            await this.recommendationsService.CreateAsync(authorId, executorId, viewModel.Recommendation);
 
             await this.projectsService.CloseAsync(viewModel.Id, executorId);
 

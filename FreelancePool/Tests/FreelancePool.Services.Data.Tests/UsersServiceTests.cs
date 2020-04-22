@@ -299,23 +299,6 @@
         }
 
         [Fact]
-        public async Task RateFreelancerAsyncAddsRecommendation()
-        {
-            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
-
-            await SeedDataAsync(dbContext);
-
-            var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
-            var service = this.InitializeService(usersRepository, dbContext);
-
-            await service.RateFreelancerAsync("TestUser1", "TestUser8", -1, "Recommendation");
-
-            var user = usersRepository.All().Where(u => u.Id == "TestUser8").FirstOrDefault();
-
-            Assert.Single(user.Recommendations);
-        }
-
-        [Fact]
         public async Task GetUserByNameReturnsCorrectUser()
         {
             MapperInitializer.InitializeMapper();
