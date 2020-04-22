@@ -2,6 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
+
     using FreelancePool.Common;
     using FreelancePool.Services.Data;
     using FreelancePool.Web.Filters;
@@ -74,7 +75,7 @@
         {
             try
             {
-                string adminName = await this.usersService.RemoveAdmin(inputModel.Email, GlobalConstants.AdministratorRoleName);
+                string adminName = await this.usersService.RemoveAdminAsync(inputModel.Email, GlobalConstants.AdministratorRoleName);
                 this.TempData["Success"] = string.Format(RemoveSuccessMessage, GlobalConstants.AdministratorRoleName, adminName);
             }
             catch
@@ -95,7 +96,7 @@
         {
             try
             {
-                string freelancerName = await this.usersService.RemoveAdmin(inputModel.Email, GlobalConstants.FreelancerRoleName);
+                string freelancerName = await this.usersService.RemoveAdminAsync(inputModel.Email, GlobalConstants.FreelancerRoleName);
                 this.TempData["Success"] = string.Format(RemoveSuccessMessage, GlobalConstants.FreelancerRoleName, freelancerName);
             }
             catch
@@ -116,7 +117,7 @@
         {
             try
             {
-                string freelancerName = await this.usersService.RemoveUser(inputModel.Email);
+                string freelancerName = await this.usersService.RemoveUserAsync(inputModel.Email);
                 this.TempData["Success"] = string.Format(RemoveSuccessMessage, "user", freelancerName);
             }
             catch

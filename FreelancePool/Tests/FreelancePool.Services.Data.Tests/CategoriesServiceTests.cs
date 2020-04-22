@@ -42,28 +42,6 @@
         }
 
         [Fact]
-        public async Task GetAllReturnsAllEntities()
-        {
-            MapperInitializer.InitializeMapper();
-            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
-
-            await this.SeedDataAsync(dbContext);
-
-            var repository = new EfDeletableEntityRepository<Category>(dbContext);
-            var service = new CategoriesService(repository);
-
-            var count = 0;
-            IEnumerable<CategoryListViewModel> allCategories = service.GetAll<CategoryListViewModel>();
-
-            foreach (var category in allCategories)
-            {
-                count++;
-            }
-
-            Assert.Equal(4, count);
-        }
-
-        [Fact]
         public async Task AddShouldIncreaseTheNumberOfEntities()
         {
             var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
@@ -148,7 +126,6 @@
             await service.Delete("Writing");
 
             Assert.Equal(count, repository.All().Count());
-
         }
 
         [Fact]
@@ -240,7 +217,6 @@
 
             await Assert.ThrowsAsync<ArgumentNullException>(() => service.Edit("Wrong", "Edit"));
         }
-
 
         private async Task SeedDataAsync(ApplicationDbContext dbContext)
         {

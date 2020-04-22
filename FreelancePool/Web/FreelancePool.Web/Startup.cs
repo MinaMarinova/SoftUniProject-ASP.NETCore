@@ -1,7 +1,7 @@
 ﻿namespace FreelancePool.Web
 {
     using System.Reflection;
-    using System.Threading.Tasks;
+
     using CloudinaryDotNet;
     using FreelancePool.Data;
     using FreelancePool.Data.Common;
@@ -102,7 +102,6 @@
 
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
-            services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<ICloudinaryService, CloudinaryService>();
             services.AddTransient<IUsersService, UsersService>();
             services.AddTransient<ICategoriesService, CategoriesService>();

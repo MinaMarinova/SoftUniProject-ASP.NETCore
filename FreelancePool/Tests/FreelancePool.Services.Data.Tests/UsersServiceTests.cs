@@ -1,5 +1,6 @@
 ﻿namespace FreelancePool.Services.Data.Tests
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -182,7 +183,6 @@
 
             await SeedDataAsync(dbContext);
 
-
             var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
             var service = this.InitializeService(usersRepository, dbContext);
 
@@ -274,9 +274,9 @@
             var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
             var service = this.InitializeService(usersRepository, dbContext);
 
-            await service.RateFreelancerAsync("TestUser1", "TestUser2", 1, " ");
+            await service.RateFreelancerAsync("TestUser1", "TestUser8", 1, " ");
 
-            var user = usersRepository.All().Where(u => u.Id == "TestUser2").FirstOrDefault();
+            var user = usersRepository.All().Where(u => u.Id == "TestUser8").FirstOrDefault();
 
             Assert.Equal(1, user.Stars);
         }
@@ -291,9 +291,9 @@
             var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
             var service = this.InitializeService(usersRepository, dbContext);
 
-            await service.RateFreelancerAsync("TestUser1", "TestUser2", -1, " ");
+            await service.RateFreelancerAsync("TestUser1", "TestUser8", -1, " ");
 
-            var user = usersRepository.All().Where(u => u.Id == "TestUser2").FirstOrDefault();
+            var user = usersRepository.All().Where(u => u.Id == "TestUser8").FirstOrDefault();
 
             Assert.Equal(-1, user.Stars);
         }
@@ -308,9 +308,9 @@
             var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
             var service = this.InitializeService(usersRepository, dbContext);
 
-            await service.RateFreelancerAsync("TestUser1", "TestUser2", -1, "Recommendation");
+            await service.RateFreelancerAsync("TestUser1", "TestUser8", -1, "Recommendation");
 
-            var user = usersRepository.All().Where(u => u.Id == "TestUser2").FirstOrDefault();
+            var user = usersRepository.All().Where(u => u.Id == "TestUser8").FirstOrDefault();
 
             Assert.Single(user.Recommendations);
         }
@@ -334,7 +334,7 @@
         [Theory]
         [InlineData(" ")]
         [InlineData(null)]
-        [InlineData("invalidName")]
+        [InlineData("Invalidname")]
         public async Task GetUserByNameReturnsNullIfNameIsInvalid(string name)
         {
             MapperInitializer.InitializeMapper();
@@ -348,30 +348,251 @@
             Assert.Null(service.GetUserByName<FreelancerViewModel>(name));
         }
 
-        private UsersService InitializeService(EfDeletableEntityRepository<ApplicationUser> usersRepository, ApplicationDbContext dbContext)
+        [Fact]
+        public async Task GetAllReturnsAllUsersAssignedToCategory()
         {
-            var userCandidateProjectsRepository = new EfRepository<UserCandidateProject>(dbContext);
-            var categoryUsersRepository = new EfRepository<CategoryUser>(dbContext);
-            var recommendationsRepository = new EfDeletableEntityRepository<Recommendation>(dbContext);
-            var userManager = this.GetUserManagerMock();
+            MapperInitializer.InitializeMapper();
 
-            var service = new UsersService(usersRepository, userCandidateProjectsRepository, categoryUsersRepository, recommendationsRepository, userManager.Object);
+            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
 
-            return service;
+            await SeedDataAsync(dbContext);
+
+            var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
+            var service = this.InitializeService(usersRepository, dbContext);
+
+            var expectedResult = usersRepository.All().Where(u => u.UserCategories.Any()).ToList();
+
+            var actualResult = service.GetAll<FreelancerViewModel>();
+
+            Assert.Equal(expectedResult.Count(), actualResult.Count());
         }
 
-        private Mock<UserManager<ApplicationUser>> GetUserManagerMock()
+        [Fact]
+        public async Task GetTopGetSixFreelancers()
         {
-            var userStoreMock = new Mock<IUserStore<ApplicationUser>>();
-            var userManagerMock = new Mock<UserManager<ApplicationUser>>(
-                userStoreMock.Object, null, null, null, null, null, null, null, null);
-            userManagerMock
-                .Setup(x => x.AddToRoleAsync(It.IsAny<ApplicationUser>(), GlobalConstants.FreelancerRoleName))
-                .ReturnsAsync(IdentityResult.Success);
-            userManagerMock.Setup(x => x.IsInRoleAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
-                .ReturnsAsync(true);
+            MapperInitializer.InitializeMapper();
 
-            return userManagerMock;
+            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
+
+            await SeedDataAsync(dbContext);
+
+            var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
+            var service = this.InitializeService(usersRepository, dbContext);
+
+            Assert.Equal(6, service.GetTop<FreelancerViewModel>().Count());
+        }
+
+        [Fact]
+        public async Task GetTopGetFreelancersWithMaximumStars()
+        {
+            MapperInitializer.InitializeMapper();
+
+            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
+
+            await SeedDataAsync(dbContext);
+
+            var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
+            var service = this.InitializeService(usersRepository, dbContext);
+
+            var expectedResult = new List<string> { "TestUser2", "TestUser4" };
+            var actualResult = service.GetTop<FreelancerViewModel>().Take(2).Select(f => f.Id).ToList();
+
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Fact]
+        public async Task GetRecentReturnsThreeFreelancers()
+        {
+            MapperInitializer.InitializeMapper();
+
+            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
+
+            await SeedDataAsync(dbContext);
+
+            var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
+            var service = this.InitializeService(usersRepository, dbContext);
+
+            Assert.Equal(3, service.GetRecent<FreelancerViewModel>().Count());
+        }
+
+        [Fact]
+        public async Task GetRecentReturnsRecentlyJoinedFreelancers()
+        {
+            MapperInitializer.InitializeMapper();
+
+            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
+
+            await SeedDataAsync(dbContext);
+
+            var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
+            var service = this.InitializeService(usersRepository, dbContext);
+
+            var expectedResult = usersRepository.All().OrderByDescending(f => f.CreatedOn).Select(x => x.Id).ToList().Take(3);
+
+            var actualResult = service.GetRecent<FreelancerViewModel>().Select(u => u.Id).ToList();
+
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Fact]
+        public async Task GetUserEmailByIdReturnsCorrectData()
+        {
+            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
+
+            await SeedDataAsync(dbContext);
+
+            var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
+            var service = this.InitializeService(usersRepository, dbContext);
+
+            Assert.Equal("TestUser1@user.bg", service.GetUserEmailById("TestUser1"));
+        }
+
+        [Fact]
+        public async Task GetUserEmailByIdReturnsNullIfIdIsInvalid()
+        {
+            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
+
+            await SeedDataAsync(dbContext);
+
+            var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
+            var service = this.InitializeService(usersRepository, dbContext);
+
+            Assert.Null(service.GetUserEmailById("invalidId"));
+        }
+
+        [Fact]
+        public async Task AddAdminThrowsArgumentExceptionIfUserNameIsInUse()
+        {
+            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
+
+            await SeedDataAsync(dbContext);
+
+            var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
+            var service = this.InitializeService(usersRepository, dbContext);
+
+            await Assert.ThrowsAsync<ArgumentException>(() => service.AddAdmin("TestUser1", "someEmail", "password"));
+        }
+
+        [Fact]
+        public async Task AddAdminThrowsArgumentExceptionIfEmailIsInUse()
+        {
+            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
+
+            await SeedDataAsync(dbContext);
+
+            var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
+            var service = this.InitializeService(usersRepository, dbContext);
+
+            await Assert.ThrowsAsync<ArgumentException>(() => service.AddAdmin("User", "TestUser1@user.bg", "password"));
+        }
+
+        [Fact]
+        public async Task AddAdminCreatesNewUser()
+        {
+            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
+
+            await SeedDataAsync(dbContext);
+
+            var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
+            var service = this.InitializeService(usersRepository, dbContext);
+
+            Assert.True(await service.AddAdmin("New user", "user@user.bg", "password"));
+        }
+
+        [Fact]
+        public async Task AddAdminAddsTheNewUserToAdminRole()
+        {
+            var userManager = this.GetUserManagerMock();
+
+            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
+
+            await SeedDataAsync(dbContext);
+
+            var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
+            var service = this.InitializeService(usersRepository, dbContext);
+
+            await service.AddAdmin("New user", "user@user.bg", "password");
+
+            var user = usersRepository.All().Where(u => u.UserName == "New user").FirstOrDefault();
+
+            var result = await userManager.Object.IsInRoleAsync(user, GlobalConstants.AdministratorRoleName);
+
+            Assert.True(result);
+        }
+
+        [Fact]
+        public async Task RemoveAdminAsyncThrowsArgumentNullExceptionIfEmailIsInvalid()
+        {
+            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
+
+            await SeedDataAsync(dbContext);
+
+            var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
+            var service = this.InitializeService(usersRepository, dbContext);
+
+            await Assert.ThrowsAsync<ArgumentNullException>(() => service.RemoveAdminAsync("wrongUser", GlobalConstants.AdministratorRoleName));
+        }
+
+        [Fact]
+        public async Task RemoveAdminAsyncThrowsArgumentNullExceptionIfUserIsNotAdmin()
+        {
+            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
+
+            await SeedDataAsync(dbContext);
+
+            var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
+            var service = this.InitializeService(usersRepository, dbContext);
+
+            var user = usersRepository.All().Where(u => u.UserName == "TestUser5").FirstOrDefault();
+
+            await Assert.ThrowsAsync<ArgumentNullException>(() => service.RemoveAdminAsync("TestUser5@user.bg", GlobalConstants.AdministratorRoleName));
+        }
+
+        [Fact]
+        public async Task RemoveUserAsyncThrowsArgumentNullExceptionIfEmailIsInvalid()
+        {
+            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
+
+            await SeedDataAsync(dbContext);
+
+            var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
+            var service = this.InitializeService(usersRepository, dbContext);
+
+            await Assert.ThrowsAsync<ArgumentNullException>(() => service.RemoveUserAsync("wrongUser"));
+        }
+
+        [Fact]
+        public async Task RemoveUserAsyncSetsIsDeletedUserToTrue()
+        {
+            MapperInitializer.InitializeMapper();
+
+            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
+
+            await SeedDataAsync(dbContext);
+
+            var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
+            var service = this.InitializeService(usersRepository, dbContext);
+
+            await service.RemoveUserAsync("TestUser4@user.bg");
+
+            var result = usersRepository.All().Where(u => u.UserName == "UserTest4@user.bg").FirstOrDefault();
+
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task RemoveUserAsyncReturnsCorrectUserName()
+        {
+            MapperInitializer.InitializeMapper();
+
+            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
+
+            await SeedDataAsync(dbContext);
+
+            var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
+            var service = this.InitializeService(usersRepository, dbContext);
+
+            Assert.Equal("TestUser4", await service.RemoveUserAsync("TestUser4@user.bg"));
         }
 
         private static async Task SeedDataAsync(ApplicationDbContext dbContext)
@@ -409,6 +630,8 @@
                 Id = "TestUser1",
                 UserName = "TestUser1",
                 Email = "TestUser1@user.bg",
+                Stars = 1,
+                CreatedOn = DateTime.UtcNow.AddSeconds(2),
             });
 
             await AddUserToCategoriesAsync(new int[] { 1, 8 }, "TestUser1", dbContext);
@@ -418,6 +641,8 @@
                 Id = "TestUser2",
                 UserName = "TestUser2",
                 Email = "TestUser2@user.bg",
+                Stars = 6,
+                CreatedOn = DateTime.UtcNow.AddSeconds(10),
             });
 
             await AddUserToCategoriesAsync(new int[] { 1, 2 }, "TestUser2", dbContext);
@@ -427,6 +652,8 @@
                 Id = "TestUser3",
                 UserName = "TestUser3",
                 Email = "TestUser3@user.bg",
+                Stars = 3,
+                CreatedOn = DateTime.UtcNow.AddSeconds(5),
             });
 
             await AddUserToCategoriesAsync(new int[] { 5, 8 }, "TestUser3", dbContext);
@@ -436,6 +663,8 @@
                 Id = "TestUser4",
                 UserName = "TestUser4",
                 Email = "TestUser4@user.bg",
+                Stars = 4,
+                CreatedOn = DateTime.UtcNow.AddSeconds(1),
             });
 
             await AddUserToCategoriesAsync(new int[] { 5 }, "TestUser4", dbContext);
@@ -506,7 +735,7 @@
 
             await dbContext.SaveChangesAsync();
 
-            //Seeding some projects
+            // Seeding some projects
             dbContext.Projects.Add(new Project
             {
                 Id = 1,
@@ -541,6 +770,35 @@
                 dbContext.CategoriesUsers.Add(categoryUser);
                 await dbContext.SaveChangesAsync();
             }
+        }
+
+        private UsersService InitializeService(EfDeletableEntityRepository<ApplicationUser> usersRepository, ApplicationDbContext dbContext)
+        {
+            var userCandidateProjectsRepository = new EfRepository<UserCandidateProject>(dbContext);
+            var categoryUsersRepository = new EfRepository<CategoryUser>(dbContext);
+            var recommendationsRepository = new EfDeletableEntityRepository<Recommendation>(dbContext);
+            var userManager = this.GetUserManagerMock();
+
+            var service = new UsersService(usersRepository, userCandidateProjectsRepository, categoryUsersRepository, recommendationsRepository, userManager.Object);
+
+            return service;
+        }
+
+        private Mock<UserManager<ApplicationUser>> GetUserManagerMock()
+        {
+            var userStoreMock = new Mock<IUserStore<ApplicationUser>>();
+            var userManagerMock = new Mock<UserManager<ApplicationUser>>(
+                userStoreMock.Object, null, null, null, null, null, null, null, null);
+            userManagerMock
+                .Setup(x => x.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Success);
+            userManagerMock
+                .Setup(x => x.AddToRoleAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Success);
+            userManagerMock.Setup(x => x.IsInRoleAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+                .ReturnsAsync(true);
+
+            return userManagerMock;
         }
     }
 }

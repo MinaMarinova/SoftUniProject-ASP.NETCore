@@ -55,6 +55,7 @@
 
             viewModel.Freelancers.Select(f =>
             {
+                f.Categories = f.Categories.Take(3);
                 f.EncryptedId = this.protector.Protect(f.Id);
                 return f;
             }).ToList();

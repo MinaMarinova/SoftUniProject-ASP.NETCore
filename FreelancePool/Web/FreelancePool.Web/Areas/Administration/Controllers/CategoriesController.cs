@@ -77,7 +77,7 @@
                     this.TempData["Error"] = string.Format(DeleteErrorMessage, inputModel.Name);
                 }
             }
-            catch (ArgumentNullException ex)
+            catch (ArgumentNullException)
             {
                 this.TempData["Error"] = string.Format(CategoryNotFoundMessage, inputModel.Name);
             }
@@ -108,7 +108,6 @@
 
             try
             {
-
                 if (await this.categoriesService.Edit(viewModel.CurrentName, viewModel.Name) > 0)
                 {
                     this.TempData["Success"] = string.Format(EditSuccessMessage, viewModel.Name);
@@ -118,7 +117,7 @@
                     this.TempData["Error"] = string.Format(EditErrorMessage, viewModel.Name);
                 }
             }
-            catch (ArgumentNullException ex)
+            catch (ArgumentNullException)
             {
                 this.TempData["Error"] = string.Format(CategoryNotFoundMessage, viewModel.Name);
             }

@@ -25,7 +25,6 @@
         private readonly IDeletableEntityRepository<Recommendation> recommendationsRepository;
         private readonly UserManager<ApplicationUser> userManager;
 
-
         public UsersService(
             IDeletableEntityRepository<ApplicationUser> userRepository,
             IRepository<UserCandidateProject> userCandidateProjectsRepository,
@@ -253,10 +252,10 @@
             return result.Succeeded;
         }
 
-        public async Task<string> RemoveAdmin(string email, string role)
+        public async Task<string> RemoveAdminAsync(string email, string role)
         {
             var user = this.userRepository.All()
-                .Where(u => u.Email == email && u.IsDeleted == false)
+                .Where(u => u.Email == email)
                 .FirstOrDefault();
 
             var users = await this.userManager.GetUsersInRoleAsync(role);
@@ -272,7 +271,7 @@
             return user.UserName;
         }
 
-        public async Task<string> RemoveUser(string email)
+        public async Task<string> RemoveUserAsync(string email)
         {
             var user = this.userRepository.All()
                 .Where(u => u.Email == email && u.IsDeleted == false)

@@ -29,7 +29,6 @@
                               new CategoriesSeeder(),
                               new UsersSeeder(),
                               new ProjectsSeeder(),
-                              new SettingsSeeder(),
                           };
 
             foreach (var seeder in seeders)

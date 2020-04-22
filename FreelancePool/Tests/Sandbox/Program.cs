@@ -5,17 +5,14 @@
     using System.IO;
     using System.Threading.Tasks;
 
+    using CommandLine;
     using FreelancePool.Data;
     using FreelancePool.Data.Common;
     using FreelancePool.Data.Common.Repositories;
     using FreelancePool.Data.Models;
     using FreelancePool.Data.Repositories;
     using FreelancePool.Data.Seeding;
-    using FreelancePool.Services.Data;
     using FreelancePool.Services.Messaging;
-
-    using CommandLine;
-
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -52,9 +49,8 @@
         {
             var sw = Stopwatch.StartNew();
 
-            var settingsService = serviceProvider.GetService<ISettingsService>();
-            Console.WriteLine($"Count of settings: {settingsService.GetCount()}");
-
+            // var settingsService = serviceProvider.GetService<ISettingsService>();
+            // Console.WriteLine($"Count of settings: {settingsService.GetCount()}");
             Console.WriteLine(sw.Elapsed);
             return await Task.FromResult(0);
         }
@@ -69,8 +65,8 @@
             services.AddSingleton<IConfiguration>(configuration);
 
             services.AddDbContext<ApplicationDbContext>(
-                options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
-                    .UseLoggerFactory(new LoggerFactory()));
+                    options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
+                        .UseLoggerFactory(new LoggerFactory()));
 
             services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
                 .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
@@ -81,7 +77,8 @@
 
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
-            services.AddTransient<ISettingsService, SettingsService>();
+
+            // services.AddTransient<ISettingsService, SettingsService>();
         }
     }
 }
