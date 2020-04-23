@@ -13,13 +13,11 @@
 
         List<string> GetUsersIdsFromEmailsString(string usersEmails);
 
-        Task ApplyAsync(string userId, int projectId);
-
         T GetUserById<T>(string id);
 
         T GetUserByName<T>(string userName);
 
-        Task CreateAProfileAsync(string userId, string userName, string photoUrl, string email, string summary, string phoneNumber, ICollection<int> categoriesId);
+        Task CreateAProfileAsync(string userId, string userName, string photoUrl, string email, string summary, string phoneNumber);
 
         Task RateFreelancerAsync(string authorId, string executorId, int starGivenOrTaken, string recommendation);
 

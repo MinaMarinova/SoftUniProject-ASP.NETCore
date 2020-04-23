@@ -88,10 +88,7 @@
                                 <input class="" name="CategoriesId" type="checkbox" value="@category.Id" /> @category.Name<br />
                             }
                             <hr />
-                            @if (!this.User.IsInRole(GlobalConstants.FreelancerRoleName))
-                            {
-                                <span asp-validation-for="CategoriesId" class="text-danger"></span>
-                            }
+                            <span asp-validation-for="CategoriesId" class="text-danger"></span>
                         </div>
                         <div class="pull-right">
                             <input type="submit" class="btn btn-primary" />

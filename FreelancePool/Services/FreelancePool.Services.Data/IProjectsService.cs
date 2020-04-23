@@ -9,7 +9,7 @@
     {
         IEnumerable<T> GetLastProjects<T>(ApplicationUser user);
 
-        Task<int> CreateAsync(string title, string description, string authorId, ICollection<int> categoriesId, IEnumerable<string> usersIds);
+        Task<int> CreateAsync(string title, string description, string authorId);
 
         T GetById<T>(int id);
 

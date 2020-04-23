@@ -17,17 +17,11 @@
         private const string AuthorEmailNotMatch = "The author's email of the project is not {0}";
 
         private readonly IDeletableEntityRepository<Project> projectsRepository;
-        private readonly IRepository<CategoryProject> projectCategoryRepository;
-        private readonly IRepository<ProjectOfferUser> projectOfferUserRepository;
 
         public ProjectsService(
-            IDeletableEntityRepository<Project> projectsRepository,
-            IRepository<CategoryProject> projectCategoryRepository,
-            IRepository<ProjectOfferUser> projectOfferUserRepository)
+            IDeletableEntityRepository<Project> projectsRepository)
         {
             this.projectsRepository = projectsRepository;
-            this.projectCategoryRepository = projectCategoryRepository;
-            this.projectOfferUserRepository = projectOfferUserRepository;
         }
 
         public async Task CloseAsync(int id, string executorId)
@@ -45,7 +39,7 @@
             }
         }
 
-        public async Task<int> CreateAsync(string title, string description, string authorId, ICollection<int> categoriesId, IEnumerable<string> usersIds)
+        public async Task<int> CreateAsync(string title, string description, string authorId)
         {
             var project = new Project
             {
@@ -57,33 +51,6 @@
 
             await this.projectsRepository.AddAsync(project);
             await this.projectsRepository.SaveChangesAsync();
-
-            foreach (var categoryId in categoriesId)
-            {
-                var projectCategory = new CategoryProject
-                {
-                    Project = project,
-                    CategoryId = categoryId,
-                };
-
-                await this.projectCategoryRepository.AddAsync(projectCategory);
-                await this.projectCategoryRepository.SaveChangesAsync();
-            }
-
-            if (usersIds.Count() != 0)
-            {
-                foreach (var userId in usersIds)
-                {
-                    var projectOfferUser = new ProjectOfferUser
-                    {
-                        Project = project,
-                        UserId = userId,
-                    };
-
-                    await this.projectOfferUserRepository.AddAsync(projectOfferUser);
-                    await this.projectOfferUserRepository.SaveChangesAsync();
-                }
-            }
 
             return project.Id;
         }

@@ -7,18 +7,7 @@
 <div class="container">
     <br />
     <br />
-    @if (this.TempData["Success"] != null)
-    {
-        <div class="alert alert-success text-center">
-            <strong>@this.TempData["Success"]</strong>
-        </div>
-    }
-    @if (this.TempData["Error"] != null)
-    {
-        <div class="alert alert-danger text-center">
-            <strong>@this.TempData["Error"]</strong>
-        </div>
-    }
+    <partial name="_TempDataPartial" />
     <br />
     <div class="row text-center">
         <div class="col-md-4">

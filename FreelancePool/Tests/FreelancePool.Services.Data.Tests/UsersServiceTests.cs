@@ -138,25 +138,6 @@
         }
 
         [Fact]
-        public async Task ApplyAsyncAddUserToApliedFreelancers()
-        {
-            MapperInitializer.InitializeMapper();
-            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
-
-            await SeedDataAsync(dbContext);
-
-            var userCandidateProjectsRepository = new EfRepository<UserCandidateProject>(dbContext);
-            var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
-            var service = this.InitializeService(usersRepository, dbContext);
-
-            await service.ApplyAsync("TestUser1", 1);
-
-            var actualResult = userCandidateProjectsRepository.All().Where(uc => uc.ProjectId == 1).Select(up => up.UserId).FirstOrDefault();
-
-            Assert.Equal("TestUser1", actualResult);
-        }
-
-        [Fact]
         public async Task GetUserByIdReturnsCorrectUser()
         {
             MapperInitializer.InitializeMapper();
@@ -203,9 +184,7 @@
             var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
             var service = this.InitializeService(usersRepository, dbContext);
 
-            List<int> categoriesIds = new List<int> { 3 };
-
-            await service.CreateAProfileAsync("TestUser9", "TestUser1", "photo", "TestUser9@user.bg", "some summary", "phone", categoriesIds);
+            await service.CreateAProfileAsync("TestUser9", "TestUser1", "photo", "TestUser9@user.bg", "some summary", "phone");
 
             var user = usersRepository.All().Where(u => u.UserName == "TestUser9").FirstOrDefault();
 
@@ -228,9 +207,7 @@
             var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
             var service = this.InitializeService(usersRepository, dbContext);
 
-            List<int> categoriesIds = new List<int> { 3 };
-
-            await service.CreateAProfileAsync("TestUser1", "TestChange", "photo", "TestChange@user.bg", "some summary", "phone", categoriesIds);
+            await service.CreateAProfileAsync("TestUser1", "TestChange", "photo", "TestChange@user.bg", "some summary", "phone");
 
             var user = usersRepository.All().Where(u => u.UserName == "TestChange").FirstOrDefault();
 
@@ -239,29 +216,6 @@
             var actualResult = new List<string>(new string[] { user.UserName, user.PhotoUrl, user.Email, user.Summary, user.PhoneNumber });
 
             Assert.Equal(expextedResult, actualResult);
-        }
-
-        [Fact]
-        public async Task CreateAProfileAddCategoriesToUser()
-        {
-            MapperInitializer.InitializeMapper();
-
-            var userManager = this.GetUserManagerMock();
-
-            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
-
-            await SeedDataAsync(dbContext);
-
-            var usersRepository = new EfDeletableEntityRepository<ApplicationUser>(dbContext);
-            var service = this.InitializeService(usersRepository, dbContext);
-
-            List<int> categoriesIds = new List<int> { 3 };
-
-            await service.CreateAProfileAsync("TestUser1", "TestChange", "photo", "TestChange@user.bg", "some summary", "phone", categoriesIds);
-
-            var user = usersRepository.All().Where(u => u.UserName == "TestChange").FirstOrDefault();
-
-            Assert.Contains(user.UserCategories, uc => uc.CategoryId == 3);
         }
 
         [Fact]
@@ -757,12 +711,9 @@
 
         private UsersService InitializeService(EfDeletableEntityRepository<ApplicationUser> usersRepository, ApplicationDbContext dbContext)
         {
-            var userCandidateProjectsRepository = new EfRepository<UserCandidateProject>(dbContext);
-            var categoryUsersRepository = new EfRepository<CategoryUser>(dbContext);
-            var recommendationsRepository = new EfDeletableEntityRepository<Recommendation>(dbContext);
             var userManager = this.GetUserManagerMock();
 
-            var service = new UsersService(usersRepository, userCandidateProjectsRepository, categoryUsersRepository, recommendationsRepository, userManager.Object);
+            var service = new UsersService(usersRepository, userManager.Object);
 
             return service;
         }

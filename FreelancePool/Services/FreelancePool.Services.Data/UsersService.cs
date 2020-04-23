@@ -20,22 +20,13 @@
         private const string EmailInUseErrorMessage = "The email is already in use! Please choose another one.";
 
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
-        private readonly IRepository<UserCandidateProject> userCandidateProjectsRepository;
-        private readonly IRepository<CategoryUser> categoryUsersRepository;
-        private readonly IDeletableEntityRepository<Recommendation> recommendationsRepository;
         private readonly UserManager<ApplicationUser> userManager;
 
         public UsersService(
             IDeletableEntityRepository<ApplicationUser> userRepository,
-            IRepository<UserCandidateProject> userCandidateProjectsRepository,
-            IRepository<CategoryUser> categoryUsersRepository,
-            IDeletableEntityRepository<Recommendation> recommendationsRepository,
             UserManager<ApplicationUser> userManager)
         {
             this.userRepository = userRepository;
-            this.userCandidateProjectsRepository = userCandidateProjectsRepository;
-            this.categoryUsersRepository = categoryUsersRepository;
-            this.recommendationsRepository = recommendationsRepository;
             this.userManager = userManager;
         }
 
@@ -94,18 +85,6 @@
             return usersIds;
         }
 
-        public async Task ApplyAsync(string userId, int projectId)
-        {
-            var userCandidateProject = new UserCandidateProject
-            {
-                UserId = userId,
-                ProjectId = projectId,
-            };
-
-            await this.userCandidateProjectsRepository.AddAsync(userCandidateProject);
-            await this.userCandidateProjectsRepository.SaveChangesAsync();
-        }
-
         public T GetUserById<T>(string id)
         {
             var user = this.userRepository.All()
@@ -116,7 +95,7 @@
             return user;
         }
 
-        public async Task CreateAProfileAsync(string userId, string userName, string photoUrl, string email, string summary, string phoneNumber, ICollection<int> categoriesId)
+        public async Task CreateAProfileAsync(string userId, string userName, string photoUrl, string email, string summary, string phoneNumber)
         {
             var user = this.userRepository.All()
                 .Where(u => u.Id == userId)
@@ -137,18 +116,6 @@
             await this.userManager.AddToRoleAsync(user, GlobalConstants.FreelancerRoleName);
 
             await this.userRepository.SaveChangesAsync();
-
-            foreach (var categoryId in categoriesId)
-            {
-                var categoryUser = new CategoryUser
-                {
-                    CategoryId = categoryId,
-                    UserId = userId,
-                };
-
-                await this.categoryUsersRepository.AddAsync(categoryUser);
-                await this.categoryUsersRepository.SaveChangesAsync();
-            }
         }
 
         public async Task RateFreelancerAsync(string authorId, string executorId, int starGivenOrTaken, string recommendation)

@@ -108,6 +108,10 @@
             services.AddTransient<IProjectsService, ProjectsService>();
             services.AddTransient<IMessagesService, MessagesService>();
             services.AddTransient<IRecommendationsService, RecommendationsService>();
+            services.AddTransient<IUserCandidateProjectsService, UserCandidateProjectsService>();
+            services.AddTransient<ICategoryProjectsService, CategoryProjectsService>();
+            services.AddTransient<IProjectOfferUsersService, ProjectOfferUsersService>();
+            services.AddTransient<ICategoryUsersService, CategoryUsersService>();
             services.AddTransient<AuthorizeRootUserFilterAttribute>();
 
             services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();

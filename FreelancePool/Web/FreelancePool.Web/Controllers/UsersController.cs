@@ -23,6 +23,7 @@
         private readonly ICategoriesService categoriesService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IUsersService usersService;
+        private readonly ICategoryUsersService categoryUsersServices;
         private readonly ICloudinaryService cloudinaryService;
 
         private readonly IDataProtector protector;
@@ -31,6 +32,7 @@
             ICategoriesService categoriesService,
             UserManager<ApplicationUser> userManager,
             IUsersService usersService,
+            ICategoryUsersService categoryUsersServices,
             ICloudinaryService cloudinaryService,
             IDataProtectionProvider dataProtectionProvider,
             DataProtectionPurposeStrings dataProtectionPurposeStrings)
@@ -38,6 +40,7 @@
             this.categoriesService = categoriesService;
             this.userManager = userManager;
             this.usersService = usersService;
+            this.categoryUsersServices = categoryUsersServices;
             this.cloudinaryService = cloudinaryService;
             this.protector = dataProtectionProvider.CreateProtector(dataProtectionPurposeStrings.EmployeeIdRouteValue);
         }
@@ -116,7 +119,9 @@
                 inputModel.PhotoUrl = await this.cloudinaryService.UploadPhotoAsync(inputModel.NewPhoto, "User", "Users");
             }
 
-            await this.usersService.CreateAProfileAsync(userId, inputModel.UserName, inputModel.PhotoUrl, inputModel.Email, inputModel.Summary, inputModel.PhoneNumber, inputModel.CategoriesId);
+            await this.usersService.CreateAProfileAsync(userId, inputModel.UserName, inputModel.PhotoUrl, inputModel.Email, inputModel.Summary, inputModel.PhoneNumber);
+
+            await this.categoryUsersServices.CreateAsync(userId, inputModel.CategoriesId);
 
             return this.RedirectToAction(nameof(this.Profile), new { id = userId });
         }

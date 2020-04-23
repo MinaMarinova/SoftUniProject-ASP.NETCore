@@ -59,30 +59,11 @@
             var projectsRepository = new EfDeletableEntityRepository<Project>(dbContext);
             var service = this.InitializeService(projectsRepository, dbContext);
 
-            var actualResult = await service.CreateAsync("Title", "description", "authorId", new List<int> { 1, 2 }, new List<string> { "TestUser1", "TestUser2" });
+            var actualResult = await service.CreateAsync("Title", "description", "authorId");
 
             var expectedResult = projectsRepository.All().Where(p => p.Title == "Title").Select(p => p.Id).FirstOrDefault();
 
             Assert.Equal(expectedResult, actualResult);
-        }
-
-        [Fact]
-        public async Task CreateAsyncSetsProjectToCategories()
-        {
-            var dbContext = ApplicationDbContextInMemoryFactory.InitializeContext();
-
-            await SeedDataAsync(dbContext);
-
-            var projectsRepository = new EfDeletableEntityRepository<Project>(dbContext);
-            var service = this.InitializeService(projectsRepository, dbContext);
-
-            var categoriesIds = new List<int> { 1, 2 };
-
-            await service.CreateAsync("Title", "description", "authorId", categoriesIds, new List<string> { "TestUser1", "TestUser2" });
-
-            var actualResult = projectsRepository.All().Where(p => p.Title == "Title").Select(p => p.ProjectCategories.Select(pc => pc.CategoryId)).FirstOrDefault();
-
-            Assert.Equal(categoriesIds, actualResult);
         }
 
         [Fact]
@@ -468,7 +449,7 @@
             var projectCategoryRepository = new EfRepository<CategoryProject>(dbContext);
             var projectOfferUserRepository = new EfRepository<ProjectOfferUser>(dbContext);
 
-            var service = new ProjectsService(projectsRepository, projectCategoryRepository, projectOfferUserRepository);
+            var service = new ProjectsService(projectsRepository);
 
             return service;
         }

@@ -27,6 +27,9 @@
         private readonly IUsersService usersService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IRecommendationsService recommendationsService;
+        private readonly IUserCandidateProjectsService userCandidateProjectsServices;
+        private readonly ICategoryProjectsService categoryProjectsServices;
+        private readonly IProjectOfferUsersService projectOfferUsersServices;
         private readonly IDataProtector protector;
 
         public ProjectsController(
@@ -35,6 +38,9 @@
             IUsersService usersService,
             UserManager<ApplicationUser> userManager,
             IRecommendationsService recommendationsService,
+            IUserCandidateProjectsService userCandidateProjectsServices,
+            ICategoryProjectsService categoryProjectsServices,
+            IProjectOfferUsersService projectOfferUsersServices,
             IDataProtectionProvider dataProtectionProvider,
             DataProtectionPurposeStrings dataProtectionPurposeStrings)
         {
@@ -43,6 +49,9 @@
             this.usersService = usersService;
             this.userManager = userManager;
             this.recommendationsService = recommendationsService;
+            this.userCandidateProjectsServices = userCandidateProjectsServices;
+            this.categoryProjectsServices = categoryProjectsServices;
+            this.projectOfferUsersServices = projectOfferUsersServices;
             this.protector = dataProtectionProvider.CreateProtector(dataProtectionPurposeStrings.EmployeeIdRouteValue);
         }
 
@@ -81,7 +90,14 @@
 
             var usersIds = this.usersService.GetUsersIdsFromEmailsString(inputModel.UsersEmails);
 
-            await this.projectsService.CreateAsync(inputModel.Title, inputModel.Description, user.Id, inputModel.CategoriesId, usersIds);
+            var projectId = await this.projectsService.CreateAsync(inputModel.Title, inputModel.Description, user.Id);
+
+            await this.categoryProjectsServices.CreateAsync(projectId, inputModel.CategoriesId);
+
+            if (usersIds.Count != 0)
+            {
+                await this.projectOfferUsersServices.CreateAsync(projectId, usersIds);
+            }
 
             this.TempData["SuccessPost"] = string.Format(PostSuccessMessage, inputModel.Title);
 
@@ -130,7 +146,7 @@
 
             var userId = this.userManager.GetUserId(this.User);
 
-            await this.usersService.ApplyAsync(userId, projectId);
+            await this.userCandidateProjectsServices.ApplyAsync(userId, projectId);
             var projectTitle = this.projectsService.GetTitleById(projectId);
 
             this.TempData["SuccessApplied"] = string.Format(ApplySuccessMessage, projectTitle);
@@ -194,6 +210,8 @@
             }
 
             var executorId = this.usersService.GetUserIdByEmail(viewModel.ExecutorEmail);
+
+            this.TempData["Error"] = null;
 
             await this.usersService.RateFreelancerAsync(authorId, executorId, viewModel.StarGivenOrTaken, viewModel.Recommendation);
 

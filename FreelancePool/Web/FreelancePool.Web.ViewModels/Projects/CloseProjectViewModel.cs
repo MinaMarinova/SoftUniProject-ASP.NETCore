@@ -1,6 +1,7 @@
 ﻿namespace FreelancePool.Web.ViewModels.Projects
 {
     using System.ComponentModel.DataAnnotations;
+
     using AutoMapper;
     using FreelancePool.Data.Models;
     using FreelancePool.Services.Mapping;
