@@ -139,10 +139,12 @@
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseStatusCodePagesWithRedirects("/Error/{0}");
                 app.UseDatabaseErrorPage();
             }
             else
             {
+                app.UseStatusCodePagesWithRedirects("/Error/{0}");
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
