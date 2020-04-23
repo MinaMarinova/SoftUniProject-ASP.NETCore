@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace FreelancePool.Web.Controllers
+﻿namespace FreelancePool.Web.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+
     public class ErrorController : BaseController
     {
         [Route("Error/{statusCode}")]

@@ -4,6 +4,7 @@
 @using Microsoft.AspNetCore.Identity
 @using FreelancePool.Data.Models
 @inject UserManager<ApplicationUser> UserManager
+@inject Microsoft.Extensions.Configuration.IConfiguration configuration
 @{
     this.ViewData["Title"] = "Freelancer's profile";
 }
@@ -19,7 +20,7 @@
             <h4 class="text-post text-left">Create @ViewData["Title"]</h4>
             <h6 class="text-danger"><i><strong>To apply for project, get an offer or write a message you should create your own freelancer's profile!</strong></i></h6>
         }
-        <script src="https://cdn.tiny.cloud/1/hhvv13byvxapusxlco3vsin7d8xcfozmch0vsde036hxek40/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+        <script src="https://cdn.tiny.cloud/1/@this.configuration["TinyMCE:ApiKey"]/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
         <script>
             tinymce.init({
                 selector: 'textarea', plugins: [

@@ -43,7 +43,7 @@
             {
                 var newUser = new ApplicationUser
                 {
-                    UserName = "AdminAgain",
+                    UserName = "Admin",
                     Email = "admin@admin.bg",
                     PhotoUrl = "https://res.cloudinary.com/freelancepool/image/upload/v1585084662/Categories/recruit_kqvbck.png",
                 };
@@ -242,7 +242,7 @@
                 {
                     UserName = "Ivan Popov",
                     Email = "ivan@ivan.bg",
-                    PhotoUrl = "https://res.cloudinary.com/freelancepool/image/upload/v1585084662/Categories/recruit_kqvbck.png",
+                    PhotoUrl = "https://res.cloudinary.com/freelancepool/image/upload/v1587330707/Users/lfviodngibybka6aaa4y.png",
                 };
 
                 var result = await userManager.CreateAsync(newUser, "ivan123");
