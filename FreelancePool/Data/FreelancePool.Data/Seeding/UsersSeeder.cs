@@ -261,7 +261,7 @@
                 {
                     UserName = "Milena Popova",
                     Email = "milena@milena.bg",
-                    PhotoUrl = "https://res.cloudinary.com/freelancepool/image/upload/v1585084662/Categories/recruit_kqvbck.png",
+                    PhotoUrl = "https://res.cloudinary.com/freelancepool/image/upload/v1586636165/Users/socvgmgkat48pp9y9ugz.jpg",
                 };
 
                 var result = await userManager.CreateAsync(newUser, "milena123");
