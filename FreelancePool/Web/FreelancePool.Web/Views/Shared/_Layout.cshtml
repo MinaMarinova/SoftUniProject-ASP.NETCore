@@ -48,11 +48,11 @@
                         <ul class="nav navbar-nav">
                             @if (!this.User.IsInRole(GlobalConstants.FreelancerRoleName))
                             {
-                            <li><a class="bg-primary" asp-area="" asp-controller="Users" asp-action="CreateProfile">Create profile</a></li>
+                                <li><a class="bg-primary" asp-area="" asp-controller="Users" asp-action="CreateProfile">Create profile</a></li>
                             }
                             else
                             {
-                            <li><a class="bg-primary" asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="@UserManager.GetUserId(this.User)">My profile</a></li>
+                                <li><a class="bg-primary" asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="@UserManager.GetUserId(this.User)">My profile</a></li>
                             }
                             <vc:categories></vc:categories>
                             <li><a class="bg-primary" asp-area="" asp-controller="Projects" asp-action="Post">Post a project</a></li>
@@ -107,11 +107,8 @@
     <script src="~/js/jquery.scrollTo.js"></script>
     <script src="~/js/wow.min.js"></script>
 
-    <script src="jquery.js"></script>
-    <script src="jquery.validate.js"></script>
-    <script src="jquery.validate.unobtrusive.js"></script>
     <!-- Custom Theme JavaScript -->
-    <script src="~/js/custom.js"></script>
+    @*<script src="~/js/custom.js"></script>*@
     <script src="~/js/bootstrap.js"></script>
     <script src="~/js/jquery-1.10.2.js"></script>
 
