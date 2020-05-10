@@ -1,5 +1,6 @@
-﻿@model FreelancePool.Web.ViewModels.Users.AllFreelancersViewModel
-@using FreelancePool.Common 
+﻿@model AllFreelancersViewModel
+@using FreelancePool.Web.ViewModels.Users
+@using FreelancePool.Common
 @{
     this.ViewData["Title"] = "All freelancers";
 }
@@ -29,11 +30,12 @@
             <div class="row">
                 <div class="col-md-7 text-center">
                     <div class="card-allfreelancers example-1 text-profile-about square scrollbar-cyan bordered-cyan">
-                        @foreach (var freelancer in Model.Freelancers)
-                        {
-                            @Html.DisplayFor(f => freelancer)
-
-                        }
+                        <div id="freelancers">
+                            @foreach (var freelancer in Model.Freelancers)
+                            {
+                                @Html.DisplayFor(f => freelancer)
+                            }
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-1">
@@ -45,13 +47,14 @@
                         <h5 class="bg bg-primary">You can arrange the freelancers by:</h5>
                     </div>
                     <br />
-                    <form asp-area="" asp-controller="Users" asp-action="All">
-                        <div class="form-group radio text-center">
-                            <label><input type="radio" asp-for="Order" value="@GlobalConstants.AlphabeticalOrder">Name</label>
-                            <label><input type="radio" asp-for="Order" value="@GlobalConstants.RatingOrder">Rating</label>
-                        </div>
-                        <input type="submit" class="btn btn-primary pull-right"/>
-                    </form>
+                    <div class="pull-left">
+                        <button href="#" id="byName"> By Name </button>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="pull-left">
+                        <button href="#" id="byRating"> By Rating </button>
+                    </div>
                     <br />
                     <hr />
                     <br />
@@ -77,6 +80,84 @@
                     </div>
                 </div>
             </div>
-            </div>
+        </div>
     </section>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function (data) {
+
+        var json = { freelancers: data.freelancers }
+        $("#byName").click(orderByName)
+        $("#byRating").click(orderByRating)
+
+        function orderByName() {
+            console.log("test")
+            $("#byRating").css("background-color", "#fff");
+            $("#byRating").css("color", "#666");
+            $("#byName").css("background-color", "#428bca");
+            $("#byName").css("color", "white");
+            $.ajax({
+                url: "/Users/AllOrderedByName",
+                type: "POST",
+                data: JSON.stringify(json),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    success(data);
+                    console.log(data.freelancers);
+                },
+                error: function (error) {
+                    console.log("error", error);
+                },
+            });
+        };
+
+        function orderByRating() {
+            console.log("test")
+
+            $("#byName").css("background-color", "#fff");
+            $("#byName").css("color", "#666");
+            $("#byRating").css("background-color", "#428bca");
+            $("#byRating").css("color", "white");
+            
+            $.ajax({
+                url: "/Users/AllOrderedByRating",
+                type: "POST",
+                data: JSON.stringify(json),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    success(data);
+                    console.log(data.freelancers);
+                },
+                error: function (error) {
+                    console.log("error", error);
+                },
+            });
+        };
+
+        function success(data) {
+            console.log(data.freelancers);
+            $("#freelancers").empty();
+            $.each(data.freelancers, function (i, v) {
+                var item = `<div class="col-xs-6 col-sm-3 col-md-3">
+                                        <div class="wow bounceInUp animated" data-wow-delay="0.2s" style="visibility: visible;-webkit-animation-delay: 0.2s; -moz-animation-delay: 0.2s; animation-delay: 0.2s;">
+                                            <div class="team boxed-grey">
+                                                <div class="inner clearfix">
+                                                    <a href="/Users/Profile/${v.encryptedId}">
+                                                        <h6 id="username">${v.userName}<br><img src="~/img/icons/star.svg" alt="" width="15" height="15" /> ${v.stars}</h6>
+                                                        <div id="photo" class="avatar"><img src="${v.photoUrl}" alt="" class="img-responsive img-circle"></div>
+                                                    </a>
+                                                    <div>${v.categories.join("/")}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>`
+                $("#freelancers").append(item);
+            });
+        }
+    });
+</script>
+

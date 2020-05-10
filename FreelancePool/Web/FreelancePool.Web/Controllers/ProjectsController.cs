@@ -175,7 +175,6 @@
             return this.View(projectViewModel);
         }
 
-        [HttpGet]
         [HttpPost]
         [Authorize]
         public IActionResult IsEmailValid()

@@ -3,7 +3,6 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using FreelancePool.Common;
     using FreelancePool.Data.Models;
     using FreelancePool.Services;
     using FreelancePool.Services.Data;
@@ -45,7 +44,6 @@
             this.protector = dataProtectionProvider.CreateProtector(dataProtectionPurposeStrings.EmployeeIdRouteValue);
         }
 
-        // TODO: To add API Key at appsettings.json for TinyMCE
         [Authorize]
         public IActionResult CreateProfile()
         {
@@ -67,7 +65,6 @@
             return this.View(modelView);
         }
 
-        [HttpGet]
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> IsEmailUnique(string email)
@@ -151,20 +148,9 @@
         }
 
         [HttpGet]
-        [HttpPost]
         public IActionResult All(AllFreelancersViewModel viewModel)
         {
             viewModel.Freelancers = this.usersService.GetAll<FreelancerViewModel>();
-
-            if (viewModel.Order == GlobalConstants.AlphabeticalOrder)
-            {
-                viewModel.Freelancers = viewModel.Freelancers.OrderBy(f => f.UserName).ToList();
-            }
-
-            if (viewModel.Order == GlobalConstants.RatingOrder)
-            {
-                viewModel.Freelancers = viewModel.Freelancers.OrderByDescending(f => f.Stars).ToList();
-            }
 
             viewModel.Freelancers.Select(f =>
             {
@@ -189,6 +175,42 @@
             }).ToList();
 
             return this.View(viewModel);
+        }
+
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public ActionResult<AllFreelancersViewModel> AllOrderedByName()
+        {
+            var viewModel = new AllFreelancersViewModel();
+            var freelancers = this.usersService.GetAll<FreelancerViewModel>();
+            viewModel.Freelancers = freelancers.OrderBy(f => f.UserName).ToList();
+
+            viewModel.Freelancers.Select(f =>
+            {
+                f.Categories = f.Categories.Take(3);
+                f.EncryptedId = this.protector.Protect(f.Id);
+                return f;
+            }).ToList();
+
+            return viewModel;
+        }
+
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public ActionResult<AllFreelancersViewModel> AllOrderedByRating()
+        {
+            var freelancers = this.usersService.GetAll<FreelancerViewModel>();
+            var viewModel = new AllFreelancersViewModel();
+            viewModel.Freelancers = freelancers.OrderByDescending(f => f.Stars).ToList();
+
+            viewModel.Freelancers.Select(f =>
+            {
+                f.Categories = f.Categories.Take(3);
+                f.EncryptedId = this.protector.Protect(f.Id);
+                return f;
+            }).ToList();
+
+            return viewModel;
         }
     }
 }
